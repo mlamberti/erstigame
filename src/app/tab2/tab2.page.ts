@@ -9,3 +9,4 @@ import { USERS } from '../MOCK-USERS';
 export class Tab2Page {
   users = USERS;
 }
+  
