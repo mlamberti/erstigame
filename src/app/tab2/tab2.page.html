@@ -8,9 +8,11 @@
 
 <ion-content>
   <ion-list lines="none">
-    <ion-item *ngFor="let user of users">
-      <ion-label>{{user.name}}</ion-label>
-        <ion-icon name="logo-tux"></ion-icon>
-    </ion-item>
+    <ng-template ngFor let-user [ngForOf]="users">
+      <ion-item  *ngIf="user.subgroup==1">
+        <ion-label>{{user.name}}</ion-label>
+        <ion-icon name={{user.icon}}></ion-icon>
+      </ion-item>
+    </ng-template>
   </ion-list>
 </ion-content>
