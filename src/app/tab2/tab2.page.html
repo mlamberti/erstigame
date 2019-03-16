@@ -8,8 +8,46 @@
 
 <ion-content>
   <ion-list lines="none">
+    <ion-grid>
+      <ion-row>
+        <ion-col>      
+          <ion-img src="assets/Beispiel.JPG"></ion-img>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-label>join the team 1</ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label>YOU HAVE 1 HOUR</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
     <ng-template ngFor let-user [ngForOf]="users">
       <ion-item  *ngIf="user.subgroup==1">
+        <ion-label>{{user.name}}</ion-label>
+        <ion-icon name={{user.icon}}></ion-icon>
+      </ion-item>
+    </ng-template>
+    <ion-grid>
+      <ion-row>
+        <ion-col>      
+          <ion-img src="assets/Beispiel.JPG"></ion-img>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-label>join the team 2</ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label>YOU HAVE 1 HOUR</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ng-template ngFor let-user [ngForOf]="users">
+      <ion-item  *ngIf="user.subgroup==2">
         <ion-label>{{user.name}}</ion-label>
         <ion-icon name={{user.icon}}></ion-icon>
       </ion-item>
