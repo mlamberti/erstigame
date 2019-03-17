@@ -6,9 +6,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<script src="js/erstigame.js"></script>
+
+<ion-content ng-app="erstigame" ng-controller="erstigameCtrl">
   <ion-list lines="none">
       <ion-card>
+        {{subgroup.title}}
+        <ion-title> {{subgroup}} </ion-title>
         <ion-grid>
         <ion-row>
           <ion-col>      
@@ -64,7 +68,7 @@
       </ion-item>
     </ng-template>
   </ion-card>
-      <ng-template ngFor let-user.subgroup [ngForOf]="users">
+      <ng-template ngFor let-user [ngForOf]="users">
       <ion-label> {{user.subgroup}} </ion-label>
     </ng-template>
   </ion-list>
