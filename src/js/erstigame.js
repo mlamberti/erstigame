@@ -1,18 +1,18 @@
 {function{}
 var app= angular.module('erstigame', ['ionic']);
 app.controller('erstigameCtrl',function($scope){
- $scope.subgroup = [
+ $scope.subgroups = [
   {
-   title=Team 1
-   teamid=1
+   title: 'Team 1'
+   teamid: 1
    }
   {
-   title=Team 2
-   teamid=2
+   title: 'Team 2'
+   teamid:2
    }
   {
-   title=Team 3
-   teamid=3
+   title: 'Team 3'
+   teamid:3
    }
 
  
