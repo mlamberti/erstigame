@@ -2,7 +2,8 @@ export class activity {
   id: number;
   teamid: number;
   picturelink: string;
-  hashtags: arry<hashtag>=[];
-  users: array<user>= [];
+  hashtags: string []=[]
+  users: number []= [];
   active:boolean;
+  time:string;
 }
