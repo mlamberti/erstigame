@@ -8,9 +8,44 @@
 
 <ion-content>
   <ion-list lines="none">
-    <ion-item *ngFor="let user of users">
-      <ion-label>{{user.name}}</ion-label>
-        <ion-icon name="logo-tux"></ion-icon>
-    </ion-item>
+      <ng-template ngFor let-activity [ngForOf]="activitys"> 
+        <ion-item *ngIf="activity.active===true">
+         <ion-label>{{dataTime}}</ion-label> 
+          <ion-card>
+            <ion-grid>
+            <ion-row>
+              <ion-col>      
+                <ion-img src={{activity.picturelink}}></ion-img>
+              </ion-col>
+              <ion-col>
+                <ion-row>
+                  <ion-label>join the Team</ion-label>
+                    <ion-item *ngIf="timeInSeconds && timeInSeconds >0">
+                      <ion-label> {{timer.displayTime}}</ion-label>
+                    </ion-item>
+                </ion-row>
+                <ion-row>
+                  <ion-label></ion-label>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+                   <ion-label>{{dateTime}}</ion-label> 
+
+          <ng-template ngFor let-userA [ngForOf]="activity.users">
+            <ng-template ngFor let-userU [ngForOf]="users">
+            <ion-item  *ngIf="userU.id==userA"> <!--user u gleich user aus users user a gleich user Activity-->
+              <ion-avatar>
+                  <ion-icon name={{userU.icon}}></ion-icon>
+                </ion-avatar>
+                <ion-label>{{userU.name}}</ion-label>
+                <ion-button shape="round">-</ion-button>
+            </ion-item>
+          </ng-template>
+          </ng-template>
+        </ion-card>
+      </ion-item>
+    </ng-template>
+
   </ion-list>
-</ion-content>
+</ion-content>    
