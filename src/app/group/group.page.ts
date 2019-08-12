@@ -4,11 +4,11 @@ import {ACTIVITYS} from'../MOCK-ACTIVITYS';
 import {ITimer} from '../itimer';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'] 
+  selector: 'app-group',
+  templateUrl: 'group.page.html',
+  styleUrls: ['group.page.scss'] 
 })
-export class Tab2Page {
+export class GroupPage {
   users = USERS;
   activitys=ACTIVITYS;
   public data: boolean=false;
