@@ -7,26 +7,27 @@
     </ion-header>
   </ion-item>
 </ng-template>
-<ion-content>
-<ion-list>
-<ion-grid>
-  <ion-row>
-    <ion-col>
-      <ion-label>1</ion-label>
-    </ion-col>
-    <ion-col>
-            <ion-label>2</ion-label>
-          </ion-col>
-        </ion-row><ion-row>
+ 
 
-    <ion-col>
-      <ion-label>3</ion-label>
-    </ion-col>
-    <ion-col>
-            <ion-label>4</ion-label>
-          </ion-col>
-        </ion-row>
+  <ng-template ngFor let-group [ngForOf]="group"> 
+    <ion-list *ngIf="group.id===knownid.groupid">       
+            <ion-list *ngIf="group.active===true">
+              <ng-template ngFor let-userG [ngForOf]="group.userid">
+                <ng-template ngFor let-userU [ngForOf]="user">
+                  <ion-card  *ngIf="userU.id==userG"> 
+                    <ion-avatar>
+                      <ion-icon name={{userU.icon}}></ion-icon>
+                    </ion-avatar>
+                    <ion-card-header>{{userU.name}}</ion-card-header>
+                    <ion-label>
+                      {{userU.info}}</ion-label>
+                      </ion-card>
+                    </ng-template>
+                  </ng-template>
+                </ion-list>
+              </ion-list></ng-template>
 
+<!--
 </ion-grid>
 </ion-list>
   <ng-template ngFor let-group [ngForOf]="group"> 
@@ -35,14 +36,18 @@
               <ng-template ngFor let-userG [ngForOf]="group.userid">
                 <ng-template ngFor let-userU [ngForOf]="user">
                   <ion-row  *ngIf="userU.id==userG"> 
-                    <!--user u gleich user aus users user a gleich user picture-->
+                    <!--user u gleich user aus users user a gleich user picture-
                     <ion-card>
+                      <ion-item>
                     <ion-avatar>
                       <ion-icon name={{userU.icon}}></ion-icon>
                     </ion-avatar>
-                    <ion-label>{{userU.name}}</ion-label>
-                    <ion-label>{{userU.info}}</ion-label>
-                  </ion-card>
+                    <ion-card-header>{{userU.name}}</ion-card-header>
+                    <ion-label>
+                      {{userU.info}}</ion-label>
+                      </ion-item>
+                      
+                    </ion-card>
                   </ion-row>
                 </ng-template>
               </ng-template>
