@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { USERS } from '../MOCK-USERS';
-import {ACTIVITYS} from'../MOCK-ACTIVITYS';
-import {ITimer} from '../itimer';
+import { USER } from '../MOCK-USER';
+import {PICTURE } from'../MOCK-PICTURE';
+import {GROUP } from'../MOCK-GROUP';
+import {knownid} from'../global';
 
 @Component({
   selector: 'app-group',
@@ -9,9 +10,8 @@ import {ITimer} from '../itimer';
   styleUrls: ['group.page.scss'] 
 })
 export class GroupPage {
-  users = USERS;
-  activitys=ACTIVITYS;
-  public data: boolean=false;
-  public dateTime : string = '';
-  
-  }
+  user = USER;
+  picture=PICTURE;
+  group=GROUP;
+  knownid=knownid;
+}
