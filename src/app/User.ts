@@ -1,6 +1,6 @@
 export class User {
   id: number;
-  ip: number;
+  gid: number;
   name: string;
   info: string;
   icon: string;

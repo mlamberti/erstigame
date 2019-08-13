@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { USER } from '../MOCK-USER';
-import {PICTURE } from'../MOCK-PICTURE';
-import {GROUP } from'../MOCK-GROUP';
-import {knownid} from'../global';
+import { User } from '../User';
+import { USERS } from '../MOCK-USERS';
+import { GROUPS } from '../MOCK-GROUPS';
 
 @Component({
   selector: 'app-group',
@@ -10,8 +9,13 @@ import {knownid} from'../global';
   styleUrls: ['group.page.scss'] 
 })
 export class GroupPage {
-  user = USER;
-  picture=PICTURE;
-  group=GROUP;
-  knownid=knownid;
+  users: User[];
+  groupName:string;
+
+  constructor() {
+    let group = GROUPS[0];
+    this.users = USERS.filter(user=>user.gid == group.id); 
+    this.groupName = group.name;
+  }
+
 }
