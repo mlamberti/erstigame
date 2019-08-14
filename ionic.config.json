@@ -1,6 +1,8 @@
 {
   "name": "erstigame",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular",
   "id": "f75e1e4d"
 }

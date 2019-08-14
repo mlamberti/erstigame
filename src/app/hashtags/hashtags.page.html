@@ -8,6 +8,26 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item *ngFor="let hashtag of hashtags">
+      <div>
+        <ion-icon name="stopwatch" slot="start"></ion-icon>
+        <div> {{hashtag.timeToRepeat}} </div>
+      </div>
+      <ion-label text-wrap>
+        <h2>{{hashtag.name}}</h2>
+        <p>Info: {{hashtag.info}}</p>      
+      </ion-label>
+      <ion-button routerLink="/hashtag-info" fill="clear" slot="end">
+        <script>openHashtagInfo();</script>
+        <ion-icon name="help"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/camera" fill="clear" slot="end">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>Aufgabenpaket 1</ion-card-title>
@@ -50,3 +70,5 @@
     2 / 3 Aufgaben erledigt!
   </ion-card-content>
 </ion-card>
+</ion-content>
+
