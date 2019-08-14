@@ -8,10 +8,5 @@ import {HASHTAGS} from '../MOCK-HASHTAGS'
 export class HashtagsPage {
   hashtags=HASHTAGS;
 
-  constructor (){
-    function openHashtagInfo(){
-      routerlink   
-    }
-
-  }
+  constructor() { }
 }
