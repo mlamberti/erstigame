@@ -1,0 +1,7 @@
+{
+  "appId": "de.rwthaachen.fsmb.erstigame",
+  "appName": "erstigame",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}
