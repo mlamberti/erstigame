@@ -14,7 +14,7 @@
       </ion-avatar>
       <ion-label text-wrap>
         <h2>{{user.name}}</h2>
-        <p>Info: {{user.info}}</p>      
+        <p *ngIf="user.info" class="info">{{user.info}}</p>      
       </ion-label>
     </ion-item>
   </ion-list>
