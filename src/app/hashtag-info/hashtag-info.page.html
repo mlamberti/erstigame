@@ -1,9 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>hashtag-info</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ng-container *ngIf="hashtag">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>#{{ hashtag.name }}</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/tabs/hashtags"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content padding>
-
-</ion-content>
+  <ion-content padding>
+    {{ hashtag.info }}
+  </ion-content>
+</ng-container>

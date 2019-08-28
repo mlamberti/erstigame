@@ -9,8 +9,7 @@ import { HashtagInfoPage } from './hashtag-info.page';
 
 const routes: Routes = [
   {
-    path: '',
-    component: HashtagInfoPage
+    path: ':id', component: HashtagInfoPage
   }
 ];
 
