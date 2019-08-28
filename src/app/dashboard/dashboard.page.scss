@@ -1,4 +1,43 @@
-.welcome-card ion-img {
-  max-height: 35vh;
-  overflow: hidden;
+@keyframes rollin {
+  0% { transform: translateY(-48%) rotateX(90deg); }
+  50% { transform: translateY(0%) rotateX(0deg); }
+  100% { transform: translateY(48%) rotateX(-90deg); }
 }
+
+@keyframes rollout {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(100%); }
+}
+
+.wheel {
+  display: inline-block;
+  border: 1px solid grey;
+  width: 16%;
+  height: 40px;
+  position: relative;
+
+  background: linear-gradient(0deg, grey, white 40%, white 60%, grey);
+}
+
+span {
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  line-height: 40px;
+  text-align: center;
+
+  animation: rollin 2000ms;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  transform: translateY(-50%) rotateX(90deg);
+
+  font-weight: bold;
+}
+
+.wheel:nth-child(6) span { animation-delay: 0.3s; & ~ span { animation-delay: 1.3s } }
+.wheel:nth-child(5) span { animation-delay: 0.6s; & ~ span { animation-delay: 1.6s } }
+.wheel:nth-child(4) span { animation-delay: 0.9s; & ~ span { animation-delay: 1.9s } }
+.wheel:nth-child(3) span { animation-delay: 1.2s; & ~ span { animation-delay: 2.2s } }
+.wheel:nth-child(2) span { animation-delay: 1.5s; & ~ span { animation-delay: 2.5s } }
+.wheel:nth-child(1) span { animation-delay: 1.8s; & ~ span { animation-delay: 2.8s } }
