@@ -1,15 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>camera</ion-title>
+    <ion-title>Camera</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/dashboard"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <img [src]="photo" >
+  <img [src]="photo" *ngIf="photo">
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="takePicture()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" edge>
+    <ion-fab-button routerLink="/"><ion-icon name="send"></ion-icon></ion-fab-button>
   </ion-fab>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input type="text" value="Select a #Hashtag ..."></ion-input>
+  </ion-toolbar>
+</ion-footer>
