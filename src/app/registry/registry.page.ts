@@ -15,6 +15,7 @@ mutation CreateUser($name: String!, $token: String!) {
       }
     }
     token
+    errors
   }
 }
 `;

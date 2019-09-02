@@ -1,23 +1,21 @@
-<ion-nav>
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>
-        Hashtags
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Hashtags
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-content>
+<ion-content>
 
-    <ion-list>
-        <ion-item button *ngFor="let hashtag of hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
-          <ion-label text-wrap>
-            <h3>#{{hashtag.name}}</h3>
-            <p style="font-style: italic;">{{hashtag.info}}</p>
-          </ion-label>
-        </ion-item>
-    </ion-list>
+  <ion-list>
+      <ion-item button *ngFor="let hashtag of hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label text-wrap>
+          <h3>#{{hashtag.name}}</h3>
+          <p style="font-style: italic;">{{hashtag.info}}</p>
+        </ion-label>
+      </ion-item>
+  </ion-list>
 
-  </ion-content>
-</ion-nav>
+</ion-content>
 
