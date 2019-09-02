@@ -9,6 +9,21 @@
   </ion-header>
 
   <ion-content padding>
-    {{ hashtag.info }}
+    <ion-card>
+      <ion-img *ngIf="hashtag.picture" src="assets/hashtags/{{hashtag.picture}}"></ion-img>
+      <ion-card-header>
+        <ion-card-title>#{{ hashtag.name }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        {{ hashtag.description || hashtag.info }}
+      </ion-card-content>
+
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" edge>
+        <ion-fab-button routerLink="/camera"><ion-icon name="camera"></ion-icon></ion-fab-button>
+      </ion-fab>
+    </ion-card>
   </ion-content>
+
+
 </ng-container>

@@ -17,16 +17,18 @@ export class GroupPage implements OnInit {
 
   ngOnInit() {
     this.apollo
-      .watchQuery<{ group: Group }>({
+      .watchQuery<{ viewer: { group: Group }}>({
         query: gql`
           query{
-            group(id:1) {
+            viewer {
               id
-              name
-              users {
-                id
+              group {
                 name
-                info
+                users {
+                  id
+                  name
+                  info
+                }
               }
             }
           }
@@ -34,8 +36,10 @@ export class GroupPage implements OnInit {
       })
       .valueChanges.subscribe(result => {
         console.log(result);
-        this.groupName = result.data.group.name;
-        this.users = result.data.group.users;
+        let viewer = result.data.viewer;
+
+        this.groupName = viewer.group.name;
+        this.users = viewer.group.users;
       });
   }
 }

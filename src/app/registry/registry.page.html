@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides #slides pager="true" [options]="slideOpts">
+
+    <ion-slide>
+      <form [formGroup]="form" (submit)="slides.slideNext()">
+        <ion-item>
+          <ion-label position="floating">Group token</ion-label>
+          <ion-input formControlName="token"></ion-input>
+        </ion-item>
+      </form>
+    </ion-slide>
+
+    <ion-slide>
+      <form [formGroup]="form" (submit)="createUser()">
+        <ion-item>
+          <ion-label position="floating">Your name</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+      </form>
+    </ion-slide>
+
+  </ion-slides>
+</ion-content>

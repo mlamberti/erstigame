@@ -28,6 +28,10 @@ export class HashtagInfoPage implements OnInit {
             id
             name
             info
+            description
+            picture
+            points
+            repeatTime
           }
         }
         `,
