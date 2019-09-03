@@ -7,18 +7,46 @@
 </ion-header>
 
 <ion-content>
-    <ion-card class="welcome-card">
-      <ion-card-header>
-        <ion-card-title>Score</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="wheel" *ngFor="let digit of points">
-          <span>{{ digit }}</span>
-          <span>{{ digit }}</span>
-          <span>{{ digit }}</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
+  <ion-card class="welcome-card">
+    <ion-card-header>
+      <ion-card-title>Score</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="wheel" *ngFor="let digit of points">
+        <span>{{ digit }}</span>
+        <span>{{ digit }}</span>
+        <span>{{ digit }}</span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title> Mitteilung:</ion-card-title>
+  </ion-card-header>
+  <ion-label>
+    Stelle dich auf den Tisch und rufe: "Boden ist Lava!!!"
+  </ion-label>
+</ion-card>
+
+
+  <ion-card *ngFor="let hashtag of hashtags">
+      <ion-item>
+      <ion-avatar slot="start">
+        <ion-icon class="avatar" name="contact"></ion-icon>
+      </ion-avatar>
+      <ion-label text-wrap>
+        <h2>Ben</h2>    
+      </ion-label>
+    </ion-item>
+    <ion-img *ngIf="hashtag.picture" src="assets/hashtags/{{hashtag.picture}}"></ion-img>
+    <ion-card-header>
+      <ion-card-title>#{{ hashtag.name }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{ hashtag.description || hashtag.info }}
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">

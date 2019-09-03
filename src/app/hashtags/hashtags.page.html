@@ -7,15 +7,83 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-list>
+      <ion-list-header>
+        <h3> Level 1 </h3>
+      </ion-list-header>
+      <ion-item>
+       <ion-label text-wrap>
+        <h3># Teamfoto</h3>
+        <p style="font-style: italic;">Bla</p>
+      </ion-label>
+    </ion-item>
+    <ion-item class="hashtag-done">
+      <ion-label text-wrap>
+        <h3># Finde Tutoren</h3>
+        <p style="font-style: italic;"></p>
+      </ion-label>
+    </ion-item>
 
-  <ion-list>
-      <ion-item button *ngFor="let hashtag of hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
-        <ion-label text-wrap>
-          <h3>#{{hashtag.name}}</h3>
-          <p style="font-style: italic;">{{hashtag.info}}</p>
+    <ion-list (click)="catchesList.toggle()" *ngIf="catches">
+      <ion-item>
+        <ion-label>
+          # Catch... 
         </ion-label>
+        <ion-note slot="end"> 1/3</ion-note> 
       </ion-item>
+      <app-expandable #catchesList [expandHeight]="catches.length*50+'px'">
+        <ion-item button  [routerLink]="['/hashtag-info', hashtag.id]" *ngFor="let hashtag of catches">
+          <ion-label >
+            {{ hashtag.name }} 
+          </ion-label>
+        </ion-item>
+      </app-expandable>
+    </ion-list>
+
+    <ion-list (click)="placesList.toggle()" *ngIf="places">
+      <ion-item class="hashtag-done">
+        <ion-label>
+          # Places... 
+        </ion-label>
+        <ion-note slot="end"> 2/2</ion-note> 
+      </ion-item>
+      <app-expandable #placesList [expandHeight]="places.length*50+'px'">
+        <ion-item class="hashtag-done" button  [routerLink]="['/hashtag-info', hashtag.id]" *ngFor="let hashtag of places">
+          <ion-label >
+            {{ hashtag.name }} 
+          </ion-label>
+        </ion-item>
+      </app-expandable>
+    </ion-list>
+
+        <ion-list (click)="sponsorsList.toggle()" *ngIf="sponsors">
+      <ion-item class="hashtag-done">
+        <ion-label>
+          # Sponsors... 
+        </ion-label>
+        <ion-note slot="end"> 2/2</ion-note> 
+      </ion-item>
+      <app-expandable #sponsorsList [expandHeight]="sponsors.length*50+'px'">
+        <ion-item class="hashtag-done" button  [routerLink]="['/hashtag-info', hashtag.id]" *ngFor="let hashtag of sponsors">
+          <ion-label >
+            {{ hashtag.name }} 
+          </ion-label>
+        </ion-item>
+      </app-expandable>
+    </ion-list>
+
   </ion-list>
+</ion-card>
+
+<ion-list>
+  <ion-item button *ngFor="let hashtag of hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+    <ion-label text-wrap>
+      <h3>#{{hashtag.name}}</h3>
+      <p style="font-style: italic;">{{hashtag.info}}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>
 
 </ion-content>
 
