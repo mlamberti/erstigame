@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
+import { User } from '../../generated/graphql';
 import { Hashtag } from '../../generated/graphql';
 import { ExpandableComponent } from "../components/expandable/expandable.component";
 
@@ -13,13 +14,14 @@ import { ExpandableComponent } from "../components/expandable/expandable.compone
 export class HashtagsPage implements OnInit {
   hashtags: Hashtag[];
   catches: Hashtag[];
-  places:Hashtag[];
+  places:Hashtag[]
   sponsors:Hashtag[];
-
+  viewer:User;
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
     this.apollo
+    .watchQuery<{ viewer }>({
         query: gql`
           query{
             viewer {
@@ -34,15 +36,15 @@ export class HashtagsPage implements OnInit {
                 }
               }
             }
-          }
+         } 
         `,
       })
       .valueChanges.subscribe(result => {
-        this.hashtags = result.data.allHashtags;
-        this.catches = this.hashtags.filter(hashtag => hashtag.name.startsWith('Catch'));
-        this.places = this.hashtags.filter(hashtag => hashtag.name.startsWith('Tag'));
-        this.sponsors= this.hashtags.filter(hashtag => hashtag.name.startsWith('A'));
+        let viewer = result.data.viewer;
+        this.catches = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Catch'));
+        this.places = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Tag'));
+        this.sponsors= this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('A'));
       });
-  }
+   }
 
 }

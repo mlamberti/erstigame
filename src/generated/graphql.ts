@@ -85,7 +85,7 @@ export type Query = {
   group?: Maybe<Group>,
   hashtag?: Maybe<Hashtag>,
   user?: Maybe<User>,
-  viewer?: Maybe<User>,
+    viewer?: Maybe<User>,
 };
 
 
