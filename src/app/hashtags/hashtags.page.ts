@@ -22,29 +22,31 @@ export class HashtagsPage implements OnInit {
   ngOnInit() {
     this.apollo
     .watchQuery<{ viewer }>({
-        query: gql`
-          query{
-            viewer {
-              group {
-                hashtags {
-                  id
-                  name
-                  info
-                  level
-                  points
-                  done
-                }
-              }
+      query: gql`
+      query{
+        viewer{
+          id
+          group {
+            hashtags{
+              id
+              name
+              info
+              description
+              picture
+              points
+              repeatTime
             }
-         } 
-        `,
-      })
-      .valueChanges.subscribe(result => {
-        let viewer = result.data.viewer;
-        this.catches = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Catch'));
-        this.places = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Tag'));
-        this.sponsors= this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('A'));
-      });
-   }
+          }
+        }
+      }
+      `, 
+    })
+    .valueChanges.subscribe(result => {
+      let viewer = result.data.viewer;
+      this.catches = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Catch'));
+      this.places = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Tag'));
+      this.sponsors= this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('A'));
+    });
+  }
 
 }
