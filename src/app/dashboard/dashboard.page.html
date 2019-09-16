@@ -19,34 +19,30 @@
       </div>
     </ion-card-content>
   </ion-card>
-<ion-card>
-  <ion-card-header>
-    <ion-card-title> Mitteilung:</ion-card-title>
-  </ion-card-header>
-  <ion-label>
-    Stelle dich auf den Tisch und rufe: "Boden ist Lava!!!"
-  </ion-label>
-</ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title> Mitteilung:</ion-card-title>
+    </ion-card-header>
+    <ion-label>
+      {{points}}
+    </ion-label>
+  </ion-card>
 
-
-  <ion-card *ngFor="let hashtag of hashtags">
-      <ion-item>
+  <ion-card *ngFor="let photo of photos">
+    <ion-item>
       <ion-avatar slot="start">
-        <ion-icon class="avatar" name="contact"></ion-icon>
+        <ion-icon class="avatar" name="photo.user.picture"></ion-icon>
       </ion-avatar>
       <ion-label text-wrap>
-        <h2>Ben</h2>    
+        <h2>{{photo.user.name}}</h2>    
       </ion-label>
     </ion-item>
-    <ion-img *ngIf="hashtag.picture" src="assets/hashtags/{{hashtag.picture}}"></ion-img>
-    <ion-card-header>
-      <ion-card-title>#{{ hashtag.name }}</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      {{ hashtag.description || hashtag.info }}
-    </ion-card-content>
+    <ion-img *ngIf="photo.path" src="{{photo.path}}"></ion-img>
+    <ion-card-title *ngFor="let hashtag of photo.hashtags">
+      #{{ hashtag.name }}
+    </ion-card-title> 
   </ion-card>
+
 </ion-content>
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -10,7 +10,7 @@ export function createApollo(httpLink: HttpLink) {
 
   const authLink = new ApolloLink((operation, forward) => {
       // Get the authentication token from local storage if it exists
-      const token = "SAhjDav2RkJGM2tCERvXB8Ee" //localStorage.getItem('token');
+      const token = "7AoV1M3zP1rAnZ4MEp48WcPb" //localStorage.getItem('token');
 
       // Use the setContext method to set the HTTP headers.
       operation.setContext({

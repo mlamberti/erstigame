@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { User } from '../../generated/graphql';
-import { Hashtag } from '../../generated/graphql';
+import { User, Hashtag, Group} from '../../generated/graphql';
 import { ExpandableComponent } from "../components/expandable/expandable.component";
 
 @Component({
@@ -16,7 +15,11 @@ export class HashtagsPage implements OnInit {
   catches: Hashtag[];
   places:Hashtag[]
   sponsors:Hashtag[];
+  hashtagsLevel:Hashtag[];
+  hashtagsWiederholbar: Hashtag[];
   viewer:User;
+  group: Group;
+
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
@@ -26,7 +29,8 @@ export class HashtagsPage implements OnInit {
       query{
         viewer{
           id
-          group {
+          group{
+            level
             hashtags{
               id
               name
@@ -35,17 +39,20 @@ export class HashtagsPage implements OnInit {
               picture
               points
               repeatTime
+              done
+              level
+              
             }
           }
         }
-      }
-      `, 
+      }`, 
     })
     .valueChanges.subscribe(result => {
       let viewer = result.data.viewer;
-      this.catches = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Catch'));
-      this.places = this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('Tag'));
-      this.sponsors= this.viewer.group.hashtags.filter(hashtag => hashtag.name.startsWith('A'));
+      let group = result.data.viewer.group;
+      let hashtags= result.data.viewer.group.hashtags;
+      this.hashtagsWiederholbar=hashtags;
+
     });
   }
 

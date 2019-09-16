@@ -14,9 +14,12 @@ export class DashboardPage implements OnInit {
   hashtags: Hashtag[];
   groupName: String;
   users: User[];
+  photos: Photo[];
   date=Date.now();
   latestPhoto: Photo;
   timeLatestPhoto=Date.now();
+  time= Date.now();
+
   pointsNow: number;
   pointsLast:number;
 
@@ -27,7 +30,7 @@ export class DashboardPage implements OnInit {
     this.apollo
     .watchQuery<{ viewer }>({
       query: gql`
-      query{
+    query{
         viewer{
           id
           group {
@@ -39,7 +42,19 @@ export class DashboardPage implements OnInit {
             }
             photos {
               id
+              user {
+                id
+                name
+                picture
+              }
               createdAt
+              path
+              hashtags {
+                name
+                id
+              }
+              
+              
 
             }
             hashtags{
@@ -54,35 +69,36 @@ export class DashboardPage implements OnInit {
 
           }
         }
-        `,
-      })
+      }
+    
+
+      `,
+    })
     .valueChanges.subscribe(result => {
       console.log(result);
       let viewer = result.data.viewer;
-
+      this.photos=viewer.group.photos;
       this.groupName = viewer.group.name;
       this.users = viewer.group.users;
       this.hashtags = viewer.group.hashtags
 
-/*           let pointsLast=100;
- this.latestPhoto=viewer.group.photo.filter(photo => photo.id.max());
-      
-
-this.timeLatestPhoto=viewer.group.latestPhoto.createdAt
-      this.pointsLast= viewer.group.points
-      if (this.timeLatestPhoto- this.time<= "0000-00-00 00:30:00 UTC") {
-        let pointsNow=pointsLast+5 
+           let pointsLast=100;
+/*
+ this.latestPhoto=viewer.group.photo.filter(photo => photo.id(Math.max(photo.id)));
+this.timeLatestPhoto=this.latestPhoto.createdAt;
+      this.pointsLast= viewer.group.points;
+      if (this.timeLatestPhoto.gettime()- this.time.gettime()<= 30*60*1000) {
+        let pointsNow=pointsLast+5
       }
 
-      if (this.timeLatestPhoto- this.time> "0000-00-00 00:30:00 UTC" && this.timeLatestPhoto- this.time<= "0000-00-00 01:30:00 UTC") {
-        let pointsNow=pointsLast+10
+      if (this.timeLatestPhoto.gettime()- this.time.gettime()> 30*60*1000 && this.timeLatestPhoto.gettime()- this.time.gettime()<= 60*60*1000) {
+        let pointsNow=pointsLast+10;
       }
-      if (this.timeLatestPhoto- this.time> "0000-00-00 01:30:00 UTC") {
-        let pointsNow=pointsLast+15
+      if (this.timeLatestPhoto.gettime()- this.time.gettime()> 60*60*1000) {
+        let pointsNow=pointsLast+15;
       }
-let pointsNow=100;
 */
-    });
+});
   }
 
 }
