@@ -10,9 +10,12 @@ import { User, Hashtag, Photo } from '../../generated/graphql';
 })
 export class DashboardPage implements OnInit {
 
-  points = [3,0,1,9,6,0];
+  points: Number = 200535;
+  digits: Number[];
+  pointsstring:String= "12345";
   hashtags: Hashtag[];
   groupName: String;
+  groupPoints:Number;
   users: User[];
   photos: Photo[];
   date=Date.now();
@@ -78,11 +81,12 @@ export class DashboardPage implements OnInit {
       console.log(result);
       let viewer = result.data.viewer;
       this.photos=viewer.group.photos;
+      this.groupPoints=viewer.group.points;
       this.groupName = viewer.group.name;
       this.users = viewer.group.users;
       this.hashtags = viewer.group.hashtags
-
-           let pointsLast=100;
+      //this.pointsstring=viewer.group.points.toString();
+      this.digits = (""+this.pointsstring).split("").map(Number);
 /*
  this.latestPhoto=viewer.group.photo.filter(photo => photo.id(Math.max(photo.id)));
 this.timeLatestPhoto=this.latestPhoto.createdAt;

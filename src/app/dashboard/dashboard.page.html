@@ -7,14 +7,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="welcome-card">
+  <ion-card *ngIf= "digits" class="welcome-card">
     <ion-card-header>
-      <ion-card-title>Score</ion-card-title>
+      <ion-card-title>Score:
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <div class="wheel" *ngFor="let digit of points">
-        <span>{{ digit }}</span>
-        <span>{{ digit }}</span>
+      <div class="wheel" *ngFor="let digit of digits">
         <span>{{ digit }}</span>
       </div>
     </ion-card-content>
@@ -24,8 +23,10 @@
       <ion-card-title> Mitteilung:</ion-card-title>
     </ion-card-header>
     <ion-label>
-      {{points}}
+    Viel Spaß beim Erstigame. Schließt ein Level ab um neue Level mit neuen Aufgaben abzuschließen.
+
     </ion-label>
+
   </ion-card>
 
   <ion-card *ngFor="let photo of photos">

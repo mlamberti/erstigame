@@ -16,9 +16,11 @@ export class HashtagsPage implements OnInit {
   places:Hashtag[]
   sponsors:Hashtag[];
   hashtagsLevel:Hashtag[];
+  hashtagsNichtWiederholbar: Hashtag[];
   hashtagsWiederholbar: Hashtag[];
   viewer:User;
   group: Group;
+  groupLevel:number;
 
   constructor(private apollo: Apollo) { }
 
@@ -49,9 +51,15 @@ export class HashtagsPage implements OnInit {
     })
     .valueChanges.subscribe(result => {
       let viewer = result.data.viewer;
-      let group = result.data.viewer.group;
-      let hashtags= result.data.viewer.group.hashtags;
-      this.hashtagsWiederholbar=hashtags;
+      this.group = viewer.group;
+      this.hashtags=viewer.group.hashtags;
+      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level);
+      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level== this.group.level);
+      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level);
+      this.groupLevel=this.group.level;
+      this.catches=this.hashtags.filter(hashtag=>hashtag.name.startsWith("A"))
+      this.places=this.hashtags.filter(hashtag=>hashtag.name.startsWith("T"))
+      this.sponsors=this.hashtags.filter(hashtag=>hashtag.name.startsWith("C"))
 
     });
   }
