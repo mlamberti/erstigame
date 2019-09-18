@@ -19,12 +19,11 @@
     </ion-card-content>
   </ion-card>
   <ion-card>
-    <ion-card-header>
-      <ion-card-title> Mitteilung:</ion-card-title>
+    <ion-card-header *ngIf= "Announcement">
+      <ion-card-title> Announcement:</ion-card-title>
     </ion-card-header>
     <ion-label>
-    Viel Spaß beim Erstigame. Schließt ein Level ab um neue Level mit neuen Aufgaben abzuschließen.
-
+    {{announcement}}
     </ion-label>
 
   </ion-card>

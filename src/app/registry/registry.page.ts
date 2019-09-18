@@ -4,11 +4,12 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 const CREATE_USER = gql`
-mutation CreateUser($name: String!, $token: String!) {
-  createUser(name: $name, groupToken: $token) {
+mutation CreateUser($name: String!, $token: String!, $gender: String!) {
+  createUser(name: $name, groupToken: $token, gender: $gender) {
     user {
       id
       name
+      gender
       group {
         id
         name
@@ -49,7 +50,8 @@ export class RegistryPage implements OnInit {
       mutation: CREATE_USER,
       variables: {
         name: this.form.get('name').value,
-        token: this.form.get('token').value
+        token: this.form.get('token').value,
+        gender: this.form.get('gender').value
       }
     }).subscribe(({ data }) => {
       console.log('got data', data);

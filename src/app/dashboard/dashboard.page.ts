@@ -22,7 +22,7 @@ export class DashboardPage implements OnInit {
   latestPhoto: Photo;
   timeLatestPhoto=Date.now();
   time= Date.now();
-
+  announcement:String= "Verhalte dich immer Vorbildlich... Du weißt nie wer dir Bonus Punkte für gute Taten gibt.";
   pointsNow: number;
   pointsLast:number;
 
