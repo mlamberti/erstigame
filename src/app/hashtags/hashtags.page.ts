@@ -61,9 +61,9 @@ export class HashtagsPage implements OnInit {
       let viewer = result.data.viewer;
       this.group = viewer.group;
       this.hashtags=viewer.group.hashtags;
-      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level<= this.group.level && (hashtag.repeatable||!hashtag.done));
+      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level<= this.group.level && (hashtag=>hashtag.repeatable||!hashtag.done));
       this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level== this.group.level);
-      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level&&hashtag.done && !hashtag.repeatable);
+      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level&&hashtag.done && !(hashtag=>hashtag.repeatable));
       this.groupLevel=this.group.level;
       this.catches=this.hashtags.filter(hashtag=>hashtag.name.startsWith("A"));
       this.places=this.hashtags.filter(hashtag=>hashtag.name.startsWith("T"));

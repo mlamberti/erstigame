@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-
+import {PreloadAllModules, RouterModule, Router, ActivatedRoute, ParamMap } from "@angular/router"; //  Für Token auslesen
+import { switchMap } from 'rxjs/operators'; // für token auslesen
 const CREATE_USER = gql`
-mutation CreateUser($name: String!, $token: String!, $gender: String!) {
-  createUser(name: $name, groupToken: $token, gender: $gender) {
+mutation CreateUser($name: String!, $token: String!) {
+  createUser(name: $name, groupToken: $token) {
     user {
       id
       name
-      gender
       group {
         id
         name
@@ -34,15 +34,28 @@ export class RegistryPage implements OnInit {
     initialSlide: 0,
     speed: 400
   };
-
-  constructor(private apollo: Apollo, private formBuilder: FormBuilder) {
+  groupToken:String='';
+  constructor(
+    private apollo: Apollo, 
+    private formBuilder: FormBuilder,  
+    private route: ActivatedRoute, 
+    private router: Router,
+    ) {
     this.form = this.formBuilder.group({
       token: ['', Validators.required],
       name: ['', Validators.required],
     });
+     ;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+     let groupToken = this.route.snapshot.paramMap.get('token');
+     console.log (groupToken);
+     this.form.setValue({'token': groupToken, 'name':''});
+    // if (groupToken){
+    // this.form.token= this.groupToken
+    // }
+  }
 
   createUser() {
     console.log(this.form.value)
@@ -50,14 +63,14 @@ export class RegistryPage implements OnInit {
       mutation: CREATE_USER,
       variables: {
         name: this.form.get('name').value,
-        token: this.form.get('token').value,
-        gender: this.form.get('gender').value
+        token: this.form.get('token').value
       }
     }).subscribe(({ data }) => {
       console.log('got data', data);
     },(error) => {
       console.log('there was an error sending the query', error);
     });
+    {path: '/tabs/group'}
   }
 
 }

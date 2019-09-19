@@ -5,8 +5,9 @@ const routes: Routes = [
   { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'camera', loadChildren: './camera/camera.module#CameraPageModule' },
   { path: 'hashtag-info', loadChildren: './hashtag-info/hashtag-info.module#HashtagInfoPageModule' },
+  { path: 'registry/:token', loadChildren: './registry/registry.module#RegistryPageModule' },
   { path: 'registry', loadChildren: './registry/registry.module#RegistryPageModule' },
-  { path: ':token', loadChildren: './tabs/tabs.module#TabsPageModule'}
+  { path: 'token/:token', loadChildren: './tabs/tabs.module#TabsPageModule'}
   //{ path: '**', redirectTo: 'Tokeneinlösenseite: dann Dashboard}
 ];
 @NgModule({
