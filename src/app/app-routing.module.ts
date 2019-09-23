@@ -7,7 +7,8 @@ const routes: Routes = [
   { path: 'hashtag-info', loadChildren: './hashtag-info/hashtag-info.module#HashtagInfoPageModule' },
   { path: 'registry/:token', loadChildren: './registry/registry.module#RegistryPageModule' },
   { path: 'registry', loadChildren: './registry/registry.module#RegistryPageModule' },
-  { path: 'token/:token', loadChildren: './tabs/tabs.module#TabsPageModule'}
+  { path: 'token/:token', loadChildren: './token/token.module#TokenPageModule'},
+  { path: 'token', loadChildren: './token/token.module#TokenPageModule' }
   //{ path: '**', redirectTo: 'Tokeneinlösenseite: dann Dashboard}
 ];
 @NgModule({

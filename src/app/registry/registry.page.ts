@@ -45,7 +45,7 @@ export class RegistryPage implements OnInit {
       token: ['', Validators.required],
       name: ['', Validators.required],
     });
-     ;
+     ;  
   }
 
   ngOnInit() {

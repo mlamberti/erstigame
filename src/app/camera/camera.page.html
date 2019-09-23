@@ -11,12 +11,106 @@
   <img [src]="photo" *ngIf="photo">
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" edge>
-    <ion-fab-button routerLink="/"><ion-icon name="send"></ion-icon></ion-fab-button>
+    <ion-fab-button createPhoto><ion-icon name="send"></ion-icon></ion-fab-button>
   </ion-fab>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <ion-input type="text" value="Select a #Hashtag ..."></ion-input>
-  </ion-toolbar>
-</ion-footer>
+
+<ion-content>
+  <ion-card>
+    <ion-list>
+      <ion-list-header *ngIf="groupLevel" >
+        <h3> Level {{groupLevel}} </h3>
+      </ion-list-header>
+      <ion-item button *ngFor="let hashtag of hashtagsLevel" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label text-wrap>
+          <h3>#{{hashtag.name}}</h3>
+        </ion-label>
+        
+        <ion-checkbox slot="end" [(ngModel)]="hashtag.marked"></ion-checkbox>
+
+      </ion-item>
+      <ion-list *ngIf="catches">
+        <ion-item>
+          <ion-label *ngIf="numCatchesHave >= numCatchesMust" class="hashtag-done">
+            # Catch... 
+          </ion-label>
+          <ion-label *ngIf="numCatchesHave < numCatchesMust">
+            # Catch... 
+          </ion-label>
+          <ion-note slot="end"> {{numCatchesHave}}/{{numCatchesMust}}</ion-note> 
+        </ion-item>
+        <!--        <app-expandable #catchesList [expandHeight]="catches.length*50+'px'">  -->
+          <div  *ngFor="let hashtag of catches">
+            <ion-item button  [routerLink]="['/hashtag-info', hashtag.id]" *ngIf="!hashtag.done">
+              <ion-label>
+                {{ hashtag.name }} 
+              </ion-label>
+              <ion-checkbox slot="end" [(ngModel)]="hashtag.marked"></ion-checkbox>
+            </ion-item>
+          </div>
+
+          <!--        </app-expandable> -->
+        </ion-list>
+
+        <ion-list *ngIf="places">
+          <ion-item >
+            <ion-label *ngIf="numPlacesHave >= numPlacesMust" class="hashtag-done">
+              # Places... 
+            </ion-label>
+            <ion-label *ngIf="numPlacesHave < numPlacesMust">
+              # Places... 
+            </ion-label>
+            <ion-note slot="end"> {{numPlacesHave}}/{{numPlacesMust}}</ion-note> 
+          </ion-item>
+          <!--        <app-expandable #placesList [expandHeight]="places.length*50+'px'"> -->
+            <div *ngFor="let hashtag of places">
+              <ion-item button  [routerLink]="['/hashtag-info', hashtag.id]" *ngIf="!hashtag.done">
+                <ion-label>
+                  {{ hashtag.name }} 
+                </ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="hashtag.marked"></ion-checkbox>
+
+              </ion-item>
+            </div>
+            <!--         </app-expandable> -->
+          </ion-list>
+
+          <ion-list *ngIf="sponsors">
+            <ion-item>
+              <ion-label *ngIf="numSponsorsHave >= numSponsorsMust" class="hashtag-done">
+                # Sponsors... 
+              </ion-label>
+              <ion-label *ngIf="numSponsorsHave < numSponsorsMust">
+                # Sponsors... 
+              </ion-label>
+              <ion-note slot="end"> {{numSponsorsHave}}/{{numSponsorsMust}}</ion-note> 
+            </ion-item>
+            <!--        <app-expandable #sponsorsList [expandHeight]="sponsors.length*50+'px'"> -->
+              <div *ngFor="let hashtag of sponsors">
+                <ion-item button  [routerLink]="['/hashtag-info', hashtag.id]"  *ngIf="!hashtag.done">
+                  <ion-label>
+                    {{ hashtag.name }} 
+                  </ion-label>
+                  <ion-checkbox slot="end" [(ngModel)]="hashtag.marked"></ion-checkbox>
+
+                </ion-item>
+              </div>
+              <!--         </app-expandable>   -->
+            </ion-list>
+
+          </ion-list>
+        </ion-card>
+
+        <ion-list>
+          <ion-item  *ngFor="let hashtag of hashtagsWiederholbar" >
+            <ion-label button [routerLink]="['/hashtag-info', hashtag.id]" text-wrap>
+              <h3>#{{hashtag.name}}</h3>
+
+
+            </ion-label> 
+            <ion-checkbox slot="end" [(ngModel)]="hashtag.marked"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+
+      </ion-content>  

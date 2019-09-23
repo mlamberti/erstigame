@@ -7,18 +7,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngIf= "digits" class="welcome-card">
+  <ion-card *ngIf= "groupPoints" class="welcome-card">
     <ion-card-header>
-      <ion-card-title>Score:
-      </ion-card-title>
+      <ion-card-title>Score:</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      <div class="wheel" *ngFor="let digit of digits">
-        <span>{{ digit }}</span>
-      </div>
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
+      <ion-label> {{groupPoints}}</ion-label>
+        </ion-card>
+          <ion-card>
     <ion-card-header *ngIf= "Announcement">
       <ion-card-title> Announcement:</ion-card-title>
     </ion-card-header>

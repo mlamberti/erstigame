@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 import { User, Hashtag, Group} from '../../generated/graphql';
 import { ExpandableComponent } from "../components/expandable/expandable.component";
-
+  
 @Component({
   selector: 'app-hashtags',
   templateUrl: 'hashtags.page.html',
@@ -61,6 +61,7 @@ export class HashtagsPage implements OnInit {
       let viewer = result.data.viewer;
       this.group = viewer.group;
       this.hashtags=viewer.group.hashtags;
+      this.hashtags.marked=false;
       this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level<= this.group.level && (hashtag=>hashtag.repeatable||!hashtag.done));
       this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level== this.group.level);
       this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level&&hashtag.done && !(hashtag=>hashtag.repeatable));

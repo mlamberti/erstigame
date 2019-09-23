@@ -38,6 +38,7 @@ export class DashboardPage implements OnInit {
           id
           group {
             name
+            points
             users {
               id
               name
@@ -56,9 +57,6 @@ export class DashboardPage implements OnInit {
                 name
                 id
               }
-              
-              
-
             }
             hashtags{
               id
@@ -69,12 +67,9 @@ export class DashboardPage implements OnInit {
               points
               repeatTime
             }
-
           }
         }
       }
-    
-
       `,
     })
     .valueChanges.subscribe(result => {
@@ -85,8 +80,8 @@ export class DashboardPage implements OnInit {
       this.groupName = viewer.group.name;
       this.users = viewer.group.users;
       this.hashtags = viewer.group.hashtags
-      //this.pointsstring=viewer.group.points.toString();
-      this.digits = (""+this.pointsstring).split("").map(Number);
+   //   this.pointsstring=viewer.group.points.toString();
+   //   this.digits = (""+this.pointsstring).split("").map(Number);
 /*
  this.latestPhoto=viewer.group.photo.filter(photo => photo.id(Math.max(photo.id)));
 this.timeLatestPhoto=this.latestPhoto.createdAt;
