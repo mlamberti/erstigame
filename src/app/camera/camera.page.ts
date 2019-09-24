@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
 import { User, Hashtag, Group} from '../../generated/graphql';
@@ -22,24 +23,23 @@ export class CameraPage implements OnInit {
   viewer:User;
   group: Group;
   groupLevel:number;
-  numPlacesMust:number=1;
+  numPlacesMust:number;
   numPlacesHave:number;
-  numSponsorsMust:number=5;
+  numSponsorsMust:number;
   numSponsorsHave:number;
-  numCatchesMust:number=5;
+  numCatchesMust:number;
   numCatchesHave:number;
   numHoursMust:number=5;
   numHoursHave:number=10;
   minNumber:number=3;
   photo: SafeResourceUrl;
-
+  hashtagsInPhoto:Hashtag[];
   constructor(private sanitizer: DomSanitizer,
     private apollo: Apollo,
 
     ) {  }
 
   ngOnInit() {
-    this.createPhoto();
     this.apollo
     .watchQuery<{ viewer }>({
       query: gql`
@@ -65,21 +65,22 @@ export class CameraPage implements OnInit {
               repeatTime
               repeatable
               done
-              level
-              
+              level{
+                rank}
+
+              }
             }
           }
-        }
-      }`, 
-    })
+        }`, 
+      })
     .valueChanges.subscribe(result => {
       let viewer = result.data.viewer;
       this.group = viewer.group;
       this.hashtags=viewer.group.hashtags;
-      //this.hashtags.marked=false;
-      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level<= this.group.level.rank && (hashtag=>hashtag.repeatable||!hashtag.done));
-      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level== this.group.level.rank);
-      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
+      this.hashtags.forEach(hashtag => hashtag['ischecked'] = false);
+      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank<= this.group.level.rank && (hashtag=>hashtag.repeatable||!hashtag.done));
+      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level.rank== this.group.level.rank);
+      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
       this.groupLevel=this.group.level.rank;
       this.catches=this.hashtags.filter(hashtag=>hashtag.name.startsWith("A"));
       this.places=this.hashtags.filter(hashtag=>hashtag.name.startsWith("T"));
@@ -87,23 +88,21 @@ export class CameraPage implements OnInit {
       this.numCatchesHave=this.catches.filter(hashtag=>hashtag.done).length;
       this.numPlacesHave=this.places.filter(hashtag=>hashtag.done).length;
       this.numSponsorsHave=this.sponsors.filter(hashtag=>hashtag.done).length;
+      this.numCatchesMust=this.group.level.numCatches;
+      this.numSponsorsMust=this.group.level.numSponsors;
+      this.numPlacesMust=this.group.level.numPlaces;
     });
-
-
   }
 
-  async createPhoto() {
-    const image = await Plugins.Camera.getPhoto({
-      quality: 100,
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera,
-      saveToGallery: true,
-    });
+  createPhoto() {
+    this.hashtagsInPhoto=this.hashtags.filter(hashtag=>hashtag['ischecked']);
+    console.log(this.hashtagsInPhoto);
+  
 
-    this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
-
-
+    {path: '/tabs/dashboard'}
   }
 
+  onSubmit(f: NgForm) {
+    console.log(f.value);
+  }
 }

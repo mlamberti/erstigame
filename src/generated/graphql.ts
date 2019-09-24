@@ -50,6 +50,7 @@ export type Group = Node & {
 
 export type Hashtag = Node & {
   __typename?: 'Hashtag',
+  category?: Maybe<HashtagCategory>,
   createdAt?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   done?: Maybe<Scalars['Boolean']>,
@@ -63,6 +64,12 @@ export type Hashtag = Node & {
   repeatable: Scalars['Boolean'],
   updatedAt?: Maybe<Scalars['String']>,
 };
+
+export enum HashtagCategory {
+  Catch = 'CATCH',
+  Sponsor = 'SPONSOR',
+  Place = 'PLACE'
+}
 
 export type Level = Node & {
   __typename?: 'Level',
@@ -123,7 +130,25 @@ export type Photo = Node & {
 
 export type Query = {
   __typename?: 'Query',
+  group?: Maybe<Group>,
+  hashtag?: Maybe<Hashtag>,
+  user?: Maybe<User>,
   viewer?: Maybe<User>,
+};
+
+
+export type QueryGroupArgs = {
+  id: Scalars['ID']
+};
+
+
+export type QueryHashtagArgs = {
+  id: Scalars['ID']
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID']
 };
 
 export type RallyeRating = Node & {

@@ -27,7 +27,7 @@ export class HashtagsPage implements OnInit {
   numSponsorsHave:number;
   numCatchesMust:number;
   numCatchesHave:number;
-  numHoursMust:number=5;
+  numHoursMust:number;
   numHoursHave:number=10;
   constructor(private apollo: Apollo) { }
 
@@ -35,6 +35,7 @@ export class HashtagsPage implements OnInit {
     this.apollo
     .watchQuery<{ viewer }>({
       query: gql`
+      query{
         viewer{
           id
           group{
@@ -71,7 +72,6 @@ export class HashtagsPage implements OnInit {
       this.group = viewer.group;
       this.hashtags=viewer.group.hashtags;
       //this.hashtags.marked=false;
-      console.log(group.level.rank)
       this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank<= this.group.level.rank && (hashtag=>hashtag.repeatable||!hashtag.done));
       this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level.rank== this.group.level.rank);
       this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
@@ -85,6 +85,7 @@ export class HashtagsPage implements OnInit {
       this.numCatchesMust=this.group.level.numCatches;
       this.numSponsorsMust=this.group.level.numSponsors;
       this.numPlacesMust=this.group.level.numPlaces;
+      this.numHoursMust=this.group.level.numHours;
     });
   }
 

@@ -12,7 +12,7 @@
       <ion-list-header *ngIf="groupLevel" >
         <h3> Level {{groupLevel}} </h3>
       </ion-list-header>
-      <ion-item *ngIf="numHoursHave">
+      <ion-item *ngIf="numHoursHave" [routerLink]="['/personhours']">
           <ion-label *ngIf="numHoursHave >= numHoursMust" class="hashtag-done">
             HoursTogether*Persons 
           </ion-label>
