@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { User, Hashtag, Group} from '../../generated/graphql';
+import { User, Hashtag, Group,HashtagCategory} from '../../generated/graphql';
 import { ExpandableComponent } from "../components/expandable/expandable.component";
   
 @Component({
@@ -76,9 +76,9 @@ export class HashtagsPage implements OnInit {
       this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level.rank== this.group.level.rank);
       this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
       this.groupLevel=this.group.level.rank;
-      this.catches=this.hashtags.filter(hashtag=>hashtag.name.startsWith("A"));
-      this.places=this.hashtags.filter(hashtag=>hashtag.name.startsWith("T"));
-      this.sponsors=this.hashtags.filter(hashtag=>hashtag.name.startsWith("C"));
+      this.catches=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Catch);
+      this.places=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Place);
+      this.sponsors=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Sponsor);
       this.numCatchesHave=this.catches.filter(hashtag=>hashtag.done).length;
       this.numPlacesHave=this.places.filter(hashtag=>hashtag.done).length;
       this.numSponsorsHave=this.sponsors.filter(hashtag=>hashtag.done).length;
