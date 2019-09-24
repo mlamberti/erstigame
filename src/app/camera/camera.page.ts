@@ -7,12 +7,22 @@ import { User, Hashtag, Group , HashtagCategory} from '../../generated/graphql';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
+const CREATE_PHOTO = gql`
+mutation CreatePhoto($picture: Upload!) {
+  createPhoto(peopleCount: 2, hashtagIds: [], picture: $picture) {
+    photo { id }
+    errors
+  }
+}
+`;
+
 @Component({
   selector: 'app-camera',
   templateUrl: './camera.page.html',
   styleUrls: ['./camera.page.scss'],
 })
 export class CameraPage implements OnInit {
+  picture: File;
   hashtags: Hashtag[];
   catches: Hashtag[];
   places:Hashtag[]
@@ -96,12 +106,23 @@ export class CameraPage implements OnInit {
   }
 
   createPhoto() {
-    this.hashtagsInPhoto=this.hashtags.filter(hashtag=>hashtag['ischecked']);
-    console.log(this.hashtagsInPhoto);
-  
+    this.apollo.mutate({
+      mutation: CREATE_PHOTO,
+      variables: {
+        picture: this.picture
+      },
+      context: {
+        useMultipart: true
+      },
+    }).subscribe(({ data }) => {
+      console.log('got data', data);
+    },(error) => {
+      console.log('there was an error sending the query', error);
+    });
+  }
 
-
-    {path: '/tabs/dashboard'}
+  changePhoto(photo: File) {
+    this.picture = photo;
   }
 
   onSubmit(f: NgForm) {
