@@ -5,9 +5,9 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import {PreloadAllModules, RouterModule, Router, ActivatedRoute, ParamMap } from "@angular/router"; //  Für Token auslesen
 import { switchMap } from 'rxjs/operators'; // für token auslesen
-const GET_RALLYPOINTS = gql`
-mutation GetRallyPoints($token: String!,) {
-  getRallyPoints(token: $token) {
+const ADD_GROUP_RALLY_RATING = gql`
+mutation AddGroupRallyeRating($token: String!,) {
+  addGroupRallyeRating(token: $token) {
     user {
       id
       name
@@ -41,7 +41,7 @@ export class TokenPage implements OnInit {
   }
   getRallyPoints() {
     this.apollo.mutate({
-      mutation: GET_RALLYPOINTS,
+      mutation: ADD_GROUP_RALLY_RATING,
       variables: {
         token: this.token
       }

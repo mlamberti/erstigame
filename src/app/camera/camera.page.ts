@@ -30,15 +30,16 @@ export class CameraPage implements OnInit {
   numCatchesHave:number;
   numHoursMust:number=5;
   numHoursHave:number=10;
-
+  minNumber:number=3;
   photo: SafeResourceUrl;
 
   constructor(private sanitizer: DomSanitizer,
-private apollo: Apollo
+    private apollo: Apollo,
+
     ) {  }
 
   ngOnInit() {
-    this.takePicture();
+    this.createPhoto();
     this.apollo
     .watchQuery<{ viewer }>({
       query: gql`
@@ -46,7 +47,14 @@ private apollo: Apollo
         viewer{
           id
           group{
-            level
+            level {
+              id
+              rank
+              numHours
+              numPlaces
+              numCatches
+              numSponsors
+            }
             hashtags{
               id
               name
@@ -68,11 +76,11 @@ private apollo: Apollo
       let viewer = result.data.viewer;
       this.group = viewer.group;
       this.hashtags=viewer.group.hashtags;
-      this.hashtags.marked=false;
-      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level<= this.group.level && (hashtag=>hashtag.repeatable||!hashtag.done));
-      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level== this.group.level);
-      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level&&hashtag.done && !(hashtag=>hashtag.repeatable));
-      this.groupLevel=this.group.level;
+      //this.hashtags.marked=false;
+      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level<= this.group.level.rank && (hashtag=>hashtag.repeatable||!hashtag.done));
+      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level== this.group.level.rank);
+      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
+      this.groupLevel=this.group.level.rank;
       this.catches=this.hashtags.filter(hashtag=>hashtag.name.startsWith("A"));
       this.places=this.hashtags.filter(hashtag=>hashtag.name.startsWith("T"));
       this.sponsors=this.hashtags.filter(hashtag=>hashtag.name.startsWith("C"));
@@ -84,7 +92,7 @@ private apollo: Apollo
 
   }
 
-  async takePicture() {
+  async createPhoto() {
     const image = await Plugins.Camera.getPhoto({
       quality: 100,
       allowEditing: true,

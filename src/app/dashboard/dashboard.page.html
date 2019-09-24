@@ -9,16 +9,15 @@
 <ion-content>
   <ion-card *ngIf= "groupPoints" class="welcome-card">
     <ion-card-header>
-      <ion-card-title>Score:</ion-card-title>
+      <ion-card-title>Score: {{groupPoints}} Points</ion-card-title>
     </ion-card-header>
-      <ion-label> {{groupPoints}}</ion-label>
-        </ion-card>
-          <ion-card>
-    <ion-card-header *ngIf= "Announcement">
+  </ion-card>
+  <ion-card>
+    <ion-card-header *ngIf= "announcement">
       <ion-card-title> Announcement:</ion-card-title>
     </ion-card-header>
     <ion-label>
-    {{announcement}}
+      {{announcement}}
     </ion-label>
 
   </ion-card>

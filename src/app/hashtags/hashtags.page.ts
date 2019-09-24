@@ -13,7 +13,7 @@ import { ExpandableComponent } from "../components/expandable/expandable.compone
 export class HashtagsPage implements OnInit {
   hashtags: Hashtag[];
   catches: Hashtag[];
-  places:Hashtag[]
+  places:Hashtag[];
   sponsors:Hashtag[];
   hashtagsLevel:Hashtag[];
   hashtagsNichtWiederholbar: Hashtag[];
@@ -21,11 +21,11 @@ export class HashtagsPage implements OnInit {
   viewer:User;
   group: Group;
   groupLevel:number;
-  numPlacesMust:number=1;
+  numPlacesMust:number ;
   numPlacesHave:number;
-  numSponsorsMust:number=5;
+  numSponsorsMust:number;
   numSponsorsHave:number;
-  numCatchesMust:number=5;
+  numCatchesMust:number;
   numCatchesHave:number;
   numHoursMust:number=5;
   numHoursHave:number=10;
@@ -35,11 +35,17 @@ export class HashtagsPage implements OnInit {
     this.apollo
     .watchQuery<{ viewer }>({
       query: gql`
-      query{
         viewer{
           id
           group{
-            level
+            level {
+              id
+              rank
+              numHours
+              numPlaces
+              numCatches
+              numSponsors
+            }
             hashtags{
               id
               name
@@ -50,28 +56,35 @@ export class HashtagsPage implements OnInit {
               repeatTime
               repeatable
               done
-              level
+              level {
+                id
+                rank
+              }
               
             }
           }
         }
-      }`, 
+      }   `, 
     })
     .valueChanges.subscribe(result => {
       let viewer = result.data.viewer;
       this.group = viewer.group;
       this.hashtags=viewer.group.hashtags;
-      this.hashtags.marked=false;
-      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level<= this.group.level && (hashtag=>hashtag.repeatable||!hashtag.done));
-      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level== this.group.level);
-      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level< this.group.level&&hashtag.done && !(hashtag=>hashtag.repeatable));
-      this.groupLevel=this.group.level;
+      //this.hashtags.marked=false;
+      console.log(group.level.rank)
+      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank<= this.group.level.rank && (hashtag=>hashtag.repeatable||!hashtag.done));
+      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level.rank== this.group.level.rank);
+      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
+      this.groupLevel=this.group.level.rank;
       this.catches=this.hashtags.filter(hashtag=>hashtag.name.startsWith("A"));
       this.places=this.hashtags.filter(hashtag=>hashtag.name.startsWith("T"));
       this.sponsors=this.hashtags.filter(hashtag=>hashtag.name.startsWith("C"));
       this.numCatchesHave=this.catches.filter(hashtag=>hashtag.done).length;
       this.numPlacesHave=this.places.filter(hashtag=>hashtag.done).length;
       this.numSponsorsHave=this.sponsors.filter(hashtag=>hashtag.done).length;
+      this.numCatchesMust=this.group.level.numCatches;
+      this.numSponsorsMust=this.group.level.numSponsors;
+      this.numPlacesMust=this.group.level.numPlaces;
     });
   }
 
