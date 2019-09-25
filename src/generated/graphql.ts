@@ -34,6 +34,12 @@ export type CreateUserPayload = {
   user?: Maybe<User>,
 };
 
+export enum GenderEnum {
+  Maschi = 'MASCHI',
+  Maschine = 'MASCHINE',
+  Pinguin = 'PINGUIN'
+}
+
 export type Group = Node & {
   __typename?: 'Group',
   createdAt?: Maybe<Scalars['String']>,
@@ -111,7 +117,9 @@ export type MutationCreatePhotoArgs = {
 
 export type MutationCreateUserArgs = {
   name: Scalars['String'],
-  groupToken: Scalars['String']
+  groupToken: Scalars['String'],
+  gender?: Maybe<Scalars['String']>,
+  info?: Maybe<Scalars['String']>
 };
 
 /** An object with an ID. */
@@ -175,6 +183,7 @@ export type RallyeStation = Node & {
 export type User = Node & {
   __typename?: 'User',
   createdAt?: Maybe<Scalars['String']>,
+  gender?: Maybe<GenderEnum>,
   group: Group,
   id: Scalars['ID'],
   info?: Maybe<Scalars['String']>,
