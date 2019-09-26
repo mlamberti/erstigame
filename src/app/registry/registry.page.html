@@ -32,7 +32,7 @@
         <ion-item>
           <ion-label position="floating">Your gender</ion-label>
           <ion-select formControlName="gender" interface="action-sheet"> 
-            <ion-select-option *ngFor="let gender of genders | keyvalue" [value]="gender.key">{{ gender.key }}</ion-select-option>
+            <ion-select-option *ngFor="let gender of genders | keyvalue" [value]="gender.value">{{ gender.key }}</ion-select-option>
           </ion-select>
         </ion-item> 
         <ion-button type="submit"> Create User </ion-button>
