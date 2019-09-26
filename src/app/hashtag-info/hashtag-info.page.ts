@@ -24,7 +24,7 @@ export class HashtagInfoPage implements OnInit {
       this.apollo.watchQuery<{ hashtag: Hashtag }>({
         query: gql`
           query{
-          hashtag(id: ${params.id}) {
+          hashtag(hashtagId: ${params.id}) {
             id
             name
             info

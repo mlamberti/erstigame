@@ -17,7 +17,9 @@ mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!)
 const QUERY_HASHTAGS = gql`
 query {
   viewer {
+    id
     group {
+      id
       hashtags {
         id
         doable

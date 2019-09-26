@@ -35,7 +35,9 @@ export class DashboardPage implements OnInit {
       query: gql`
     query{
         viewer{
+          id
           group {
+            id
             name
             points
             users {
@@ -53,8 +55,8 @@ export class DashboardPage implements OnInit {
               createdAt
               path
               hashtags {
-                name
                 id
+                name
               }
             }
             hashtags{

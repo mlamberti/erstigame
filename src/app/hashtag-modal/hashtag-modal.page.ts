@@ -11,6 +11,7 @@ query {
   viewer {
     id
     group {
+      id
       level {
         id
         rank
