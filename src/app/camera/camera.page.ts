@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Router } from "@angular/router";
+import { ModalController, ToastController } from '@ionic/angular';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
@@ -41,15 +42,20 @@ export class CameraPage implements OnInit, AfterViewInit {
   numHashtags = 0;
   hashtagIds: string[] = [];
 
-  constructor(private apollo: Apollo, public modalController : ModalController) {     this.apollo
-    .watchQuery<{ viewer: User }>({
+  constructor(
+    private router: Router,
+    private apollo: Apollo,
+    public modalController: ModalController,
+    public toastController: ToastController,
+  ) {
+    this.apollo.watchQuery<{ viewer: User }>({
       query: QUERY_HASHTAGS,
-    })
-    .valueChanges.subscribe(result => {
+    }).valueChanges.subscribe(result => {
       let viewer = result.data.viewer;
 
       this.numHashtags = viewer.group.hashtags.filter( hashtag => hashtag.doable ).length;
-    }); }
+    });
+  }
 
   ngOnInit() {
 
@@ -57,6 +63,14 @@ export class CameraPage implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.filePicker.nativeElement.click();
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
   }
 
   createPhoto() {
@@ -70,12 +84,19 @@ export class CameraPage implements OnInit, AfterViewInit {
       context: {
         useMultipart: true
       },
-    }).subscribe(({ data }) => {
-      console.log('got data', data);
-      window.location.href = '/tabs/dashboard';   
-    },(error) => {
-      console.log('there was an error sending the query', error);
-    });
+    }).subscribe(
+      ({ data }) => {
+        console.log('got data', data);
+        if (data.createPhoto.errors) {
+          this.presentToast(data.createPhoto.errors)
+        } else {
+          this.router.navigate(['/']);
+        }
+      },(error) => {
+        console.log('there was an error sending the query', error);
+        this.presentToast(error)
+      }
+    );
   }
 
   changePhoto(file: File) {

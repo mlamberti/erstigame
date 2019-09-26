@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 import { User, Hashtag, Group,HashtagCategory} from '../../generated/graphql';
 import { ExpandableComponent } from "../components/expandable/expandable.component";
-  
+
 @Component({
   selector: 'app-hashtags',
   templateUrl: 'hashtags.page.html',
@@ -36,9 +36,10 @@ export class HashtagsPage implements OnInit {
     .watchQuery<{ viewer }>({
       query: gql`
       query{
-        viewer{
+        viewer {
           id
-          group{
+          group {
+            id
             level {
               id
               rank
@@ -61,14 +62,12 @@ export class HashtagsPage implements OnInit {
                 id
                 rank
               }
-              
             }
           }
         }
-      }   `, 
-    })
-    .valueChanges.subscribe(result => {
-      let viewer = result.data.viewer;
+      }`,
+    }).valueChanges.subscribe(({data}) => {
+      let viewer = data.viewer;
       this.group = viewer.group;
       this.hashtags=viewer.group.hashtags;
       //this.hashtags.marked=false;

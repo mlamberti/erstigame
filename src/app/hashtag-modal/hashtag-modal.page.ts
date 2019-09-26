@@ -26,6 +26,7 @@ query {
         doable
         category
         level {
+          id
           rank
         }
       }
