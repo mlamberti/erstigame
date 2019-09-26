@@ -23,6 +23,7 @@ export class GroupPage implements OnInit {
             viewer {
               id
               group {
+                id
                 name
                 users {
                   id

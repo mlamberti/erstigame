@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Camera</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Foto einschicken</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/dashboard"></ion-back-button>
     </ion-buttons>
@@ -8,15 +8,30 @@
 </ion-header>
 
 <ion-content>
-  <img [src]="photo" *ngIf="photo">
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" edge>
-    <ion-fab-button routerLink="/"><ion-icon name="send"></ion-icon></ion-fab-button>
+  <input #filePicker type="file" accept="image/*" capture (change)="changePhoto($event.target.files[0])">
+  <ion-img [src]="pictureURL" *ngIf="pictureURL"></ion-img>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="createPhoto()"><ion-icon name="send"></ion-icon></ion-fab-button>
   </ion-fab>
 </ion-content>
 
+
 <ion-footer>
-  <ion-toolbar>
-    <ion-input type="text" value="Select a #Hashtag ..."></ion-input>
+  <ion-toolbar color="primary">
+    <ion-list>
+      <ion-item>
+        <ion-label> Anzahl Personen </ion-label>
+        <div class="number-input">
+          <button (click)="peopleCountInput.stepDown()"></button>
+          <input #peopleCountInput name="peopleCount" [(ngModel)]="peopleCount" type="number" class="quantity" min="0" value="0" step="1">
+          <button (click)="peopleCountInput.stepUp()" class="plus"></button>
+        </div>
+      </ion-item>
+      <ion-item button (click)="openModal()">
+        <ion-label>Hashtags auswählen ...</ion-label>
+        <ion-note slot="end">{{ hashtagIds.length }} / {{ numHashtags }}</ion-note>
+      </ion-item>
+    </ion-list>
   </ion-toolbar>
 </ion-footer>
+

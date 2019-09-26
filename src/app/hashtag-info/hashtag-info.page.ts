@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+  import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -24,7 +24,7 @@ export class HashtagInfoPage implements OnInit {
       this.apollo.watchQuery<{ hashtag: Hashtag }>({
         query: gql`
           query{
-          hashtag(id: ${params.id}) {
+          hashtag(hashtagId: ${params.id}) {
             id
             name
             info

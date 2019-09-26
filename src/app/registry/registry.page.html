@@ -1,16 +1,20 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Registry
+    </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-label>Hier könnte ihre Dateschutzvereinbarung stehen.</ion-label>
 
 <ion-content>
   <ion-slides #slides pager="true" [options]="slideOpts">
 
-    <ion-slide>
+    <ion-slide *ngIf="!groupToken">
       <form [formGroup]="form" (submit)="slides.slideNext()">
-        <ion-item>
-          <ion-label position="floating">Group token</ion-label>
-          <ion-input formControlName="token"></ion-input>
+        <ion-item >
+          <ion-label  position="floating">Group token</ion-label>
+          <ion-input formControlName="token" >{{groupToken}}</ion-input>
         </ion-item>
       </form>
     </ion-slide>
@@ -20,7 +24,18 @@
         <ion-item>
           <ion-label position="floating">Your name</ion-label>
           <ion-input formControlName="name"></ion-input>
-        </ion-item>
+        </ion-item> 
+        <ion-item>
+          <ion-label position="floating">Your Info</ion-label>
+          <ion-input formControlName="info"></ion-input>
+        </ion-item> 
+        <ion-item>
+          <ion-label position="floating">Your gender</ion-label>
+          <ion-select formControlName="gender" interface="action-sheet"> 
+            <ion-select-option *ngFor="let gender of genders | keyvalue" [value]="gender.value">{{ gender.key }}</ion-select-option>
+          </ion-select>
+        </ion-item> 
+        <ion-button type="submit"> Create User </ion-button>
       </form>
     </ion-slide>
 

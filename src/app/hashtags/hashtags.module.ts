@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HashtagsPage } from './hashtags.page';
+import { ExpandableComponent } from "../components/expandable/expandable.component";
+
 
 @NgModule({
   imports: [
@@ -12,6 +14,6 @@ import { HashtagsPage } from './hashtags.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: HashtagsPage }])
   ],
-  declarations: [HashtagsPage]
+  declarations: [HashtagsPage,ExpandableComponent]
 })
 export class HashtagsPageModule {}

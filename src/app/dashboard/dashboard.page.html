@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
       Erstigame
     </ion-title>
@@ -7,20 +7,38 @@
 </ion-header>
 
 <ion-content>
-    <ion-card class="welcome-card">
-      <ion-card-header>
-        <ion-card-title>Score</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="wheel" *ngFor="let digit of points">
-          <span>{{ digit }}</span>
-          <span>{{ digit }}</span>
-          <span>{{ digit }}</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
+  <ion-card *ngIf= "groupPoints" class="welcome-card">
+    <ion-card-header>
+      <ion-card-title>Score: {{groupPoints}} Points</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  <ion-card>
+    <ion-card-header *ngIf= "announcement">
+      <ion-card-title> Announcement:</ion-card-title>
+    </ion-card-header>
+    <ion-label>
+      {{announcement}}
+    </ion-label>
+
+  </ion-card>
+
+  <ion-card *ngFor="let photo of photos">
+    <ion-item>
+      <ion-avatar slot="start">
+        <ion-icon class="avatar" name="photo.user.picture"></ion-icon>
+      </ion-avatar>
+      <ion-label text-wrap>
+        <h2>{{photo.user.name}}</h2>
+      </ion-label>
+    </ion-item>
+    <ion-img *ngIf="photo.path" src="{{photo.path}}"></ion-img>
+    <ion-card-title *ngFor="let hashtag of photo.hashtags">
+      #{{ hashtag.name }}
+    </ion-card-title>
+  </ion-card>
+
 </ion-content>
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button routerLink="/camera"><ion-icon name="camera"></ion-icon></ion-fab-button>
+  <ion-fab-button routerLink="/camera" color="primary"><ion-icon name="camera"></ion-icon></ion-fab-button>
 </ion-fab>
