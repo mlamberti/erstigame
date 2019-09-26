@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { User, Hashtag, Photo } from '../../generated/graphql';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -77,6 +78,9 @@ export class DashboardPage implements OnInit {
       console.log(result);
       let viewer = result.data.viewer;
       this.photos=viewer.group.photos;
+      for (let photo of this.photos) {
+        photo.path=environment.backendUrl+photo.path;
+      }
       this.groupPoints=viewer.group.points;
       this.groupName = viewer.group.name;
       this.users = viewer.group.users;
