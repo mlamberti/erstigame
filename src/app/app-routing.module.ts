@@ -11,7 +11,8 @@ const routes: Routes = [
   { path: 'token', loadChildren: './token/token.module#TokenPageModule' },
   { path: 'personhours', loadChildren: './personhours/personhours.module#PersonhoursPageModule' },
   { path: 'hashtag-modal', loadChildren: './hashtag-modal/hashtag-modal.module#HashtagModalPageModule' },
-  { path: '**', redirectTo: ''}
+  { path: '**', redirectTo: ''},
+  { path: 'rallyepoints', loadChildren: './rallyepoints/rallyepoints.module#RallyepointsPageModule' }
 ];
 @NgModule({
   imports: [
