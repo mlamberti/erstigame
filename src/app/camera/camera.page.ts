@@ -1,115 +1,69 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
-import { User, Hashtag, Group , HashtagCategory} from '../../generated/graphql';
-// import { ExpandableComponent } from "./components/expandable/expandable.component";
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
+import { HashtagModalPage } from '../hashtag-modal/hashtag-modal.page';
+import { User, HashtagCategory } from '../../generated/graphql';
+
 const CREATE_PHOTO = gql`
-mutation CreatePhoto($picture: Upload!) {
-  createPhoto(peopleCount: 2, hashtagIds: [], picture: $picture) {
+mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!) {
+  createPhoto(picture: $picture, peopleCount: $peopleCount, hashtagIds: $hashtagIds) {
     photo { id }
     errors
   }
-}
-`;
+}`;
+
+const QUERY_HASHTAGS = gql`
+query {
+  viewer {
+    group {
+      hashtags {
+        id
+        doable
+      }
+    }
+  }
+}`;
 
 @Component({
   selector: 'app-camera',
   templateUrl: './camera.page.html',
   styleUrls: ['./camera.page.scss'],
 })
-export class CameraPage implements OnInit {
+export class CameraPage implements OnInit, AfterViewInit {
+  @ViewChild('filePicker') filePicker: ElementRef;
   picture: File;
-  hashtags: Hashtag[];
-  catches: Hashtag[];
-  places:Hashtag[]
-  sponsors:Hashtag[];
-  hashtagsLevel:Hashtag[];
-  hashtagsNichtWiederholbar: Hashtag[];
-  hashtagsWiederholbar: Hashtag[];
-  viewer:User;
-  group: Group;
-  groupLevel:number;
-  numPlacesMust:number;
-  numPlacesHave:number;
-  numSponsorsMust:number;
-  numSponsorsHave:number;
-  numCatchesMust:number;
-  numCatchesHave:number;
-  numHoursMust:number=5;
-  numHoursHave:number=10;
-  minNumber:number=3;
-  photo: SafeResourceUrl;
-  hashtagsInPhoto:Hashtag[];
-  constructor(private sanitizer: DomSanitizer,
-    private apollo: Apollo,
+  pictureURL: any;
+  peopleCount = 0;
+  numHashtags = 0;
+  hashtagIds: string[] = [];
 
-    ) {  }
-
-  ngOnInit() {
-    this.apollo
-    .watchQuery<{ viewer }>({
-      query: gql`
-      query{
-        viewer{
-          id
-          group{
-            level {
-              id
-              rank
-              numHours
-              numPlaces
-              numCatches
-              numSponsors
-            }
-            hashtags{
-              id
-              name
-              info
-              description
-              picture
-              points
-              repeatTime
-              repeatable
-              done
-              category
-              level{
-                rank}
-
-              }
-            }
-          }
-        }`, 
-      })
+  constructor(private apollo: Apollo, public modalController : ModalController) {     this.apollo
+    .watchQuery<{ viewer: User }>({
+      query: QUERY_HASHTAGS,
+    })
     .valueChanges.subscribe(result => {
       let viewer = result.data.viewer;
-      this.group = viewer.group;
-      this.hashtags=viewer.group.hashtags;
-      this.hashtags.forEach(hashtag => hashtag['ischecked'] = false);
-      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank<= this.group.level.rank && (hashtag=>hashtag.repeatable||!hashtag.done));
-      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level.rank== this.group.level.rank);
-      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
-      this.groupLevel=this.group.level.rank;
-      this.catches=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Catch);
-      this.places=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Place);
-      this.sponsors=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Sponsor);
-      this.numCatchesHave=this.catches.filter(hashtag=>hashtag.done).length;
-      this.numPlacesHave=this.places.filter(hashtag=>hashtag.done).length;
-      this.numSponsorsHave=this.sponsors.filter(hashtag=>hashtag.done).length;
-      this.numCatchesMust=this.group.level.numCatches;
-      this.numSponsorsMust=this.group.level.numSponsors;
-      this.numPlacesMust=this.group.level.numPlaces;
-    });
+
+      this.numHashtags = viewer.group.hashtags.filter( hashtag => hashtag.doable ).length;
+    }); }
+
+  ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
+    this.filePicker.nativeElement.click();
   }
 
   createPhoto() {
     this.apollo.mutate({
       mutation: CREATE_PHOTO,
       variables: {
-        picture: this.picture
+        picture: this.picture,
+        peopleCount: this.peopleCount,
+        hashtagIds: this.hashtagIds
       },
       context: {
         useMultipart: true
@@ -121,11 +75,27 @@ export class CameraPage implements OnInit {
     });
   }
 
-  changePhoto(photo: File) {
-    this.picture = photo;
+  changePhoto(file: File) {
+    console.log("change");
+    this.picture = file;
+
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      this.pictureURL = reader.result;
+    }
+    reader.readAsDataURL(file);
   }
 
-  onSubmit(f: NgForm) {
-    console.log(f.value);
+  async openModal() {
+    const modal = await this.modalController.create({
+      component: HashtagModalPage
+    });
+
+    modal.onDidDismiss().then((res) => {
+       this.hashtagIds = res.data.hashtagIds;
+    });
+
+    return await modal.present();
   }
+
 }

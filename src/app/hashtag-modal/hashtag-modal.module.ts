@@ -5,12 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CameraPage } from './camera.page';
+import { HashtagModalPage } from './hashtag-modal.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CameraPage
+    component: HashtagModalPage
   }
 ];
 
@@ -20,8 +20,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
+    RouterModule.forChild(routes)
   ],
-  declarations: [CameraPage]
+  declarations: [HashtagModalPage]
 })
-export class CameraPageModule {}
+export class HashtagModalPageModule {}

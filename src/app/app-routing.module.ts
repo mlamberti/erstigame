@@ -9,8 +9,9 @@ const routes: Routes = [
   { path: 'registry', loadChildren: './registry/registry.module#RegistryPageModule' },
   { path: 'token/:token', loadChildren: './token/token.module#TokenPageModule'},
   { path: 'token', loadChildren: './token/token.module#TokenPageModule' },
-  { path: 'personhours', loadChildren: './personhours/personhours.module#PersonhoursPageModule' }
-  //{ path: '**', redirectTo: 'Tokeneinlösenseite: dann Dashboard}
+  { path: 'personhours', loadChildren: './personhours/personhours.module#PersonhoursPageModule' },
+  { path: 'hashtag-modal', loadChildren: './hashtag-modal/hashtag-modal.module#HashtagModalPageModule' },
+  { path: '**', redirectTo: ''}
 ];
 @NgModule({
   imports: [

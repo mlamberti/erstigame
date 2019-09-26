@@ -41,9 +41,13 @@ export type Group = Node & {
   id: Scalars['ID'],
   level: Level,
   name: Scalars['String'],
+  numCatches: Scalars['Int'],
+  numPlaces: Scalars['Int'],
+  numSponsors: Scalars['Int'],
   photos: Array<Photo>,
   points: Scalars['Int'],
   rallyeRatings: Array<RallyeRating>,
+  timeTogether: Scalars['Int'],
   updatedAt?: Maybe<Scalars['String']>,
   users: Array<User>,
 };
@@ -53,6 +57,7 @@ export type Hashtag = Node & {
   category?: Maybe<HashtagCategory>,
   createdAt?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
+  doable?: Maybe<Scalars['Boolean']>,
   done?: Maybe<Scalars['Boolean']>,
   id: Scalars['ID'],
   info: Scalars['String'],
@@ -61,7 +66,8 @@ export type Hashtag = Node & {
   picture?: Maybe<Scalars['String']>,
   points: Scalars['Int'],
   repeatTime?: Maybe<Scalars['String']>,
-  repeatable: Scalars['Boolean'],
+  repeatable?: Maybe<Scalars['Boolean']>,
+  repeatableAt?: Maybe<Scalars['String']>,
   updatedAt?: Maybe<Scalars['String']>,
 };
 

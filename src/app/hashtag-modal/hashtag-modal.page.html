@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Hashtags auswählen</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Speichern</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+
+      <ion-item *ngFor="let hashtag of hashtags">
+        <ion-label>#{{ hashtag.name }}</ion-label>
+        <ion-checkbox #checkbox [name]="hashtag.id" slot="end"></ion-checkbox>
+      </ion-item>
+
+      <ng-container *ngFor="let category of hashtagCategories | keyvalue">
+        <ion-item *ngIf="category.value.length">
+          <ion-label>#{{ category.key | titlecase }} ...</ion-label>
+          <ion-select #select multiple="true" placeholder="0 / {{ category.value.length }}">
+            <ion-select-option *ngFor="let hashtag of category.value" [value]="hashtag.id">{{ hashtag.name }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ng-container>
+
+    </ion-list>
+</ion-content>

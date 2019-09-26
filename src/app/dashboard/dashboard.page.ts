@@ -35,7 +35,6 @@ export class DashboardPage implements OnInit {
       query: gql`
     query{
         viewer{
-          id
           group {
             name
             points
