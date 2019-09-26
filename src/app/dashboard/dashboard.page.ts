@@ -77,7 +77,7 @@ export class DashboardPage implements OnInit {
     .valueChanges.subscribe(result => {
       console.log(result);
       let viewer = result.data.viewer;
-      this.photos=viewer.group.photos;
+      this.photos=viewer.group.photos.sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt));
       for (let photo of this.photos) {
         photo.path=environment.backendUrl+photo.path;
       }
