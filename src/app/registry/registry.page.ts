@@ -39,7 +39,7 @@ export class RegistryPage implements OnInit {
     initialSlide: 0,
     speed: 400
   };
-  groupToken:String;
+  groupToken:string;
   constructor(
     public toastController: ToastController,
     private apollo: Apollo, 
@@ -57,7 +57,7 @@ export class RegistryPage implements OnInit {
     ;  
   }
 
-  async presentToast(message:String) {
+  async presentToast(message:string) {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000

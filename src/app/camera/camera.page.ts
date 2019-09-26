@@ -72,6 +72,7 @@ export class CameraPage implements OnInit, AfterViewInit {
       },
     }).subscribe(({ data }) => {
       console.log('got data', data);
+      window.location.href = '/tabs/dashboard';   
     },(error) => {
       console.log('there was an error sending the query', error);
     });
