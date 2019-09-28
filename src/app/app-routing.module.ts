@@ -14,7 +14,6 @@ const routes: Routes = [
   { path: 'rallyepoints', loadChildren: './rallyepoints/rallyepoints.module#RallyepointsPageModule' },
   { path: 'rallyepoints/:token', loadChildren: './rallyepoints/rallyepoints.module#RallyepointsPageModule' },
   { path: '**', redirectTo: ''}
-
 ];
 @NgModule({
   imports: [

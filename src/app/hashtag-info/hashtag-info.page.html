@@ -1,7 +1,7 @@
 <ng-container *ngIf="hashtag">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title> #{{ hashtag.name }}</ion-title>
+      <ion-title>#{{ hashtag.name }}</ion-title>
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/tabs/hashtags"></ion-back-button>
       </ion-buttons>
@@ -18,12 +18,8 @@
       <ion-card-content>
         {{ hashtag.description || hashtag.info }}
       </ion-card-content>
-
-
     </ion-card>
   </ion-content>
-
-
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button hashtag.marked=true routerLink="/camera" ><ion-icon name="camera"></ion-icon></ion-fab-button>
