@@ -47,7 +47,7 @@
       </ion-col>
       <ion-col>
         <ion-icon name="hourglass"></ion-icon>
-        <ion-note>{{ group.numHours | number:'1.0-0' }} / {{ group.level.numHours }}</ion-note>
+        <ion-note>{{ group.numHours | floor }} / {{ group.level.numHours }}</ion-note>
       </ion-col>
     </ion-row>
   </ion-card>

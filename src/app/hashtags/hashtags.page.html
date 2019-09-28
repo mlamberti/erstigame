@@ -34,7 +34,7 @@
     <ion-item>
       <ion-icon name="hourglass" slot="start"></ion-icon>
       <ion-label>Zeit zusammen</ion-label>
-      <ion-note slot="end">{{ group.numHours }} / {{ group.level.numHours }}</ion-note>
+      <ion-note slot="end">{{ group.numHours | floor }} / {{ group.level.numHours }}</ion-note>
     </ion-item>
   </ion-card>
 
