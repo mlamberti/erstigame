@@ -228,6 +228,19 @@ export type DashboardQuery = (
   )> }
 );
 
+export type HashtagInfoQueryVariables = {
+  hashtagId: Scalars['ID']
+};
+
+
+export type HashtagInfoQuery = (
+  { __typename?: 'Query' }
+  & { hashtag: Maybe<(
+    { __typename?: 'Hashtag' }
+    & Pick<Hashtag, 'id' | 'name' | 'info' | 'description' | 'picture' | 'points' | 'repeatTime'>
+  )> }
+);
+
 export const DashboardDocument = gql`
     query dashboard {
   viewer {
@@ -279,5 +292,26 @@ export const DashboardDocument = gql`
   })
   export class DashboardGQL extends Apollo.Query<DashboardQuery, DashboardQueryVariables> {
     document = DashboardDocument;
+    
+  }
+export const HashtagInfoDocument = gql`
+    query HashtagInfo($hashtagId: ID!) {
+  hashtag(hashtagId: $hashtagId) {
+    id
+    name
+    info
+    description
+    picture
+    points
+    repeatTime
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class HashtagInfoGQL extends Apollo.Query<HashtagInfoQuery, HashtagInfoQueryVariables> {
+    document = HashtagInfoDocument;
     
   }

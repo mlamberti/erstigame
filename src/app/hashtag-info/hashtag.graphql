@@ -1,0 +1,11 @@
+query HashtagInfo($hashtagId: ID!) {
+  hashtag(hashtagId: $hashtagId) {
+    id
+    name
+    info
+    description
+    picture
+    points
+    repeatTime
+  }
+}
