@@ -6,35 +6,79 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card *ngIf= "groupPoints" class="welcome-card">
-    <ion-card-header>
-      <ion-card-title>Score: {{groupPoints}} Points</ion-card-title>
-    </ion-card-header>
-  </ion-card>
-  <ion-card>
-    <ion-card-header *ngIf= "announcement">
-      <ion-card-title> Announcement:</ion-card-title>
-    </ion-card-header>
-    <ion-label>
-      {{announcement}}
-    </ion-label>
+<ion-content *ngIf="viewer">
 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Welcome {{ viewer.name }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Hier erklären wir wie euch das Spiel funktioniert. Klickt das Fenster einfach weg, wenn ihr es nicht mehr sehen wollt.
+    </ion-card-content>
   </ion-card>
+
+  <ion-card class="score">
+    <ion-item lines="full">
+      <ion-icon name="trophy" slot="start"></ion-icon>
+      <ion-label>Level {{ group.level.rank }}</ion-label>
+      <ion-note slot="end">4030 Punkte</ion-note>
+    </ion-item>
+
+    <ion-card-content>
+      <ion-item *ngFor="let hashtag of level.requiredHashtags">
+        <ion-label text-wrap>#{{ hashtag.name }}</ion-label>
+        <ion-icon name="checkmark" slot="end" *ngIf="hashtag.done"></ion-icon>
+      </ion-item>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col>
+        <ion-icon name="hand"></ion-icon>
+        <ion-note>{{ group.numPlaces }} / {{ group.level.numPlaces }}</ion-note>
+      </ion-col>
+      <ion-col>
+        <ion-icon name="pin"></ion-icon>
+        <ion-note>{{ group.numCatches }} / {{ group.level.numCatches }}</ion-note>
+      </ion-col>
+      <ion-col>
+        <ion-icon name="gift"></ion-icon>
+        <ion-note>{{ group.numSponsors }} / {{ group.level.numSponsors }}</ion-note>
+      </ion-col>
+      <ion-col>
+        <ion-icon name="hourglass"></ion-icon>
+        <ion-note>{{ group.numHours | number:'1.0-0' }} / {{ group.level.numHours }}</ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-item *ngIf="photos">Letzte Aktivitäten</ion-item>
 
   <ion-card *ngFor="let photo of photos">
-    <ion-item>
-      <ion-avatar slot="start">
-        <ion-icon class="avatar" name="photo.user.picture"></ion-icon>
-      </ion-avatar>
-      <ion-label text-wrap>
-        <h2>{{photo.user.name}}</h2>
-      </ion-label>
-    </ion-item>
     <ion-img *ngIf="photo.path" src="{{photo.path}}"></ion-img>
-    <ion-card-title *ngFor="let hashtag of photo.hashtags">
-      #{{ hashtag.name }}
-    </ion-card-title>
+
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <ion-icon class="avatar" name="contact"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ photo.user.name }}</h2>
+          <span>{{ photo.createdAt }}</span>
+        </ion-label>
+      </ion-item>
+
+      <ion-chip>
+        <ion-icon name="trophy"></ion-icon>
+        <ion-label>{{ photo.points }} Punkte</ion-label>
+      </ion-chip>
+
+      <ion-chip *ngFor="let hashtag of photo.hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label>#{{ hashtag.name }}</ion-label>
+      </ion-chip>
+
+    </ion-card-content>
   </ion-card>
 
 </ion-content>
