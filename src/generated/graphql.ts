@@ -48,12 +48,12 @@ export type Group = Node & {
   level: Level,
   name: Scalars['String'],
   numCatches: Scalars['Int'],
+  numHours: Scalars['Float'],
   numPlaces: Scalars['Int'],
   numSponsors: Scalars['Int'],
   photos: Array<Photo>,
   points: Scalars['Int'],
   rallyeRatings: Array<RallyeRating>,
-  timeTogether: Scalars['Int'],
   updatedAt?: Maybe<Scalars['String']>,
   users: Array<User>,
 };
@@ -92,6 +92,7 @@ export type Level = Node & {
   numPlaces: Scalars['Int'],
   numSponsors: Scalars['Int'],
   rank: Scalars['Int'],
+  requiredHashtags?: Maybe<Array<Hashtag>>,
   updatedAt?: Maybe<Scalars['String']>,
 };
 
@@ -157,7 +158,7 @@ export type QueryGroupArgs = {
 
 
 export type QueryHashtagArgs = {
-  id: Scalars['ID']
+  hashtagId: Scalars['ID']
 };
 
 
