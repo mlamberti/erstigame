@@ -2,8 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { User, Hashtag, Group,HashtagCategory} from '../../generated/graphql';
+import { User, Hashtag, Group, HashtagCategory} from '../../generated/graphql';
 import { ExpandableComponent } from "../components/expandable/expandable.component";
+
+const QUERY_VIEWER = gql`
+query{
+  viewer {
+    id
+    group {
+      id
+      numHours, numCatches, numPlaces, numSponsors
+      level {
+        id,
+        rank,
+        requiredHashtags { id, name, done }
+        numCatches, numPlaces, numSponsors, numHours
+      }
+      hashtags{
+        id
+        name
+        info
+        points
+        repeatTime
+        repeatable
+        done
+        category
+        level { id, rank }
+      }
+    }
+  }
+}`;
 
 @Component({
   selector: 'app-hashtags',
@@ -11,80 +39,49 @@ import { ExpandableComponent } from "../components/expandable/expandable.compone
   styleUrls: ['hashtags.page.scss']
 })
 export class HashtagsPage implements OnInit {
-  hashtags: Hashtag[];
-  catches: Hashtag[];
-  places:Hashtag[];
-  sponsors:Hashtag[];
-  hashtagsLevel:Hashtag[];
-  hashtagsNichtWiederholbar: Hashtag[];
-  hashtagsWiederholbar: Hashtag[];
-  viewer:User;
+  loading = true;
+  viewer: User;
   group: Group;
-  groupLevel:number;
-  numPlacesMust:number ;
-  numPlacesHave:number;
-  numSponsorsMust:number;
-  numSponsorsHave:number;
-  numCatchesMust:number;
-  numCatchesHave:number;
-  numHoursMust:number;
-  numHoursHave:number=10;
+
+  allHashtags: Hashtag[];
+  hashtags: Hashtag[];
+  hashtagCategories = {
+    catches: [],
+    places: [],
+    sponsors: [],
+  };
+  categoryLabels = {
+    catches: 'Fang',
+    places: 'Orte',
+    sponsors: 'Sponsoren',
+    hours: 'Zeit zusammen'
+  };
+  categoryIcons = {
+    catches: 'hand',
+    places: 'pin',
+    sponsors: 'gift',
+    hours: 'hourglass'
+  };
+
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
     this.apollo
     .watchQuery<{ viewer }>({
-      query: gql`
-      query{
-        viewer {
-          id
-          group {
-            id
-            level {
-              id
-              rank
-              numHours
-              numPlaces
-              numCatches
-              numSponsors
-            }
-            hashtags{
-              id
-              name
-              info
-              description
-              picture
-              points
-              repeatTime
-              repeatable
-              done
-              level {
-                id
-                rank
-              }
-            }
-          }
-        }
-      }`,
+      query: QUERY_VIEWER
     }).valueChanges.subscribe(({data}) => {
-      let viewer = data.viewer;
-      this.group = viewer.group;
-      this.hashtags=viewer.group.hashtags;
-      //this.hashtags.marked=false;
-      this.hashtagsWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank<= this.group.level.rank && (hashtag=>hashtag.repeatable||!hashtag.done));
-      this.hashtagsLevel=this.hashtags.filter(hashtag=> hashtag.level.rank== this.group.level.rank);
-      this.hashtagsNichtWiederholbar=this.hashtags.filter(hashtag=> hashtag.level.rank< this.group.level.rank&&hashtag.done && !(hashtag=>hashtag.repeatable));
-      this.groupLevel=this.group.level.rank;
-      this.catches=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Catch);
-      this.places=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Place);
-      this.sponsors=this.hashtags.filter(hashtag=>hashtag.category==HashtagCategory.Sponsor);
-      this.numCatchesHave=this.catches.filter(hashtag=>hashtag.done).length;
-      this.numPlacesHave=this.places.filter(hashtag=>hashtag.done).length;
-      this.numSponsorsHave=this.sponsors.filter(hashtag=>hashtag.done).length;
-      this.numCatchesMust=this.group.level.numCatches;
-      this.numSponsorsMust=this.group.level.numSponsors;
-      this.numPlacesMust=this.group.level.numPlaces;
-      this.numHoursMust=this.group.level.numHours;
+      this.viewer = data.viewer;
+      this.group = this.viewer.group;
+
+      this.allHashtags = this.group.hashtags;
+
+      this.hashtagCategories.catches  = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Catch);
+      this.hashtagCategories.places   = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Place);
+      this.hashtagCategories.sponsors = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Sponsor);
+
+      this.hashtags = this.allHashtags.filter( hashtag => hashtag.category === null);
+
+      this.loading = false;
     });
   }
 
