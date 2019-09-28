@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import TimeAgo from 'javascript-time-ago'
+import de from 'javascript-time-ago/locale/de'
+
 import { User, Group, Level, Photo } from '../../generated/graphql';
 import { environment } from '../../environments/environment';
+
+TimeAgo.addLocale(de)
 
 const QUERY_VIEWER = gql`
 query {
@@ -45,6 +50,7 @@ export class DashboardPage implements OnInit {
   group: Group;
   level: Level;
   photos: Photo[];
+  timeAgo = new TimeAgo('de-DE')
 
   constructor(private apollo: Apollo) { }
 
@@ -59,6 +65,7 @@ export class DashboardPage implements OnInit {
       this.photos = this.viewer.group.photos.sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt));
       for (let photo of this.photos) {
         photo.path=environment.backendUrl+photo.path;
+        photo['dateString'] = this.timeAgo.format(new Date(photo.createdAt));
       }
 
     });
