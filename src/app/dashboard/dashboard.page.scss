@@ -4,6 +4,14 @@
 }
 
 .score {
+  > ion-item {
+    > ion-label {
+      font-size: 20px;
+    }
+    ion-chip {
+      background: none;
+    }
+  }
   ion-col {
     text-align: center;
     ion-icon {
@@ -12,5 +20,22 @@
       width: 30px;
       margin: 6px auto;
     }
+  }
+}
+
+.photo {
+  ion-item {
+    ion-label {
+      span {
+        font-size: 12px;
+        font-style: italic;
+      }
+    }
+  }
+}
+
+.done, .disabled {
+  &, ion-icon, ion-note {
+    color: #ccc;
   }
 }

@@ -8,34 +8,25 @@
 
 <ion-content *ngIf="!loading">
   <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          Level 1
-        </ion-card-title>
+    <ion-card-header>
+      <ion-card-title>
+        Level {{ level.rank }}
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       Um das nächste Level zu erreichen, müsst ihr folgende Bedingen erfüllen:
+      <ion-item *ngFor="let hashtag of level.requiredHashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label text-wrap>#{{ hashtag.name }}</ion-label>
+        <ion-icon name="checkmark" slot="end" *ngIf="hashtag.done"></ion-icon>
+      </ion-item>
+      <ng-container *ngFor="let category of categoryLabels | keyvalue">
+        <ion-item *ngIf="level[numKey(category.key)]">
+          <ion-icon name="categoryIcons[category.key]" slot="start"></ion-icon>
+          <ion-label>{{ categoryLabels[category.key] }}</ion-label>
+          <ion-note slot="end">{{ group[numKey(category.key)] }} / {{ level[numKey(category.key)] }}</ion-note>
+        </ion-item>
+      </ng-container>
     </ion-card-content>
-    <ion-item>
-      <ion-icon name="hand" slot="start"></ion-icon>
-      <ion-label>Fang</ion-label>
-      <ion-note slot="end">{{ group.numPlaces }} / {{ group.level.numPlaces }}</ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="pin" slot="start"></ion-icon>
-      <ion-label>Orte</ion-label>
-      <ion-note slot="end">{{ group.numCatches }} / {{ group.level.numCatches }}</ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="gift" slot="start"></ion-icon>
-      <ion-label>Sponsoren</ion-label>
-      <ion-note slot="end">{{ group.numSponsors }} / {{ group.level.numSponsors }}</ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="hourglass" slot="start"></ion-icon>
-      <ion-label>Zeit zusammen</ion-label>
-      <ion-note slot="end">{{ group.numHours | floor }} / {{ group.level.numHours }}</ion-note>
-    </ion-item>
   </ion-card>
 
   <ion-card>
@@ -46,25 +37,25 @@
     </ion-card-header>
 
     <ion-list>
-      <ion-item detail *ngFor="let hashtag of hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+      <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of hashtags" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
         <ion-label text-wrap>
           <h3>#{{ hashtag.name }}</h3>
-          <p>{{ hashtag.info }}</p>
+          <p class="info">{{ hashtag.info }}</p>
         </ion-label>
       </ion-item>
 
       <ng-container *ngFor="let category of hashtagCategories | keyvalue">
-        <ion-item class="expandable" [class.disabled]="!category.value.length" *ngIf="true" (click)="expandable.toggle()" lines="full">
+        <ion-item class="expandable" [class.done]="group[numKey(category.key)] >= category.value.length" *ngIf="category.value.length" (click)="expandable.toggle()" lines="full">
           <ion-icon [name]="expandable.expanded ? 'ios-arrow-down' : 'ios-arrow-forward'" slot="start"></ion-icon>
           <ion-label>{{ categoryLabels[category.key] }}</ion-label>
-          <ion-note slot="end">{{ group['num' + category.key[0].toUpperCase() + category.key.slice(1)] }} / {{ category.value.length }}</ion-note>
+          <ion-note slot="end">{{ group[numKey(category.key)] }} / {{ category.value.length }}</ion-note>
         </ion-item>
 
         <app-expandable #expandable [expandHeight]="category.value.length*64+'px'">
-          <ion-item detail *ngFor="let hashtag of category.value" [routerLink]="['/hashtag-info', hashtag.id]">
+          <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of category.value" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
             <ion-label text-wrap>
               <h3>#{{ hashtag.name }}</h3>
-              <p>{{ hashtag.info }}</p>
+              <p class="info">{{ hashtag.info }}</p>
             </ion-label>
           </ion-item>
         </app-expandable>

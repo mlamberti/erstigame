@@ -1,7 +1,11 @@
-.hashtag-done, .disabled {
-  &, ion-icon, ion-note {
-    color: #ccc;
+.done, .disabled {
+  &, ion-label, ion-icon, ion-note, p {
+    color: #aaa;
   }
+}
+
+.info {
+  font-style: italic;
 }
 
 .expandable {

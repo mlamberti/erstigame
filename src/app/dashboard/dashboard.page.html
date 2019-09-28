@@ -20,9 +20,11 @@
 
   <ion-card class="score">
     <ion-item lines="full">
-      <ion-icon name="trophy" slot="start"></ion-icon>
       <ion-label>Level {{ group.level.rank }}</ion-label>
-      <ion-note slot="end">4030 Punkte</ion-note>
+      <ion-chip>
+        <ion-icon name="trophy"></ion-icon>
+        <ion-label>{{ group.points }} Punkte</ion-label>
+      </ion-chip>
     </ion-item>
 
     <ion-card-content>
@@ -33,28 +35,16 @@
     </ion-card-content>
 
     <ion-row>
-      <ion-col>
-        <ion-icon name="hand"></ion-icon>
-        <ion-note>{{ group.numPlaces }} / {{ group.level.numPlaces }}</ion-note>
-      </ion-col>
-      <ion-col>
-        <ion-icon name="pin"></ion-icon>
-        <ion-note>{{ group.numCatches }} / {{ group.level.numCatches }}</ion-note>
-      </ion-col>
-      <ion-col>
-        <ion-icon name="gift"></ion-icon>
-        <ion-note>{{ group.numSponsors }} / {{ group.level.numSponsors }}</ion-note>
-      </ion-col>
-      <ion-col>
-        <ion-icon name="hourglass"></ion-icon>
-        <ion-note>{{ group.numHours | floor }} / {{ group.level.numHours }}</ion-note>
+      <ion-col *ngFor="let category of categories">
+        <ion-icon [name]="categoryIcons[category]" [routerLink]="['/hashtag-info', category]"></ion-icon>
+        <ion-note>{{ group[numKey(category)] | floor }} / {{ group.level[numKey(category)] }}</ion-note>
       </ion-col>
     </ion-row>
   </ion-card>
 
   <ion-item *ngIf="photos">Letzte Aktivitäten</ion-item>
 
-  <ion-card *ngFor="let photo of photos">
+  <ion-card class="photo" *ngFor="let photo of photos">
     <ion-img *ngIf="photo.path" src="{{photo.path}}"></ion-img>
 
     <ion-card-content>
@@ -64,7 +54,7 @@
           <ion-icon class="avatar" name="contact"></ion-icon>
         </ion-avatar>
         <ion-label>
-          <h2>{{ photo.user.name }}</h2>
+          <div>{{ photo.user.name }}</div>
           <span>{{ photo.dateString }}</span>
         </ion-label>
       </ion-item>

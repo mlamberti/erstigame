@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { User, Hashtag, Group, HashtagCategory} from '../../generated/graphql';
+import { User, Group, Level, Hashtag, HashtagCategory} from '../../generated/graphql';
 import { ExpandableComponent } from "../components/expandable/expandable.component";
 
 const QUERY_VIEWER = gql`
@@ -42,6 +42,7 @@ export class HashtagsPage implements OnInit {
   loading = true;
   viewer: User;
   group: Group;
+  level: Level;
 
   allHashtags: Hashtag[];
   hashtags: Hashtag[];
@@ -72,6 +73,7 @@ export class HashtagsPage implements OnInit {
     }).valueChanges.subscribe(({data}) => {
       this.viewer = data.viewer;
       this.group = this.viewer.group;
+      this.level = this.group.level;
 
       this.allHashtags = this.group.hashtags;
 
@@ -80,9 +82,14 @@ export class HashtagsPage implements OnInit {
       this.hashtagCategories.sponsors = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Sponsor);
 
       this.hashtags = this.allHashtags.filter( hashtag => hashtag.category === null);
+      this.hashtags.sort(hashtag => hashtag.done);
 
       this.loading = false;
     });
+  }
+
+  numKey(key: string): string {
+    return 'num' + key[0].toUpperCase() + key.slice(1);
   }
 
 }

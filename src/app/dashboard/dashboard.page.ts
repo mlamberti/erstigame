@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { QueryRef } from 'apollo-angular';
-import gql from 'graphql-tag';
 import TimeAgo from 'javascript-time-ago'
 import de from 'javascript-time-ago/locale/de'
 
@@ -21,6 +20,19 @@ export class DashboardPage implements OnInit {
   photos: Partial<Photo[]>;
   timeAgo = new TimeAgo('de-DE')
   reporterQueryRef: QueryRef<DashboardQuery, DashboardQueryVariables>;
+  categories = ['catches', 'places', 'sponsors', 'hours'];
+  categoryLabels = {
+    catches: 'Fang',
+    places: 'Orte',
+    sponsors: 'Sponsoren',
+    hours: 'Zeit zusammen'
+  };
+  categoryIcons = {
+    catches: 'hand',
+    places: 'pin',
+    sponsors: 'gift',
+    hours: 'hourglass'
+  };
 
   constructor(private dashboardGQL: DashboardGQL) {
     this.reporterQueryRef = this.dashboardGQL.watch();
@@ -37,6 +49,10 @@ export class DashboardPage implements OnInit {
         photo['dateString'] = this.timeAgo.format(new Date(photo.createdAt));
       }
     });
+  }
+
+  numKey(key: string): string {
+    return 'num' + key[0].toUpperCase() + key.slice(1);
   }
 
 }
