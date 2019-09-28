@@ -1,44 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 import TimeAgo from 'javascript-time-ago'
 import de from 'javascript-time-ago/locale/de'
 
-import { User, Group, Level, Photo } from '../../generated/graphql';
+import { User, Group, Level, Photo, DashboardQuery, DashboardQueryVariables, DashboardGQL } from '../../generated/graphql';
 import { environment } from '../../environments/environment';
 
 TimeAgo.addLocale(de)
-
-const QUERY_VIEWER = gql`
-query {
-  viewer {
-    id
-    name
-    group {
-      id
-      name
-      points
-      numCatches
-      numPlaces
-      numSponsors
-      numHours
-      level {
-        id,
-        rank,
-        requiredHashtags { id, name, done }
-        numCatches, numPlaces, numSponsors, numHours
-      }
-      photos {
-        id
-        user { id, name, picture }
-        hashtags { id, name }
-        points
-        path
-        createdAt
-      }
-    }
-  }
-}`;
 
 @Component({
   selector: 'app-dashboard',
@@ -46,19 +15,19 @@ query {
   styleUrls: ['dashboard.page.scss']
 })
 export class DashboardPage implements OnInit {
-  viewer: User;
-  group: Group;
-  level: Level;
-  photos: Photo[];
+  viewer: Partial<User>;
+  group: Partial<Group>;
+  level: Partial<Level>;
+  photos: Partial<Photo[]>;
   timeAgo = new TimeAgo('de-DE')
+  reporterQueryRef: QueryRef<DashboardQuery, DashboardQueryVariables>;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private dashboardGQL: DashboardGQL) {
+    this.reporterQueryRef = this.dashboardGQL.watch();
+  }
 
   ngOnInit() {
-    this.apollo
-    .watchQuery<{ viewer }>({
-      query: QUERY_VIEWER
-    }).valueChanges.subscribe(({ data }) => {
+    this.reporterQueryRef.valueChanges.subscribe(({ data }) => {
       this.viewer = data.viewer;
       this.group = this.viewer.group;
       this.level = this.group.level
@@ -67,7 +36,6 @@ export class DashboardPage implements OnInit {
         photo.path=environment.backendUrl+photo.path;
         photo['dateString'] = this.timeAgo.format(new Date(photo.createdAt));
       }
-
     });
   }
 

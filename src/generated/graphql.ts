@@ -1,4 +1,6 @@
 import gql from 'graphql-tag';
+import { Injectable } from '@angular/core';
+import * as Apollo from 'apollo-angular';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -193,3 +195,89 @@ export type User = Node & {
   picture?: Maybe<Scalars['String']>,
   updatedAt?: Maybe<Scalars['String']>,
 };
+export type DashboardQueryVariables = {};
+
+
+export type DashboardQuery = (
+  { __typename?: 'Query' }
+  & { viewer: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'name'>
+    & { group: (
+      { __typename?: 'Group' }
+      & Pick<Group, 'id' | 'name' | 'points' | 'numCatches' | 'numPlaces' | 'numSponsors' | 'numHours'>
+      & { level: (
+        { __typename?: 'Level' }
+        & Pick<Level, 'id' | 'rank' | 'numCatches' | 'numPlaces' | 'numSponsors' | 'numHours'>
+        & { requiredHashtags: Maybe<Array<(
+          { __typename?: 'Hashtag' }
+          & Pick<Hashtag, 'id' | 'name' | 'done'>
+        )>> }
+      ), photos: Array<(
+        { __typename?: 'Photo' }
+        & Pick<Photo, 'id' | 'points' | 'path' | 'createdAt'>
+        & { user: (
+          { __typename?: 'User' }
+          & Pick<User, 'id' | 'name' | 'picture'>
+        ), hashtags: Array<(
+          { __typename?: 'Hashtag' }
+          & Pick<Hashtag, 'id' | 'name'>
+        )> }
+      )> }
+    ) }
+  )> }
+);
+
+export const DashboardDocument = gql`
+    query dashboard {
+  viewer {
+    id
+    name
+    group {
+      id
+      name
+      points
+      numCatches
+      numPlaces
+      numSponsors
+      numHours
+      level {
+        id
+        rank
+        requiredHashtags {
+          id
+          name
+          done
+        }
+        numCatches
+        numPlaces
+        numSponsors
+        numHours
+      }
+      photos {
+        id
+        user {
+          id
+          name
+          picture
+        }
+        hashtags {
+          id
+          name
+        }
+        points
+        path
+        createdAt
+      }
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DashboardGQL extends Apollo.Query<DashboardQuery, DashboardQueryVariables> {
+    document = DashboardDocument;
+    
+  }

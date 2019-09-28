@@ -1,0 +1,29 @@
+query dashboard {
+  viewer {
+    id
+    name
+    group {
+      id
+      name
+      points
+      numCatches
+      numPlaces
+      numSponsors
+      numHours
+      level {
+        id,
+        rank,
+        requiredHashtags { id, name, done }
+        numCatches, numPlaces, numSponsors, numHours
+      }
+      photos {
+        id
+        user { id, name, picture }
+        hashtags { id, name }
+        points
+        path
+        createdAt
+      }
+    }
+  }
+}
