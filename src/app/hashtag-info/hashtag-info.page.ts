@@ -16,7 +16,7 @@ export class HashtagInfoPage implements OnInit {
   categoryLabels = {
     [HashtagCategory.Catch]: 'Fang',
     [HashtagCategory.Place]: 'Orte',
-    [HashtagCategory.Sonsor]: 'Sponsoren',
+    [HashtagCategory.Sponsor]: 'Sponsoren',
   };
 
   constructor(

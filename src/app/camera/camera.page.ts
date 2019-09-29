@@ -36,9 +36,10 @@ query {
 })
 export class CameraPage implements OnInit, AfterViewInit {
   @ViewChild('filePicker') filePicker: ElementRef;
+  @ViewChild('peopleCountInput') peopleCountInput :ElementRef;
   picture: File;
   pictureURL: any;
-  peopleCount = 0;
+  peopleCount:number = 0;
   numHashtags = 0;
   hashtagIds: string[] = [];
 
@@ -74,6 +75,9 @@ export class CameraPage implements OnInit, AfterViewInit {
   }
 
   createPhoto() {
+    this.peopleCount=+this.peopleCountInput.nativeElement.value;
+    console.log(this.peopleCount);
+    console.log(typeof this.peopleCount);
     this.apollo.mutate({
       mutation: CREATE_PHOTO,
       variables: {
@@ -87,6 +91,8 @@ export class CameraPage implements OnInit, AfterViewInit {
     }).subscribe(
       ({ data }) => {
         console.log('got data', data);
+      
+
         if (data.createPhoto.errors) {
           this.presentToast(data.createPhoto.errors)
         } else {
