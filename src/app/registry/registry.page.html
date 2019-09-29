@@ -5,8 +5,6 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-label>Hier könnte ihre Dateschutzvereinbarung stehen.</ion-label>
-
 <ion-content>
   <ion-slides #slides pager="true" [options]="slideOpts">
 
@@ -34,6 +32,9 @@
           <ion-select formControlName="gender" interface="action-sheet"> 
             <ion-select-option *ngFor="let gender of genders | keyvalue" [value]="gender.value">{{ gender.key }}</ion-select-option>
           </ion-select>
+        </ion-item>
+        <ion-item routerLink="/dsgvo" >
+        <ion-label> Mit der Anmeldung akzeptierst <br> du die Datenschutzvereinbarung.</ion-label> 
         </ion-item> 
         <ion-button type="submit"> Create User </ion-button>
       </form>

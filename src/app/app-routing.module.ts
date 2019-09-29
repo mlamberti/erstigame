@@ -13,7 +13,8 @@ const routes: Routes = [
   { path: 'hashtag-modal', loadChildren: './hashtag-modal/hashtag-modal.module#HashtagModalPageModule' },
   { path: 'rallyepoints', loadChildren: './rallyepoints/rallyepoints.module#RallyepointsPageModule' },
   { path: 'rallyepoints/:token', loadChildren: './rallyepoints/rallyepoints.module#RallyepointsPageModule' },
-  { path: '**', redirectTo: ''}
+  { path: 'dsgvo', loadChildren: './dsgvo/dsgvo.module#DsgvoPageModule' },
+  { path: '**', redirectTo: ''},
 ];
 @NgModule({
   imports: [
