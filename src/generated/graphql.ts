@@ -56,6 +56,7 @@ export type Group = Node & {
   photos: Array<Photo>,
   points: Scalars['Int'],
   rallyeRatings: Array<RallyeRating>,
+  token?: Maybe<Scalars['String']>,
   updatedAt?: Maybe<Scalars['String']>,
   users: Array<User>,
 };

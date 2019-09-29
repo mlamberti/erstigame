@@ -18,4 +18,15 @@
       </ion-label>
     </ion-item>
   </ion-list>
+  <ng-container *ngIf="linkQR">
+  <ion-item>
+    <ion-title> Beitrittslink:</ion-title>
+  </ion-item>
+  <ion-item>
+   <qrcode [qrdata]="linkQR" [size]="256" [level]="'M'"></qrcode>
+</ion-item>
+<ion-item>
+  <ion-label text-wrap > {{linkQR}}</ion-label>
+</ion-item>
+ </ng-container>
 </ion-content>

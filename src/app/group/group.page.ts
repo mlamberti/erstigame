@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-
+import { QRCodeModule } from 'angularx-qrcode';
 import { Group, User } from '../../generated/graphql';
 
 @Component({
@@ -12,6 +12,7 @@ import { Group, User } from '../../generated/graphql';
 export class GroupPage implements OnInit {
   users: User[];
   groupName: string;
+  linkQR:string;
 
   constructor(private apollo: Apollo) { }
 
@@ -25,6 +26,7 @@ export class GroupPage implements OnInit {
               group {
                 id
                 name
+                token
                 users {
                   id
                   name
@@ -41,6 +43,7 @@ export class GroupPage implements OnInit {
 
         this.groupName = viewer.group.name;
         this.users = viewer.group.users;
+        this.linkQR='http://localhost:8100/registry/'+viewer.group.token
       });
   }
 }
