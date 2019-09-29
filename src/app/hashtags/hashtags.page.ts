@@ -18,7 +18,7 @@ query{
         requiredHashtags { id, name, done }
         numCatches, numPlaces, numSponsors, numHours
       }
-      hashtags{
+      hashtagsAvailable {
         id
         name
         info
