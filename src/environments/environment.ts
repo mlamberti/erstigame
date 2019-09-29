@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  backendUrl: 'http://localhost:3000'
-  frontendUrl: 'http://192.168.178.20:8100',
+  backendUrl: 'http://localhost:3000',
+  frontendUrl: 'http://localhost:8100',
 };
 
 /*
