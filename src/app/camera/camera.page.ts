@@ -21,7 +21,7 @@ query {
     id
     group {
       id
-      hashtags {
+      hashtagsAvailable {
         id
         doable
       }
@@ -54,7 +54,7 @@ export class CameraPage implements OnInit, AfterViewInit {
     }).valueChanges.subscribe(result => {
       let viewer = result.data.viewer;
 
-      this.numHashtags = viewer.group.hashtags.filter( hashtag => hashtag.doable ).length;
+      this.numHashtags = viewer.group.hashtagsAvailable.filter( hashtag => hashtag.doable ).length;
     });
   }
 

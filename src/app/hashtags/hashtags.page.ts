@@ -76,7 +76,7 @@ export class HashtagsPage implements OnInit {
       this.group = this.viewer.group;
       this.level = this.group.level;
 
-      this.allHashtags = this.group.hashtags;
+      this.allHashtags = this.group.hashtagsAvailable;
 
       this.hashtagCategories.catches  = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Catch);
       this.hashtagCategories.places   = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Place);

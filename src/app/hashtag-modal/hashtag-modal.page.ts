@@ -20,7 +20,7 @@ query {
         numCatches
         numSponsors
       }
-      hashtags {
+      hashtagsAvailable {
         id
         name
         doable
@@ -67,7 +67,7 @@ export class HashtagModalPage implements OnInit {
       let viewer = result.data.viewer;
       this.group = viewer.group;
 
-      this.allHashtags = viewer.group.hashtags.filter( hashtag => hashtag.doable );
+      this.allHashtags = viewer.group.hashtagsAvailable.filter( hashtag => hashtag.doable );
 
       this.hashtagCategories.catches  = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Catch);
       this.hashtagCategories.places   = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Place);

@@ -45,7 +45,7 @@ export enum GenderEnum {
 export type Group = Node & {
   __typename?: 'Group',
   createdAt?: Maybe<Scalars['String']>,
-  hashtags?: Maybe<Array<Hashtag>>,
+  hashtagsAvailable?: Maybe<Array<Hashtag>>,
   id: Scalars['ID'],
   level: Level,
   name: Scalars['String'],
