@@ -54,14 +54,20 @@ export class HashtagsPage implements OnInit {
   categories = ['catches', 'places', 'sponsors', 'hours'];
   categoryLabels = {
     catches: 'Fang',
+    [HashtagCategory.Catch]: 'Fang',
     places: 'Orte',
+    [HashtagCategory.Place]: 'Ort',
     sponsors: 'Sponsoren',
+    [HashtagCategory.Sponsor]: 'Sponsor',
     hours: 'Zeit zusammen'
   };
   categoryIcons = {
     catches: 'hand',
+    [HashtagCategory.Catch]: 'hand',
     places: 'pin',
+    [HashtagCategory.Place]: 'pin',
     sponsors: 'gift',
+    [HashtagCategory.Sponsor]: 'gift',
     hours: 'hourglass'
   };
 

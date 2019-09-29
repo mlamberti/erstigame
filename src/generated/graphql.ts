@@ -139,6 +139,10 @@ export type Photo = Node & {
   group: Group,
   hashtags: Array<Hashtag>,
   id: Scalars['ID'],
+  numCatches: Scalars['Int'],
+  numHours: Scalars['Float'],
+  numPlaces: Scalars['Int'],
+  numSponsors: Scalars['Int'],
   path: Scalars['String'],
   peopleCount: Scalars['Int'],
   points: Scalars['Int'],
@@ -216,13 +220,13 @@ export type DashboardQuery = (
         )>> }
       ), photos: Array<(
         { __typename?: 'Photo' }
-        & Pick<Photo, 'id' | 'points' | 'path' | 'createdAt'>
+        & Pick<Photo, 'id' | 'numHours' | 'points' | 'path' | 'createdAt'>
         & { user: (
           { __typename?: 'User' }
           & Pick<User, 'id' | 'name' | 'picture'>
         ), hashtags: Array<(
           { __typename?: 'Hashtag' }
-          & Pick<Hashtag, 'id' | 'name'>
+          & Pick<Hashtag, 'id' | 'name' | 'category'>
         )> }
       )> }
     ) }
@@ -278,7 +282,9 @@ export const DashboardDocument = gql`
         hashtags {
           id
           name
+          category
         }
+        numHours
         points
         path
         createdAt

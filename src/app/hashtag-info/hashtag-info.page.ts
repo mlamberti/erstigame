@@ -15,8 +15,8 @@ export class HashtagInfoPage implements OnInit {
   reporterQueryRef: QueryRef<HashtagInfoQuery, HashtagInfoQueryVariables>;
   categoryLabels = {
     [HashtagCategory.Catch]: 'Fang',
-    [HashtagCategory.Place]: 'Orte',
-    [HashtagCategory.Sponsor]: 'Sponsoren',
+    [HashtagCategory.Place]: 'Ort',
+    [HashtagCategory.Sponsor]: 'Sponsor',
   };
 
   constructor(

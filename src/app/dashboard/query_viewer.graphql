@@ -19,7 +19,8 @@ query dashboard {
       photos {
         id
         user { id, name, picture }
-        hashtags { id, name }
+        hashtags { id, name, category }
+        numHours
         points
         path
         createdAt

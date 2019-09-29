@@ -33,7 +33,7 @@
     </ion-item>
 
     <ion-card-content>
-      <ion-item *ngFor="let hashtag of level.requiredHashtags">
+      <ion-item *ngFor="let hashtag of level.requiredHashtags" [routerLink]="['/hashtag-info', hashtag.id]">
         <ion-label text-wrap>#{{ hashtag.name }}</ion-label>
         <ion-icon name="checkmark" slot="end" *ngIf="hashtag.done"></ion-icon>
       </ion-item>
@@ -47,7 +47,7 @@
     </ion-row>
   </ion-card>
 
-  <ion-item *ngIf="photos">Letzte Aktivitäten</ion-item>
+  <ion-item *ngIf="photos.length">Letzte Aktivitäten</ion-item>
 
   <ion-card class="photo" *ngFor="let photo of photos">
     <ion-img *ngIf="photo.path" src="{{photo.path}}"></ion-img>
@@ -69,8 +69,13 @@
         <ion-label>{{ photo.points }} Punkte</ion-label>
       </ion-chip>
 
+      <ion-chip *ngIf="photo.numHours" [routerLink]="['/hashtag-info', 'hours']">
+        <ion-icon name="hourglass"></ion-icon>
+        <ion-label>{{ photo.numHours | floor }} Stunden</ion-label>
+      </ion-chip>
+
       <ion-chip *ngFor="let hashtag of photo.hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
-        <ion-label>#{{ hashtag.name }}</ion-label>
+        <ion-label>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-label>
       </ion-chip>
 
     </ion-card-content>

@@ -3,7 +3,7 @@ import { QueryRef } from 'apollo-angular';
 import TimeAgo from 'javascript-time-ago'
 import de from 'javascript-time-ago/locale/de'
 import { IonInfiniteScroll } from '@ionic/angular';
-import { User, Group, Level, Photo, DashboardQuery, DashboardQueryVariables, DashboardGQL } from '../../generated/graphql';
+import { User, Group, Level, Photo, HashtagCategory, DashboardQuery, DashboardQueryVariables, DashboardGQL } from '../../generated/graphql';
 import { environment } from '../../environments/environment';
 
 TimeAgo.addLocale(de)
@@ -24,14 +24,20 @@ export class DashboardPage implements OnInit {
   categories = ['catches', 'places', 'sponsors', 'hours'];
   categoryLabels = {
     catches: 'Fang',
+    [HashtagCategory.Catch]: 'Fang',
     places: 'Orte',
+    [HashtagCategory.Place]: 'Ort',
     sponsors: 'Sponsoren',
+    [HashtagCategory.Sponsor]: 'Sponsor',
     hours: 'Zeit zusammen'
   };
   categoryIcons = {
     catches: 'hand',
+    [HashtagCategory.Catch]: 'hand',
     places: 'pin',
+    [HashtagCategory.Place]: 'pin',
     sponsors: 'gift',
+    [HashtagCategory.Sponsor]: 'gift',
     hours: 'hourglass'
   };
 
