@@ -237,7 +237,7 @@ export type HashtagInfoQuery = (
   { __typename?: 'Query' }
   & { hashtag: Maybe<(
     { __typename?: 'Hashtag' }
-    & Pick<Hashtag, 'id' | 'name' | 'info' | 'description' | 'picture' | 'points' | 'repeatTime'>
+    & Pick<Hashtag, 'id' | 'name' | 'info' | 'description' | 'picture' | 'points' | 'repeatTime' | 'category'>
   )> }
 );
 
@@ -304,6 +304,7 @@ export const HashtagInfoDocument = gql`
     picture
     points
     repeatTime
+    category
   }
 }
     `;

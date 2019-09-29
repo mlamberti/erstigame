@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QueryRef } from 'apollo-angular';
 
-import { User, Group, Level, Photo, Hashtag } from '../../generated/graphql';
+import { User, Group, Level, Photo, Hashtag, HashtagCategory } from '../../generated/graphql';
 import { HashtagInfoQuery, HashtagInfoQueryVariables, HashtagInfoGQL } from '../../generated/graphql';
 
 @Component({
@@ -13,6 +13,11 @@ import { HashtagInfoQuery, HashtagInfoQueryVariables, HashtagInfoGQL } from '../
 export class HashtagInfoPage implements OnInit {
   hashtag: Hashtag;
   reporterQueryRef: QueryRef<HashtagInfoQuery, HashtagInfoQueryVariables>;
+  categoryLabels = {
+    [HashtagCategory.Catch]: 'Fang',
+    [HashtagCategory.Place]: 'Orte',
+    [HashtagCategory.Sonsor]: 'Sponsoren',
+  };
 
   constructor(
     private route: ActivatedRoute,

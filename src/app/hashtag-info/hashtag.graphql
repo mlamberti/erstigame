@@ -7,5 +7,6 @@ query HashtagInfo($hashtagId: ID!) {
     picture
     points
     repeatTime
+    category
   }
 }

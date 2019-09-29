@@ -35,7 +35,7 @@
     </ion-card-content>
 
     <ion-row>
-      <ion-col *ngFor="let category of categories">
+      <ion-col [class.done]="group[numKey(category)] >= group.level[numKey(category)]" *ngFor="let category of categories">
         <ion-icon [name]="categoryIcons[category]" [routerLink]="['/hashtag-info', category]"></ion-icon>
         <ion-note>{{ group[numKey(category)] | floor }} / {{ group.level[numKey(category)] }}</ion-note>
       </ion-col>
@@ -59,7 +59,7 @@
         </ion-label>
       </ion-item>
 
-      <ion-chip>
+      <ion-chip *ngIf="photo.points">
         <ion-icon name="trophy"></ion-icon>
         <ion-label>{{ photo.points }} Punkte</ion-label>
       </ion-chip>

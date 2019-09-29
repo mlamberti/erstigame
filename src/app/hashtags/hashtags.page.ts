@@ -51,6 +51,7 @@ export class HashtagsPage implements OnInit {
     places: [],
     sponsors: [],
   };
+  categories = ['catches', 'places', 'sponsors', 'hours'];
   categoryLabels = {
     catches: 'Fang',
     places: 'Orte',
@@ -82,7 +83,7 @@ export class HashtagsPage implements OnInit {
       this.hashtagCategories.sponsors = this.allHashtags.filter( hashtag => hashtag.category == HashtagCategory.Sponsor);
 
       this.hashtags = this.allHashtags.filter( hashtag => hashtag.category === null);
-      this.hashtags.sort(hashtag => hashtag.done);
+      this.hashtags.sort((a,b) => +a.done - +b.done);
 
       this.loading = false;
     });

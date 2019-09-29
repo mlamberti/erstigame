@@ -1,7 +1,7 @@
 <ng-container *ngIf="hashtag">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>#{{ hashtag.name }}</ion-title>
+      <ion-title>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-title>
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/tabs/hashtags"></ion-back-button>
       </ion-buttons>
@@ -12,7 +12,7 @@
     <ion-card>
       <ion-img *ngIf="hashtag.picture" src="assets/hashtags/{{hashtag.picture}}"></ion-img>
       <ion-card-header>
-        <ion-card-title>#{{ hashtag.name }}</ion-card-title>
+        <ion-card-title>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>

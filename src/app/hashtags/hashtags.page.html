@@ -19,11 +19,11 @@
         <ion-label text-wrap>#{{ hashtag.name }}</ion-label>
         <ion-icon name="checkmark" slot="end" *ngIf="hashtag.done"></ion-icon>
       </ion-item>
-      <ng-container *ngFor="let category of categoryLabels | keyvalue">
-        <ion-item *ngIf="level[numKey(category.key)]">
-          <ion-icon name="categoryIcons[category.key]" slot="start"></ion-icon>
-          <ion-label>{{ categoryLabels[category.key] }}</ion-label>
-          <ion-note slot="end">{{ group[numKey(category.key)] }} / {{ level[numKey(category.key)] }}</ion-note>
+      <ng-container *ngFor="let category of categories">
+        <ion-item *ngIf="level[numKey(category)]">
+          <ion-icon name="{{ categoryIcons[category] }}" slot="start"></ion-icon>
+          <ion-label>{{ categoryLabels[category] }}</ion-label>
+          <ion-note slot="end">{{ group[numKey(category)] | floor }} / {{ level[numKey(category)] }}</ion-note>
         </ion-item>
       </ng-container>
     </ion-card-content>
@@ -47,14 +47,14 @@
       <ng-container *ngFor="let category of hashtagCategories | keyvalue">
         <ion-item class="expandable" [class.done]="group[numKey(category.key)] >= category.value.length" *ngIf="category.value.length" (click)="expandable.toggle()" lines="full">
           <ion-icon [name]="expandable.expanded ? 'ios-arrow-down' : 'ios-arrow-forward'" slot="start"></ion-icon>
-          <ion-label>{{ categoryLabels[category.key] }}</ion-label>
+          <ion-label>#{{ categoryLabels[category.key] }} ...</ion-label>
           <ion-note slot="end">{{ group[numKey(category.key)] }} / {{ category.value.length }}</ion-note>
         </ion-item>
 
         <app-expandable #expandable [expandHeight]="category.value.length*64+'px'">
           <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of category.value" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
             <ion-label text-wrap>
-              <h3>#{{ hashtag.name }}</h3>
+              <h3>#{{ categoryLabels[category.key] }}{{ hashtag.name }}</h3>
               <p class="info">{{ hashtag.info }}</p>
             </ion-label>
           </ion-item>
