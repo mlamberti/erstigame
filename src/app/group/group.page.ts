@@ -3,6 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { QRCodeModule } from 'angularx-qrcode';
 import { Group, User } from '../../generated/graphql';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-group',
@@ -12,7 +13,7 @@ import { Group, User } from '../../generated/graphql';
 export class GroupPage implements OnInit {
   users: User[];
   groupName: string;
-  linkQR:string;
+  linkQR: string;
 
   constructor(private apollo: Apollo) { }
 
@@ -39,11 +40,11 @@ export class GroupPage implements OnInit {
       })
       .valueChanges.subscribe(result => {
         console.log(result);
-        let viewer = result.data.viewer;
+        const viewer = result.data.viewer;
 
         this.groupName = viewer.group.name;
         this.users = viewer.group.users;
-        this.linkQR='http://localhost:8100/registry/'+viewer.group.token
+        this.linkQR = environment.frontendUrl + '/registry/' + viewer.group.token;
       });
   }
 }

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      {{groupName}}
+      {{ groupName }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,20 +13,25 @@
         <ion-icon name="contact"></ion-icon>
       </ion-avatar>
       <ion-label text-wrap>
-        <h2>{{user.name}}</h2>
-        <p *ngIf="user.info" class="info">{{user.info}}</p>
+        <h2>{{ user.name }}</h2>
+        <p *ngIf="user.info" class="info">{{ user.info }}</p>
       </ion-label>
     </ion-item>
   </ion-list>
+
   <ng-container *ngIf="linkQR">
-  <ion-item>
-    <ion-title> Beitrittslink:</ion-title>
-  </ion-item>
-  <ion-item>
-   <qrcode [qrdata]="linkQR" [size]="256" [level]="'M'"></qrcode>
-</ion-item>
-<ion-item>
-  <ion-label text-wrap > {{linkQR}}</ion-label>
-</ion-item>
- </ng-container>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Beitrittslink</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-text>
+          Teile diesen Einladungslink mit den anderen Mitgliedern deiner Tutorengruppe oder lasse sie den QR-Code scannen.
+        </ion-text>
+
+        <qrcode [qrdata]="linkQR" [size]="256" [level]="'M'"></qrcode>
+        <a [href]="linkQR">{{ linkQR }}</a>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 </ion-content>

@@ -39,7 +39,8 @@
 
     <ion-row>
       <ion-col [class.done]="group[numKey(category)] >= group.level[numKey(category)]" *ngFor="let category of categories">
-        <ion-icon [name]="categoryIcons[category]" [routerLink]="['/hashtag-info', category]"></ion-icon>
+        <ion-icon [name]="categoryIcons[category]" [routerLink]="['/hashtag-info', category]" *ngIf="group.level[numKey(category)]"></ion-icon>
+        <ion-icon [name]="categoryIcons[category]" *ngIf="!group.level[numKey(category)]"></ion-icon>
         <ion-note>{{ group[numKey(category)] | floor }} / {{ group.level[numKey(category)] }}</ion-note>
       </ion-col>
     </ion-row>
