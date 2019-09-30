@@ -9,8 +9,7 @@ import { RallyepointsPage } from './rallyepoints.page';
 
 const routes: Routes = [
   {
-    path: '',
-    component: RallyepointsPage
+    path: ':token', component: RallyepointsPage
   }
 ];
 

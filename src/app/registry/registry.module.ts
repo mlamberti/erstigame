@@ -8,10 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { RegistryPage } from './registry.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: RegistryPage
-  }
+  { path: '', component: RegistryPage },
+  { path: ':token', component: RegistryPage }
 ];
 
 @NgModule({

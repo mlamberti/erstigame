@@ -34,9 +34,6 @@
             "name": "User"
           },
           {
-            "name": "RallyeRating"
-          },
-          {
             "name": "RallyeStation"
           }
         ]

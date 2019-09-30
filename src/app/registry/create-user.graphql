@@ -1,0 +1,16 @@
+mutation CreateUser($name: String!, $token: String!, $gender: GenderEnum, $info: String) {
+  createUser(name: $name, groupToken: $token, gender: $gender, info: $info) {
+    user {
+      id
+      name
+      gender
+      info
+      group {
+        id
+        name
+      }
+    }
+    authToken
+    errors
+  }
+}

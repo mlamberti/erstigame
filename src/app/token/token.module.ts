@@ -9,8 +9,7 @@ import { TokenPage } from './token.page';
 
 const routes: Routes = [
   {
-    path: '',
-    component: TokenPage
+    path: ':token', component: TokenPage
   }
 ];
 

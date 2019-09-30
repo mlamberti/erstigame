@@ -1,7 +1,7 @@
 import { Component, OnInit ,ElementRef , QueryList, ViewChildren} from '@angular/core';
 import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
-import { RallyeStation, RallyeRating, Group, User} from '../../generated/graphql';
+import { RallyeStation, Group, User} from '../../generated/graphql';
 import {PreloadAllModules, RouterModule, Router, ActivatedRoute, ParamMap } from "@angular/router"; //  Für Token auslesen
 
 const CREATE_RALLYEPOINTS = gql`
