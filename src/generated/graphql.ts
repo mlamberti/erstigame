@@ -195,6 +195,25 @@ export type User = Node & {
   picture?: Maybe<Scalars['String']>,
   updatedAt?: Maybe<Scalars['String']>,
 };
+export type CreatePhotoMutationVariables = {
+  picture: Scalars['Upload'],
+  peopleCount: Scalars['Int'],
+  hashtagIds: Array<Scalars['ID']>
+};
+
+
+export type CreatePhotoMutation = (
+  { __typename?: 'Mutation' }
+  & { createPhoto: Maybe<(
+    { __typename?: 'CreatePhotoPayload' }
+    & Pick<CreatePhotoPayload, 'errors'>
+    & { photo: Maybe<(
+      { __typename?: 'Photo' }
+      & Pick<Photo, 'id'>
+    )> }
+  )> }
+);
+
 export type DashboardQueryVariables = {};
 
 
@@ -215,7 +234,7 @@ export type DashboardQuery = (
         )>> }
       ), photos: Array<(
         { __typename?: 'Photo' }
-        & Pick<Photo, 'id' | 'numHours' | 'points' | 'path' | 'createdAt'>
+        & Pick<Photo, 'id' | 'peopleCount' | 'numHours' | 'points' | 'path' | 'date'>
         & { user: (
           { __typename?: 'User' }
           & Pick<User, 'id' | 'name' | 'picture'>
@@ -223,7 +242,14 @@ export type DashboardQuery = (
           { __typename?: 'Hashtag' }
           & Pick<Hashtag, 'id' | 'name' | 'category'>
         )> }
-      )> }
+      )>, hashtagsAvailable: Maybe<Array<(
+        { __typename?: 'Hashtag' }
+        & Pick<Hashtag, 'id' | 'name' | 'info' | 'category' | 'points' | 'repeatTime' | 'repeatable' | 'done' | 'doable'>
+        & { level: Maybe<(
+          { __typename?: 'Level' }
+          & Pick<Level, 'id' | 'rank'>
+        )> }
+      )>> }
     ) }
   )> }
 );
@@ -265,6 +291,24 @@ export type CreateUserMutation = (
   )> }
 );
 
+export const CreatePhotoDocument = gql`
+    mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!) {
+  createPhoto(picture: $picture, peopleCount: $peopleCount, hashtagIds: $hashtagIds) {
+    photo {
+      id
+    }
+    errors
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreatePhotoGQL extends Apollo.Mutation<CreatePhotoMutation, CreatePhotoMutationVariables> {
+    document = CreatePhotoDocument;
+    
+  }
 export const DashboardDocument = gql`
     query dashboard {
   viewer {
@@ -303,10 +347,26 @@ export const DashboardDocument = gql`
           name
           category
         }
+        peopleCount
         numHours
         points
         path
-        createdAt
+        date
+      }
+      hashtagsAvailable {
+        id
+        name
+        info
+        category
+        level {
+          id
+          rank
+        }
+        points
+        repeatTime
+        repeatable
+        done
+        doable
       }
     }
   }

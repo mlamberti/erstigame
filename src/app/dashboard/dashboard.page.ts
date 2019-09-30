@@ -61,10 +61,10 @@ export class DashboardPage implements OnInit {
       this.viewer = data.viewer;
       this.group = this.viewer.group;
       this.level = this.group.level
-      this.photos = this.viewer.group.photos.sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt));
+      this.photos = this.viewer.group.photos.sort((a,b) => Date.parse(b.date)-Date.parse(a.date));
       for (let photo of this.photos) {
-        photo.path=environment.backendUrl+photo.path;
-        photo['dateString'] = this.timeAgo.format(new Date(photo.createdAt));
+        photo['fullPath'] = environment.backendUrl + photo.path;
+        photo['dateString'] = this.timeAgo.format(new Date(photo.date));
       }
     });
   }

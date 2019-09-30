@@ -6,10 +6,7 @@ query dashboard {
       id
       name
       points
-      numCatches
-      numPlaces
-      numSponsors
-      numHours
+      numCatches, numPlaces, numSponsors, numHours
       level {
         id,
         rank,
@@ -20,10 +17,23 @@ query dashboard {
         id
         user { id, name, picture }
         hashtags { id, name, category }
+        peopleCount
         numHours
         points
         path
-        createdAt
+        date
+      }
+      hashtagsAvailable {
+        id
+        name
+        info
+        category
+        level { id, rank }
+        points
+        repeatTime
+        repeatable
+        done
+        doable
       }
     }
   }

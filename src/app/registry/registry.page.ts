@@ -14,15 +14,15 @@ import { CreateUserMutation, CreateUserMutationVariables, CreateUserGQL } from '
 })
 export class RegistryPage implements OnInit {
   reporterQueryRef: QueryRef<CreateUserMutation, CreateUserMutationVariables>;
-  private form: FormGroup;
   genders = GenderEnum;
 
+  form: FormGroup;
+  groupToken: string;
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
   slideOpts = {
     initialSlide: 0,
     speed: 400
   };
-  groupToken: string;
 
   constructor(
     private createUserGQL: CreateUserGQL,
