@@ -220,6 +220,17 @@ export type CreatePhotoMutation = (
   )> }
 );
 
+export type CheckAuthQueryVariables = {};
+
+
+export type CheckAuthQuery = (
+  { __typename?: 'Query' }
+  & { viewer: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+  )> }
+);
+
 export type DashboardQueryVariables = {};
 
 
@@ -326,6 +337,21 @@ export const CreatePhotoDocument = gql`
   })
   export class CreatePhotoGQL extends Apollo.Mutation<CreatePhotoMutation, CreatePhotoMutationVariables> {
     document = CreatePhotoDocument;
+    
+  }
+export const CheckAuthDocument = gql`
+    query CheckAuth {
+  viewer {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CheckAuthGQL extends Apollo.Query<CheckAuthQuery, CheckAuthQueryVariables> {
+    document = CheckAuthDocument;
     
   }
 export const DashboardDocument = gql`

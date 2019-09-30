@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { PreloadAllModules, RouterModule, Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { ToastController, IonSlides } from '@ionic/angular';
 import { QueryRef } from 'apollo-angular';
 
 import {
@@ -15,14 +15,16 @@ import {
   templateUrl: './registry.page.html',
   styleUrls: ['./registry.page.scss'],
 })
-export class RegistryPage implements OnInit {
+export class RegistryPage implements OnInit, AfterViewInit {
+  @ViewChild('slides') slides: IonSlides;
+
   groupByTokenQueryRef: QueryRef<GroupByTokenQuery, GroupByTokenQueryVariables>;
   createUserQueryRef: QueryRef<CreateUserMutation, CreateUserMutationVariables>;
   genders = GenderEnum;
 
   form: FormGroup;
   groupToken: string;
-  groupName: string;
+  groupName = '';
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
   slideOpts = {
     initialSlide: 0,
@@ -45,10 +47,18 @@ export class RegistryPage implements OnInit {
     });
 
     this.form.valueChanges.subscribe(val => {
-      if ( val.token ) {
+      if ( val.token && val.token.length === 24 ) {
         this.groupByTokenGQL.watch({ joinToken: val.token }).valueChanges.subscribe(({ data }) => {
-          this.groupName = data.groupByToken.name;
+          this.groupName = data.groupByToken ? data.groupByToken.name : '';
+          if ( this.groupName ) {
+            this.slides.lockSwipes(false);
+          } else {
+            this.slides.lockSwipes(true);
+          }
         });
+      } else {
+        this.groupName = '';
+        this.slides.lockSwipes(true);
       }
     });
   }
@@ -56,6 +66,10 @@ export class RegistryPage implements OnInit {
   ngOnInit() {
     this.groupToken = this.route.snapshot.paramMap.get('token');
     this.form.patchValue({ 'token': this.groupToken });
+  }
+
+  ngAfterViewInit() {
+    this.slides.lockSwipes(true);
   }
 
   async presentToast(message: string) {

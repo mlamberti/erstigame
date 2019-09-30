@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth.guard'
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: 'registry', loadChildren: './registry/registry.module#RegistryPageModule' },
+  { path: 'dsgvo', loadChildren: './dsgvo/dsgvo.module#DsgvoPageModule' },
   { path: '', canActivate: [AuthGuard], children:
     [
       { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' },
@@ -13,7 +14,6 @@ const routes: Routes = [
       { path: 'personhours', loadChildren: './personhours/personhours.module#PersonhoursPageModule' },
       { path: 'hashtag-modal', loadChildren: './hashtag-modal/hashtag-modal.module#HashtagModalPageModule' },
       { path: 'rallyepoints', loadChildren: './rallyepoints/rallyepoints.module#RallyepointsPageModule' },
-      { path: 'dsgvo', loadChildren: './dsgvo/dsgvo.module#DsgvoPageModule' },
       { path: '**', redirectTo: ''},
     ]
   }
