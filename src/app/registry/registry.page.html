@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
-      Gruppenbeitritt
+    <ion-title *ngIf="!groupName">
+      Erstigame
+    </ion-title>
+    <ion-title *ngIf="groupName">
+      {{ groupName }}
     </ion-title>
   </ion-toolbar>
 </ion-header>

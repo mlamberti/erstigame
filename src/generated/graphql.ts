@@ -154,6 +154,7 @@ export type Photo = Node & {
 export type Query = {
   __typename?: 'Query',
   group?: Maybe<Group>,
+  groupByToken?: Maybe<Group>,
   hashtag?: Maybe<Hashtag>,
   user?: Maybe<User>,
   viewer?: Maybe<User>,
@@ -162,6 +163,11 @@ export type Query = {
 
 export type QueryGroupArgs = {
   id: Scalars['ID']
+};
+
+
+export type QueryGroupByTokenArgs = {
+  token: Scalars['String']
 };
 
 
@@ -288,6 +294,19 @@ export type CreateUserMutation = (
         & Pick<Group, 'id' | 'name'>
       ) }
     )> }
+  )> }
+);
+
+export type GroupByTokenQueryVariables = {
+  joinToken: Scalars['String']
+};
+
+
+export type GroupByTokenQuery = (
+  { __typename?: 'Query' }
+  & { groupByToken: Maybe<(
+    { __typename?: 'Group' }
+    & Pick<Group, 'id' | 'name'>
   )> }
 );
 
@@ -426,5 +445,21 @@ export const CreateUserDocument = gql`
   })
   export class CreateUserGQL extends Apollo.Mutation<CreateUserMutation, CreateUserMutationVariables> {
     document = CreateUserDocument;
+    
+  }
+export const GroupByTokenDocument = gql`
+    query GroupByToken($joinToken: String!) {
+  groupByToken(token: $joinToken) {
+    id
+    name
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GroupByTokenGQL extends Apollo.Query<GroupByTokenQuery, GroupByTokenQueryVariables> {
+    document = GroupByTokenDocument;
     
   }

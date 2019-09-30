@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {PreloadAllModules, RouterModule, Router, ActivatedRoute, ParamMap } from "@angular/router"; //  Für Token auslesen
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { PreloadAllModules, RouterModule, Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { QueryRef } from 'apollo-angular';
 
-import { GenderEnum} from '../../generated/graphql';
-import { CreateUserMutation, CreateUserMutationVariables, CreateUserGQL } from '../../generated/graphql';
+import {
+  GenderEnum,
+  CreateUserMutation, CreateUserMutationVariables, CreateUserGQL,
+  GroupByTokenQuery, GroupByTokenQueryVariables, GroupByTokenGQL
+} from '../../generated/graphql';
 
 @Component({
   selector: 'app-registry',
@@ -13,11 +16,13 @@ import { CreateUserMutation, CreateUserMutationVariables, CreateUserGQL } from '
   styleUrls: ['./registry.page.scss'],
 })
 export class RegistryPage implements OnInit {
-  reporterQueryRef: QueryRef<CreateUserMutation, CreateUserMutationVariables>;
+  groupByTokenQueryRef: QueryRef<GroupByTokenQuery, GroupByTokenQueryVariables>;
+  createUserQueryRef: QueryRef<CreateUserMutation, CreateUserMutationVariables>;
   genders = GenderEnum;
 
   form: FormGroup;
   groupToken: string;
+  groupName: string;
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
   slideOpts = {
     initialSlide: 0,
@@ -26,6 +31,7 @@ export class RegistryPage implements OnInit {
 
   constructor(
     private createUserGQL: CreateUserGQL,
+    private groupByTokenGQL: GroupByTokenGQL,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -35,7 +41,15 @@ export class RegistryPage implements OnInit {
       token: ['', Validators.required],
       name: ['', Validators.required],
       gender: [''],
-      info:[''],
+      info: [''],
+    });
+
+    this.form.valueChanges.subscribe(val => {
+      if ( val.token ) {
+        this.groupByTokenGQL.watch({ joinToken: val.token }).valueChanges.subscribe(({ data }) => {
+          this.groupName = data.groupByToken.name;
+        });
+      }
     });
   }
 
@@ -61,24 +75,24 @@ export class RegistryPage implements OnInit {
     }
 
     this.createUserGQL.mutate({
-        name: this.form.get('name').value||null,
+        name: this.form.get('name').value || null,
         token: this.form.get('token').value,
-        gender: this.form.get('gender').value ||null,
+        gender: this.form.get('gender').value || null,
         info: this.form.get('info').value
       }).subscribe(
       ({ data }) => {
         console.log('got data', data);
         if (data.createUser.errors) {
-          this.presentToast(data.createUser.errors)
+          this.presentToast(data.createUser.errors);
         } else {
           localStorage.setItem('authToken', data.createUser.authToken);
-          console.log(data.createUser.authToken)
+          console.log(data.createUser.authToken);
           window.location.href = '/tabs/group';
         }
       },
       (error) => {
         console.log('there was an error sending the query', error);
-        this.presentToast(error)
+        this.presentToast(error);
       }
     );
   }

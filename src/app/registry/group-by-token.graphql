@@ -1,0 +1,6 @@
+query GroupByToken($joinToken: String!) {
+  groupByToken(token: $joinToken) {
+  	id
+  	name
+  }
+}
