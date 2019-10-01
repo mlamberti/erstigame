@@ -1,0 +1,16 @@
+mutation CreateRallyeRating($groupId: ID!, $stationToken: String!, $points: Int!) {
+  createRallyeRating(
+    groupId: $groupId
+    stationToken: $stationToken
+    points: $points
+  ) {
+    rallyeRating {
+      id
+      group {
+        id
+      }
+      points
+    }   
+    errors
+  }
+}

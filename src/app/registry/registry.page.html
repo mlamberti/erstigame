@@ -1,43 +1,55 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
-      Registry
+    <ion-title *ngIf="!groupName">
+      Erstigame
+    </ion-title>
+    <ion-title *ngIf="groupName">
+      {{ groupName }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-label>Hier könnte ihre Dateschutzvereinbarung stehen.</ion-label>
-
 <ion-content>
   <ion-slides #slides pager="true" [options]="slideOpts">
 
-    <ion-slide *ngIf="!groupToken">
+    <ion-slide *ngIf="!groupToken || !groupName">
       <form [formGroup]="form" (submit)="slides.slideNext()">
         <ion-item >
-          <ion-label  position="floating">Group token</ion-label>
-          <ion-input formControlName="token" >{{groupToken}}</ion-input>
+          <ion-label position="floating">Einladungstoken</ion-label>
+          <ion-input formControlName="token" ></ion-input>
         </ion-item>
+
+        <ion-button (click)="slides.slideNext()" [disabled]="!groupName">Weiter</ion-button>
       </form>
+
     </ion-slide>
 
     <ion-slide>
       <form [formGroup]="form" (submit)="createUser()">
         <ion-item>
-          <ion-label position="floating">Your name</ion-label>
-          <ion-input formControlName="name"></ion-input>
-        </ion-item> 
+          <ion-label position="floating">Dein Name</ion-label>
+          <ion-input formControlName="name" required></ion-input>
+        </ion-item>
         <ion-item>
-          <ion-label position="floating">Your Info</ion-label>
+          <ion-label position="floating">Kurzinfo</ion-label>
           <ion-input formControlName="info"></ion-input>
-        </ion-item> 
+        </ion-item>
         <ion-item>
-          <ion-label position="floating">Your gender</ion-label>
-          <ion-select formControlName="gender" interface="action-sheet"> 
+          <ion-label position="floating">Geschlecht</ion-label>
+          <ion-select formControlName="gender">
             <ion-select-option *ngFor="let gender of genders | keyvalue" [value]="gender.value">{{ gender.key }}</ion-select-option>
           </ion-select>
-        </ion-item> 
-        <ion-button type="submit"> Create User </ion-button>
+        </ion-item>
+        <ion-item detail [routerLink]="['/dsgvo']">
+          <ion-label>
+            Mit der Anmeldung akzeptierst<br> du die Datenschutzvereinbarung.
+          </ion-label>
+        </ion-item>
+
+        <ion-button type="submit" [disabled]="form.invalid">Gruppe beitreten</ion-button>
       </form>
     </ion-slide>
 
   </ion-slides>
+
 </ion-content>
+

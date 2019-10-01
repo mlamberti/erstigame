@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 
 import { GraphQLModule } from './graphql.module';
 
-import { HashtagModalPage } from './hashtag-modal/hashtag-modal.page'
+import { HashtagModalPage } from './hashtag-modal/hashtag-modal.page';
 
 @NgModule({
   declarations: [

@@ -1,3 +1,19 @@
-.hashtag-done {
-  color:grey;
+.done, .disabled {
+  &, ion-label, ion-icon, ion-note, p {
+    color: #aaa;
+  }
+}
+
+.info {
+  font-style: italic;
+}
+
+.expandable {
+  ion-icon {
+    margin-right: 8px;
+  }
+
+  ion-note {
+    font-size: 16px;
+  }
 }

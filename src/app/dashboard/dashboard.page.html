@@ -6,36 +6,102 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card *ngIf= "groupPoints" class="welcome-card">
-    <ion-card-header>
-      <ion-card-title>Score: {{groupPoints}} Points</ion-card-title>
-    </ion-card-header>
-  </ion-card>
+<ion-content *ngIf="viewer">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-card>
-    <ion-card-header *ngIf= "announcement">
-      <ion-card-title> Announcement:</ion-card-title>
+    <ion-card-header>
+      <ion-card-title>Welcome {{ viewer.name }}</ion-card-title>
     </ion-card-header>
-    <ion-label>
-      {{announcement}}
-    </ion-label>
 
+    <ion-card-content>
+      Hier erklären wir wie euch das Spiel funktioniert. Klickt das Fenster einfach weg, wenn ihr es nicht mehr sehen wollt.
+    </ion-card-content>
   </ion-card>
 
-  <ion-card *ngFor="let photo of photos">
-    <ion-item>
-      <ion-avatar slot="start">
-        <ion-icon class="avatar" name="photo.user.picture"></ion-icon>
-      </ion-avatar>
-      <ion-label text-wrap>
-        <h2>{{photo.user.name}}</h2>
-      </ion-label>
+  <ion-card class="rallye" *ngIf="rallyeRatings">
+    <ion-item lines="full">
+      <ion-label>Rallye</ion-label>
+      <ion-chip>
+        <ion-icon name="cog"></ion-icon>
+        <ion-label>{{ rallyePoints }} Punkte</ion-label>
+      </ion-chip>
     </ion-item>
-    <ion-img *ngIf="photo.path" src="{{photo.path}}"></ion-img>
-    <ion-card-title *ngFor="let hashtag of photo.hashtags">
-      #{{ hashtag.name }}
-    </ion-card-title>
+    <ion-list>
+      <ion-item *ngFor="let rating of rallyeRatings">
+        <ion-label>{{ rating.stationName }}</ion-label>
+        <ion-note slot="end">{{ rating.points }} Punkte</ion-note>
+      </ion-item>
+    </ion-list>
   </ion-card>
+
+  <ion-card class="score">
+    <ion-item lines="full">
+      <ion-label>Level {{ group.level.rank }}</ion-label>
+      <ion-chip>
+        <ion-icon name="trophy"></ion-icon>
+        <ion-label>{{ group.points }} Punkte</ion-label>
+      </ion-chip>
+    </ion-item>
+
+    <ion-card-content>
+      <ion-item *ngFor="let hashtag of level.requiredHashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label text-wrap>#{{ hashtag.name }}</ion-label>
+        <ion-icon name="checkmark" slot="end" *ngIf="hashtag.done"></ion-icon>
+      </ion-item>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col [class.done]="group[numKey(category)] >= group.level[numKey(category)]" *ngFor="let category of categories">
+        <ion-icon [name]="categoryIcons[category]" [routerLink]="['/hashtag-info', category]" *ngIf="group.level[numKey(category)]"></ion-icon>
+        <ion-icon [name]="categoryIcons[category]" *ngIf="!group.level[numKey(category)]"></ion-icon>
+        <ion-note>{{ group[numKey(category)] | floor }} / {{ group.level[numKey(category)] }}</ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-item *ngIf="photos.length">Letzte Aktivitäten</ion-item>
+
+  <ion-card class="photo" *ngFor="let photo of photos">
+    <ion-img [src]="photo.fullPath"></ion-img>
+
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <ion-icon class="avatar" name="contact"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <div>{{ photo.user.name }}</div>
+          <span>{{ photo.dateString }}</span>
+        </ion-label>
+      </ion-item>
+
+      <ion-chip *ngIf="photo.points">
+        <ion-icon name="trophy"></ion-icon>
+        <ion-label>{{ photo.points }} Punkte</ion-label>
+      </ion-chip>
+
+      <ion-chip *ngIf="photo.numHours" [routerLink]="['/hashtag-info', 'hours']">
+        <ion-icon name="hourglass"></ion-icon>
+        <ion-label>{{ photo.numHours | floor }} Stunden</ion-label>
+      </ion-chip>
+
+      <ion-chip *ngFor="let hashtag of photo.hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-label>
+      </ion-chip>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more data...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
 
 </ion-content>
 

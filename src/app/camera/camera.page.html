@@ -7,31 +7,36 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <input #filePicker type="file" accept="image/*" capture (change)="changePhoto($event.target.files[0])">
-  <ion-img [src]="pictureURL" *ngIf="pictureURL"></ion-img>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="createPhoto()"><ion-icon name="send"></ion-icon></ion-fab-button>
-  </ion-fab>
-</ion-content>
+<input #filePicker type="file" accept="image/*" capture (change)="changePhoto($event.target.files[0])">
+
+<ng-container *ngIf="pictureURL">
+
+  <ion-content>
+    <ion-img [src]="pictureURL" *ngIf="pictureURL"></ion-img>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="createPhoto()"><ion-icon name="send"></ion-icon></ion-fab-button>
+    </ion-fab>
+  </ion-content>
 
 
-<ion-footer>
-  <ion-toolbar color="primary">
-    <ion-list>
-      <ion-item>
-        <ion-label> Anzahl Personen </ion-label>
-        <div class="number-input">
-          <button (click)="peopleCountInput.stepDown()"></button>
-          <input #peopleCountInput name="peopleCount" [(ngModel)]="peopleCount" type="number" class="quantity" min="0" value="0" step="1">
-          <button (click)="peopleCountInput.stepUp()" class="plus"></button>
-        </div>
-      </ion-item>
-      <ion-item button (click)="openModal()">
-        <ion-label>Hashtags auswählen ...</ion-label>
-        <ion-note slot="end">{{ hashtagIds.length }} / {{ numHashtags }}</ion-note>
-      </ion-item>
-    </ion-list>
-  </ion-toolbar>
-</ion-footer>
+  <ion-footer>
+    <ion-toolbar color="primary">
+      <ion-list>
+        <ion-item>
+          <ion-label> Anzahl Personen </ion-label>
+          <div class="number-input">
+            <button (click)="peopleCountInput.stepDown()"></button>
+            <input #peopleCountInput name="peopleCount" type="number" class="quantity" min="0" value="{{ peopleCount }}" step="1">
+            <button (click)="peopleCountInput.stepUp()" class="plus"></button>
+          </div>
+        </ion-item>
+        <ion-item button (click)="openModal()">
+          <ion-label>Hashtags auswählen ...</ion-label>
+          <ion-note slot="end">{{ hashtagIds.length }} / {{ numHashtags }}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-toolbar>
+  </ion-footer>
+
+</ng-container>
 

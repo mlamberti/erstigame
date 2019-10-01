@@ -1,0 +1,15 @@
+query rallyeRatings {
+  viewer {
+    id
+    name
+    group {
+      id
+      rallyeRatings {
+        id
+        stationName
+        points
+      }
+      rallyePoints
+    }
+  }
+}

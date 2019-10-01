@@ -1,31 +1,27 @@
 <ng-container *ngIf="hashtag">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title> #{{ hashtag.name }}</ion-title>
+      <ion-title>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-title>
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/tabs/hashtags"></ion-back-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
-  <ion-content padding>
+  <ion-content>
     <ion-card>
       <ion-img *ngIf="hashtag.picture" src="assets/hashtags/{{hashtag.picture}}"></ion-img>
       <ion-card-header>
-        <ion-card-title>#{{ hashtag.name }}</ion-card-title>
+        <ion-card-title>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
         {{ hashtag.description || hashtag.info }}
       </ion-card-content>
-
-
     </ion-card>
   </ion-content>
 
-
-
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button hashtag.marked=true routerLink="/camera" ><ion-icon name="camera"></ion-icon></ion-fab-button>
-      </ion-fab>
-      </ng-container>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button hashtag.marked=true routerLink="/camera" ><ion-icon name="camera"></ion-icon></ion-fab-button>
+  </ion-fab>
+</ng-container>

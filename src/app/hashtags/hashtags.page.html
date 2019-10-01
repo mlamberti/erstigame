@@ -6,110 +6,61 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!loading">
   <ion-card>
-    <ion-list>
-      <ion-list-header *ngIf="groupLevel" >
-        <h3> Level {{groupLevel}} </h3>
-      </ion-list-header>
-      <ion-item *ngIf="numHoursHave" [routerLink]="['/personhours']">
-          <ion-label *ngIf="numHoursHave >= numHoursMust" class="hashtag-done">
-            HoursTogether*Persons 
-          </ion-label>
-          <ion-label *ngIf="numHoursHave < numHoursMust">
-            HoursTogether*Persons 
-          </ion-label>
-        <ion-note slot="end"> {{numHoursHave}}/{{numHoursMust}}</ion-note> 
+    <ion-card-header>
+      <ion-card-title>
+        Level {{ level.rank }}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Um das nächste Level zu erreichen, müsst ihr folgende Bedingen erfüllen:
+      <ion-item *ngFor="let hashtag of level.requiredHashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label text-wrap>#{{ hashtag.name }}</ion-label>
+        <ion-icon name="checkmark" slot="end" *ngIf="hashtag.done"></ion-icon>
       </ion-item>
-      <ion-item button *ngFor="let hashtag of hashtagsLevel" [routerLink]="['/hashtag-info', hashtag.id]">
-        <ion-label text-wrap>
-          <h3>#{{hashtag.name}}</h3>
-          <p style="font-style: italic;">{{hashtag.info}}</p>
-        </ion-label>
-      </ion-item>
-      <ion-list (click)="catchesList.toggle()" *ngIf="catches">
-        <ion-item>
-          <ion-label *ngIf="numCatchesHave >= numCatchesMust" class="hashtag-done">
-            # Catch... 
-          </ion-label>
-          <ion-label *ngIf="numCatchesHave < numCatchesMust">
-            # Catch... 
-          </ion-label>
-          <ion-note slot="end"> {{numCatchesHave}}/{{numCatchesMust}}</ion-note> 
+      <ng-container *ngFor="let category of categories">
+        <ion-item *ngIf="level[numKey(category)]" [routerLink]="['/hashtag-info', category]">
+          <ion-icon name="{{ categoryIcons[category] }}" slot="start"></ion-icon>
+          <ion-label>{{ categoryLabels[category] }}</ion-label>
+          <ion-note slot="end">{{ group[numKey(category)] | floor }} / {{ level[numKey(category)] }}</ion-note>
         </ion-item>
-        <app-expandable #catchesList [expandHeight]="catches.length*50+'px'">
-          <ion-item button  [routerLink]="['/hashtag-info', hashtag.id]" *ngFor="let hashtag of catches">
-            <ion-label *ngIf="hashtag.done" class="hashtag-done" >
-              {{ hashtag.name }} 
-            </ion-label>
-            <ion-label *ngIf="!hashtag.done">
-              {{ hashtag.name }} 
-            </ion-label>
-          </ion-item>
-        </app-expandable>
-      </ion-list>
-
-      <ion-list (click)="placesList.toggle()" *ngIf="places">
-        <ion-item >
-          <ion-label *ngIf="numPlacesHave >= numPlacesMust" class="hashtag-done">
-            # Places... 
-          </ion-label>
-          <ion-label *ngIf="numPlacesHave < numPlacesMust">
-            # Places... 
-          </ion-label>
-          <ion-note slot="end"> {{numPlacesHave}}/{{numPlacesMust}}</ion-note> 
-        </ion-item>
-        <app-expandable #placesList [expandHeight]="places.length*50+'px'">
-          <ion-item button  [routerLink]="['/hashtag-info', hashtag.id]" *ngFor="let hashtag of places">
-            <ion-label *ngIf="hashtag.done" class="hashtag-done" >
-              {{ hashtag.name }} 
-            </ion-label>
-            <ion-label *ngIf="!hashtag.done">
-              {{ hashtag.name }} 
-            </ion-label>
-          </ion-item>
-        </app-expandable>
-      </ion-list>
-
-      <ion-list (click)="sponsorsList.toggle()" *ngIf="sponsors">
-        <ion-item>
-            <ion-label *ngIf="numSponsorsHave >= numSponsorsMust" class="hashtag-done">
-            # Sponsors... 
-          </ion-label>
-          <ion-label *ngIf="numSponsorsHave < numSponsorsMust">
-            # Sponsors... 
-          </ion-label>
-          <ion-note slot="end"> {{numSponsorsHave}}/{{numSponsorsMust}}</ion-note> 
-        </ion-item>
-        <app-expandable #sponsorsList [expandHeight]="sponsors.length*50+'px'">
-          <ion-item button  [routerLink]="['/hashtag-info', hashtag.id]" *ngFor="let hashtag of sponsors">
-            <ion-label *ngIf="hashtag.done" class="hashtag-done" >
-              {{ hashtag.name }} 
-            </ion-label>
-            <ion-label *ngIf="!hashtag.done">
-              {{ hashtag.name }} 
-            </ion-label>
-          </ion-item>
-        </app-expandable>
-      </ion-list>
-
-    </ion-list>
+      </ng-container>
+    </ion-card-content>
   </ion-card>
 
-  <ion-list>
-    <ion-item button *ngFor="let hashtag of hashtagsWiederholbar" [routerLink]="['/hashtag-info', hashtag.id]">
-      <ion-label text-wrap>
-        <h3>#{{hashtag.name}}</h3>
-        <p style="font-style: italic;">{{hashtag.info}}</p>
-      </ion-label>
-    </ion-item>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Hashtags
+      </ion-card-title>
+    </ion-card-header>
 
-    <ion-item button *ngFor="let hashtag of hashtagsNichtWiederholbar" [routerLink]="['/hashtag-info', hashtag.id]" class="hashtag-done">
-      <ion-label text-wrap>
-        <h3>#{{hashtag.name}}</h3>
-        <p style="font-style: italic;">{{hashtag.info}}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+    <ion-list>
+      <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of hashtags" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
+        <ion-label text-wrap>
+          <h3>#{{ hashtag.name }}</h3>
+          <p class="info">{{ hashtag.info }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ng-container *ngFor="let category of hashtagCategories | keyvalue">
+        <ion-item class="expandable" [class.done]="group[numKey(category.key)] >= category.value.length" *ngIf="category.value.length" (click)="expandable.toggle()" lines="full">
+          <ion-icon [name]="expandable.expanded ? 'ios-arrow-down' : 'ios-arrow-forward'" slot="start"></ion-icon>
+          <ion-label>#{{ categoryLabels[category.key] }} ...</ion-label>
+          <ion-note slot="end">{{ group[numKey(category.key)] }} / {{ category.value.length }}</ion-note>
+        </ion-item>
+
+        <app-expandable #expandable [expandHeight]="category.value.length*64+'px'">
+          <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of category.value" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
+            <ion-label text-wrap>
+              <h3>#{{ categoryLabels[hashtag.category] }}{{ hashtag.name }}</h3>
+              <p class="info">{{ hashtag.info }}</p>
+            </ion-label>
+          </ion-item>
+        </app-expandable>
+      </ng-container>
+    </ion-list>
+  </ion-card>
 
 </ion-content>

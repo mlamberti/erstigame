@@ -1,8 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-import { User, Hashtag, Photo } from '../../generated/graphql';
-import {environment} from '../../environments/environment';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { QueryRef } from 'apollo-angular';
+import TimeAgo from 'javascript-time-ago';
+import de from 'javascript-time-ago/locale/de';
+import { IonInfiniteScroll } from '@ionic/angular';
+import {
+  User, Group, Level, Photo, HashtagCategory, RallyeRating,
+  DashboardQuery, DashboardQueryVariables, DashboardGQL,
+  RallyeRatingsQuery, RallyeRatingsQueryVariables, RallyeRatingsGQL
+} from '../../generated/graphql';
+import { environment } from '../../environments/environment';
+
+TimeAgo.addLocale(de);
 
 @Component({
   selector: 'app-dashboard',
@@ -10,99 +18,94 @@ import {environment} from '../../environments/environment';
   styleUrls: ['dashboard.page.scss']
 })
 export class DashboardPage implements OnInit {
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  viewerQueryRef: QueryRef<DashboardQuery, DashboardQueryVariables>;
+  rallyeRatingsQueryRef: QueryRef<RallyeRatingsQuery, RallyeRatingsQueryVariables>;
+  viewer: Partial<User>;
+  group: Partial<Group>;
+  level: Partial<Level>;
+  photos: Partial<Photo>[];
+  rallyeRatings: Partial<RallyeRating>[];
+  rallyePoints: number;
+  timeAgo = new TimeAgo('de-DE');
+  categories = ['catches', 'places', 'sponsors', 'hours'];
+  categoryLabels = {
+    catches: 'Fang',
+    [HashtagCategory.Catch]: 'Fang',
+    places: 'Orte',
+    [HashtagCategory.Place]: 'Ort',
+    sponsors: 'Sponsoren',
+    [HashtagCategory.Sponsor]: 'Sponsor',
+    hours: 'Zeit zusammen'
+  };
+  categoryIcons = {
+    catches: 'hand',
+    [HashtagCategory.Catch]: 'hand',
+    places: 'pin',
+    [HashtagCategory.Place]: 'pin',
+    sponsors: 'gift',
+    [HashtagCategory.Sponsor]: 'gift',
+    hours: 'hourglass'
+  };
 
-  points: Number = 200535;
-  digits: Number[];
-  pointsstring:String= "12345";
-  hashtags: Hashtag[];
-  groupName: String;
-  groupPoints:Number;
-  users: User[];
-  photos: Photo[];
-  date=Date.now();
-  latestPhoto: Photo;
-  timeLatestPhoto=Date.now();
-  time= Date.now();
-  announcement:String= "Verhalte dich immer Vorbildlich... Du weißt nie wer dir Bonus Punkte für gute Taten gibt.";
-  pointsNow: number;
-  pointsLast:number;
+  constructor(
+    private dashboardGQL: DashboardGQL,
+    private rallyeRatingsGQL: RallyeRatingsGQL
+  ) {
+    this.viewerQueryRef = this.dashboardGQL.watch();
+    this.rallyeRatingsQueryRef = this.rallyeRatingsGQL.watch();
+  }
 
-  constructor(private apollo: Apollo) {
+  loadData(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+        event.target.disabled = true;
+    }, 500);
   }
 
   ngOnInit() {
-    this.apollo
-    .watchQuery<{ viewer }>({
-      query: gql`
-    query{
-        viewer{
-          id
-          group {
-            id
-            name
-            points
-            users {
-              id
-              name
-              info
-            }
-            photos {
-              id
-              user {
-                id
-                name
-                picture
-              }
-              createdAt
-              path
-              hashtags {
-                id
-                name
-              }
-            }
-            hashtags{
-              id
-              name
-              info
-              description
-              picture
-              points
-              repeatTime
-            }
-          }
-        }
+    this.viewerQueryRef.valueChanges.subscribe(({ data }) => {
+      this.viewer = data.viewer;
+      this.group = this.viewer.group;
+      this.level = this.group.level;
+      this.photos = this.viewer.group.photos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+      for (const photo of this.photos) {
+        photo['fullPath'] = environment.backendUrl + photo.path;
+        photo['dateString'] = this.timeAgo.format(new Date(photo.date));
       }
-      `,
-    })
-    .valueChanges.subscribe(result => {
-      console.log(result);
-      let viewer = result.data.viewer;
-      this.photos=viewer.group.photos.sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt));
-      for (let photo of this.photos) {
-        photo.path=environment.backendUrl+photo.path;
-      }
-      this.groupPoints=viewer.group.points;
-      this.groupName = viewer.group.name;
-      this.users = viewer.group.users;
-      this.hashtags = viewer.group.hashtags
-   //   this.pointsstring=viewer.group.points.toString();
-   //   this.digits = (""+this.pointsstring).split("").map(Number);
-/*
- this.latestPhoto=viewer.group.photo.filter(photo => photo.id(Math.max(photo.id)));
-this.timeLatestPhoto=this.latestPhoto.createdAt;
-      this.pointsLast= viewer.group.points;
-      if (this.timeLatestPhoto.gettime()- this.time.gettime()<= 30*60*1000) {
-        let pointsNow=pointsLast+5
-      }
+    });
 
-      if (this.timeLatestPhoto.gettime()- this.time.gettime()> 30*60*1000 && this.timeLatestPhoto.gettime()- this.time.gettime()<= 60*60*1000) {
-        let pointsNow=pointsLast+10;
-      }
-      if (this.timeLatestPhoto.gettime()- this.time.gettime()> 60*60*1000) {
-        let pointsNow=pointsLast+15;
-      }
-*/
-});
+    if (this.isRallye()) {
+      this.rallyeRatingsQueryRef.valueChanges.subscribe(({ data }) => {
+        this.rallyeRatings = data.viewer.group.rallyeRatings;
+        this.rallyePoints = data.viewer.group.rallyePoints;
+        console.log(data);
+      });
+    }
+  }
+
+  isRallye(): boolean {
+    const now = new Date('2019-10-04 4:00');
+    return new Date('2019-10-04') < now && now < new Date('2019-10-05');
+  }
+
+  refresh(event) {
+    this.viewerQueryRef.refetch()
+      .then(() => event.target.complete())
+      .catch(() => event.target.complete());
+    if (this.isRallye()) {
+      this.rallyeRatingsQueryRef.refetch()
+        .then(() => event.target.complete())
+        .catch(() => event.target.complete());
+    }
+  }
+
+  numKey(key: string): string {
+    return 'num' + key[0].toUpperCase() + key.slice(1);
   }
 
 }

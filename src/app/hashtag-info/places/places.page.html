@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>#Ort ...</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/hashtags"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>#Ort ...</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Bewegt euch in Richtung dieses wundersamen Ortes und haltet den Moment auf einem Foto fest.
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button hashtag.marked=true routerLink="/camera" ><ion-icon name="camera"></ion-icon></ion-fab-button>
+</ion-fab>
