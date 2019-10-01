@@ -21,6 +21,22 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card class="rallye" *ngIf="rallyeRatings">
+    <ion-item lines="full">
+      <ion-label>Rallye</ion-label>
+      <ion-chip>
+        <ion-icon name="cog"></ion-icon>
+        <ion-label>{{ rallyePoints }} Punkte</ion-label>
+      </ion-chip>
+    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let rating of rallyeRatings">
+        <ion-label>{{ rating.stationName }}</ion-label>
+        <ion-note slot="end">{{ rating.points }} Punkte</ion-note>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
   <ion-card class="score">
     <ion-item lines="full">
       <ion-label>Level {{ group.level.rank }}</ion-label>

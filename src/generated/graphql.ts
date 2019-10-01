@@ -56,6 +56,7 @@ export type Group = Node & {
   number: Scalars['Int'],
   photos: Array<Photo>,
   points: Scalars['Int'],
+  rallyePoints: Scalars['Int'],
   rallyeRating?: Maybe<RallyeRating>,
   rallyeRatings: Array<RallyeRating>,
   token?: Maybe<Scalars['String']>,
@@ -289,6 +290,25 @@ export type DashboardQuery = (
   )> }
 );
 
+export type RallyeRatingsQueryVariables = {};
+
+
+export type RallyeRatingsQuery = (
+  { __typename?: 'Query' }
+  & { viewer: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'name'>
+    & { group: (
+      { __typename?: 'Group' }
+      & Pick<Group, 'id' | 'rallyePoints'>
+      & { rallyeRatings: Array<(
+        { __typename?: 'RallyeRating' }
+        & Pick<RallyeRating, 'id' | 'stationName' | 'points'>
+      )> }
+    ) }
+  )> }
+);
+
 export type HashtagInfoQueryVariables = {
   hashtagId: Scalars['ID']
 };
@@ -492,6 +512,31 @@ export const DashboardDocument = gql`
   })
   export class DashboardGQL extends Apollo.Query<DashboardQuery, DashboardQueryVariables> {
     document = DashboardDocument;
+    
+  }
+export const RallyeRatingsDocument = gql`
+    query rallyeRatings {
+  viewer {
+    id
+    name
+    group {
+      id
+      rallyeRatings {
+        id
+        stationName
+        points
+      }
+      rallyePoints
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class RallyeRatingsGQL extends Apollo.Query<RallyeRatingsQuery, RallyeRatingsQueryVariables> {
+    document = RallyeRatingsDocument;
     
   }
 export const HashtagInfoDocument = gql`

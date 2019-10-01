@@ -4,8 +4,9 @@ import TimeAgo from 'javascript-time-ago';
 import de from 'javascript-time-ago/locale/de';
 import { IonInfiniteScroll } from '@ionic/angular';
 import {
-  User, Group, Level, Photo, HashtagCategory,
-  DashboardQuery, DashboardQueryVariables, DashboardGQL
+  User, Group, Level, Photo, HashtagCategory, RallyeRating,
+  DashboardQuery, DashboardQueryVariables, DashboardGQL,
+  RallyeRatingsQuery, RallyeRatingsQueryVariables, RallyeRatingsGQL
 } from '../../generated/graphql';
 import { environment } from '../../environments/environment';
 
@@ -18,12 +19,15 @@ TimeAgo.addLocale(de);
 })
 export class DashboardPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  viewerQueryRef: QueryRef<DashboardQuery, DashboardQueryVariables>;
+  rallyeRatingsQueryRef: QueryRef<RallyeRatingsQuery, RallyeRatingsQueryVariables>;
   viewer: Partial<User>;
   group: Partial<Group>;
   level: Partial<Level>;
-  photos: Partial<Photo[]>;
+  photos: Partial<Photo>[];
+  rallyeRatings: Partial<RallyeRating>[];
+  rallyePoints: number;
   timeAgo = new TimeAgo('de-DE');
-  viewerQueryRef: QueryRef<DashboardQuery, DashboardQueryVariables>;
   categories = ['catches', 'places', 'sponsors', 'hours'];
   categoryLabels = {
     catches: 'Fang',
@@ -44,8 +48,12 @@ export class DashboardPage implements OnInit {
     hours: 'hourglass'
   };
 
-  constructor(private dashboardGQL: DashboardGQL) {
+  constructor(
+    private dashboardGQL: DashboardGQL,
+    private rallyeRatingsGQL: RallyeRatingsGQL
+  ) {
     this.viewerQueryRef = this.dashboardGQL.watch();
+    this.rallyeRatingsQueryRef = this.rallyeRatingsGQL.watch();
   }
 
   loadData(event) {
@@ -70,12 +78,30 @@ export class DashboardPage implements OnInit {
         photo['dateString'] = this.timeAgo.format(new Date(photo.date));
       }
     });
+
+    if (this.isRallye()) {
+      this.rallyeRatingsQueryRef.valueChanges.subscribe(({ data }) => {
+        this.rallyeRatings = data.viewer.group.rallyeRatings;
+        this.rallyePoints = data.viewer.group.rallyePoints;
+        console.log(data);
+      });
+    }
+  }
+
+  isRallye(): boolean {
+    const now = new Date('2019-10-04 4:00');
+    return new Date('2019-10-04') < now && now < new Date('2019-10-05');
   }
 
   refresh(event) {
     this.viewerQueryRef.refetch()
       .then(() => event.target.complete())
       .catch(() => event.target.complete());
+    if (this.isRallye()) {
+      this.rallyeRatingsQueryRef.refetch()
+        .then(() => event.target.complete())
+        .catch(() => event.target.complete());
+    }
   }
 
   numKey(key: string): string {
