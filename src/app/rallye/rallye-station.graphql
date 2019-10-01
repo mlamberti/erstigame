@@ -1,0 +1,20 @@
+query RallyeStation($token: String!) {
+  rallyeStation(token: $token) {
+    id
+    tag
+    name
+    allGroups {
+        id
+        name
+        number
+        rallyeRating { points }
+    }
+    rallyeRatings {
+        id
+        group {
+            id
+        }
+        points
+    }
+  }
+}

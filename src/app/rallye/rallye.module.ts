@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RallyepointsPage } from './rallyepoints.page';
+import { RallyePage } from './rallye.page';
 
 const routes: Routes = [
-  {
-    path: ':token', component: RallyepointsPage
-  }
+  { path: '', component: RallyePage },
+  { path: ':token', component: RallyePage }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [RallyepointsPage]
+  declarations: [RallyePage]
 })
-export class RallyepointsPageModule {}
+export class RallyePageModule {}

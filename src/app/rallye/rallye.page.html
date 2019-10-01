@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end" *ngIf="rallyeStation">
+      <ion-button (click)="logout()" *ngIf="!routeToken">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="!rallyeStation">
+      Rallye Station
+    </ion-title>
+    <ion-title *ngIf="rallyeStation">
+      {{ rallyeStation.name }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides #slides pager="true" [options]="slideOpts" *ngIf="!rallyeStation">
+
+    <ion-slide>
+      <form [formGroup]="form">
+        <ion-item >
+          <ion-label position="floating">Rallye Station Token</ion-label>
+          <ion-input formControlName="token" ></ion-input>
+        </ion-item>
+
+        <ion-button (click)="login()" [disabled]="form.invalid">Weiter</ion-button>
+      </form>
+    </ion-slide>
+
+  </ion-slides>
+
+  <ng-container *ngIf="rallyeStation">
+    <ion-list>
+      <ion-item *ngFor="let group of rallyeStation.allGroups">
+        <ion-label><span class="group-number">4-{{ group.number }}</span> {{ group.name }}</ion-label>
+        <ion-select okText="Speichern" cancelText="Abbrechen" interface="popover" [value]="group.rallyeRating?.points" [name]="group.id" (ionChange)="updatePoints($event.target)">
+          <ion-select-option [value]="points" *ngFor="let points of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ points }} Punkte</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+</ion-content>

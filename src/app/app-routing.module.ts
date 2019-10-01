@@ -5,6 +5,7 @@ import { AuthGuard } from './auth.guard';
 const routes: Routes = [
   { path: 'registry', loadChildren: './registry/registry.module#RegistryPageModule' },
   { path: 'dsgvo', loadChildren: './dsgvo/dsgvo.module#DsgvoPageModule' },
+  { path: 'rallye', loadChildren: './rallye/rallye.module#RallyePageModule' },
   { path: '', canActivate: [AuthGuard], children:
     [
       { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' },
@@ -13,10 +14,9 @@ const routes: Routes = [
       { path: 'token', loadChildren: './token/token.module#TokenPageModule' },
       { path: 'personhours', loadChildren: './personhours/personhours.module#PersonhoursPageModule' },
       { path: 'hashtag-modal', loadChildren: './hashtag-modal/hashtag-modal.module#HashtagModalPageModule' },
-      { path: 'rallyepoints', loadChildren: './rallyepoints/rallyepoints.module#RallyepointsPageModule' },
       { path: '**', redirectTo: ''},
     ]
-  }
+  },
 ];
 @NgModule({
   imports: [

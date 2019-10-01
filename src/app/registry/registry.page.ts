@@ -95,17 +95,14 @@ export class RegistryPage implements OnInit, AfterViewInit {
         info: this.form.get('info').value
       }).subscribe(
       ({ data }) => {
-        console.log('got data', data);
         if (data.createUser.errors) {
           this.presentToast(data.createUser.errors);
         } else {
           localStorage.setItem('authToken', data.createUser.authToken);
-          console.log(data.createUser.authToken);
           window.location.href = '/tabs/group';
         }
       },
       (error) => {
-        console.log('there was an error sending the query', error);
         this.presentToast(error);
       }
     );
