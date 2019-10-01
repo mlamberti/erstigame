@@ -37,7 +37,6 @@ export class TokenPage implements OnInit {
 
   ngOnInit() {
    let token = this.route.snapshot.paramMap.get('token');
-   console.log (token);
   }
   getRallyPoints() {
     this.apollo.mutate({

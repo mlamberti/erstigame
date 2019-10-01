@@ -58,7 +58,6 @@ export class DashboardPage implements OnInit {
 
   loadData(event) {
     setTimeout(() => {
-      console.log('Done');
       event.target.complete();
 
       // App logic to determine if all data is loaded
@@ -83,7 +82,6 @@ export class DashboardPage implements OnInit {
       this.rallyeRatingsQueryRef.valueChanges.subscribe(({ data }) => {
         this.rallyeRatings = data.viewer.group.rallyeRatings;
         this.rallyePoints = data.viewer.group.rallyePoints;
-        console.log(data);
       });
     }
   }

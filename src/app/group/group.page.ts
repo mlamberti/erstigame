@@ -39,7 +39,6 @@ export class GroupPage implements OnInit {
         `,
       })
       .valueChanges.subscribe(result => {
-        console.log(result);
         const viewer = result.data.viewer;
 
         this.groupName = viewer.group.name;
