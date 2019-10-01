@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   backendUrl: 'https://erstigame-backend.herokuapp.com',
-  frontendUrl: 'http://localhost:8100',
+  frontendUrl: 'https://www.fsmb.rwth-aachen.de/erstispiel',
 };
