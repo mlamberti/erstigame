@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  backendUrl: 'http://localhost:3000',
+  backendUrl: 'https://erstigame-backend.herokuapp.com',
   frontendUrl: 'http://localhost:8100',
 };
 
