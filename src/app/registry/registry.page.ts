@@ -4,6 +4,8 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ToastController, IonSlides } from '@ionic/angular';
 import { QueryRef } from 'apollo-angular';
 
+import { environment } from '../../environments/environment';
+
 import {
   GenderEnum,
   CreateUserMutation, CreateUserMutationVariables, CreateUserGQL,
@@ -99,7 +101,7 @@ export class RegistryPage implements OnInit, AfterViewInit {
           this.presentToast(data.createUser.errors);
         } else {
           localStorage.setItem('authToken', data.createUser.authToken);
-          window.location.href = '/tabs/group';
+          window.location.href = environment.frontendUrl + '/tabs/group';
         }
       },
       (error) => {
