@@ -1,12 +1,12 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 import { NgxPicaService } from '@digitalascetic/ngx-pica';
 
-import { HashtagModalPage } from '../hashtag-modal/hashtag-modal.page';
+import { HashtagModalComponent } from '../hashtag-modal/hashtag-modal.component';
 import {
   User, HashtagCategory,
   DashboardQuery, DashboardQueryVariables, DashboardGQL,
@@ -27,7 +27,7 @@ mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!)
 })
 export class CameraPage implements OnInit, AfterViewInit {
   @ViewChild('filePicker') filePicker: ElementRef;
-  @ViewChild('peopleCountInput') peopleCountInput :ElementRef;
+  @ViewChild('peopleCountInput') peopleCountInput: ElementRef;
   viewerQueryRef: QueryRef<DashboardQuery, DashboardQueryVariables>;
   viewer: Partial<User>;
 
@@ -52,7 +52,7 @@ export class CameraPage implements OnInit, AfterViewInit {
     this.viewerQueryRef.valueChanges.subscribe(({ data }) => {
       this.viewer = data.viewer;
       this.numHashtags = this.viewer.group.hashtagsAvailable.filter( hashtag => hashtag.doable ).length;
-      let photos = this.viewer.group.photos;
+      const photos = this.viewer.group.photos;
       this.peopleCount = photos.length ? photos[0].peopleCount : 0;
     });
   }
@@ -113,7 +113,7 @@ export class CameraPage implements OnInit, AfterViewInit {
 
   async openModal() {
     const modal = await this.modalController.create({
-      component: HashtagModalPage
+      component: HashtagModalComponent
     });
 
     modal.onDidDismiss().then((res) => {

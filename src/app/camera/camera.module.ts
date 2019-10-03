@@ -9,6 +9,8 @@ import { NgxPicaModule } from '@digitalascetic/ngx-pica';
 
 import { CameraPage } from './camera.page';
 
+import { HashtagModalComponent } from '../hashtag-modal/hashtag-modal.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -25,6 +27,10 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     NgxPicaModule,
   ],
-  declarations: [CameraPage],
+  entryComponents: [HashtagModalComponent],
+  declarations: [
+    CameraPage,
+    HashtagModalComponent,
+  ],
 })
 export class CameraPageModule {}

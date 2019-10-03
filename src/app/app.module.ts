@@ -13,14 +13,10 @@ import { AppComponent } from './app.component';
 
 import { GraphQLModule } from './graphql.module';
 
-import { HashtagModalPage } from './hashtag-modal/hashtag-modal.page';
-
 @NgModule({
   declarations: [
     AppComponent,
-    HashtagModalPage,
   ],
-  entryComponents: [HashtagModalPage],
   imports: [
     BrowserModule,
     FormsModule,

@@ -13,7 +13,6 @@ const routes: Routes = [
       { path: 'hashtag-info', loadChildren: './hashtag-info/hashtag-info.module#HashtagInfoPageModule' },
       { path: 'token', loadChildren: './token/token.module#TokenPageModule' },
       { path: 'personhours', loadChildren: './personhours/personhours.module#PersonhoursPageModule' },
-      { path: 'hashtag-modal', loadChildren: './hashtag-modal/hashtag-modal.module#HashtagModalPageModule' },
       { path: '**', redirectTo: ''},
     ]
   },

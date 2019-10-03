@@ -38,14 +38,14 @@ query {
 
 @Component({
   selector: 'app-hashtag-modal',
-  templateUrl: './hashtag-modal.page.html',
-  styleUrls: ['./hashtag-modal.page.scss'],
+  templateUrl: './hashtag-modal.component.html',
+  styleUrls: ['./hashtag-modal.component.scss'],
 })
-export class HashtagModalPage implements OnInit {
+export class HashtagModalComponent implements OnInit {
    @ViewChildren('checkbox') checkboxes: QueryList<IonCheckbox>;
    @ViewChildren('select') selects: QueryList<IonSelect>;
 
-  viewer:User;
+  viewer: User;
   group: Group;
 
   allHashtags: Hashtag[];
@@ -54,7 +54,7 @@ export class HashtagModalPage implements OnInit {
     catches: [],
     places: [],
     sponsors: [],
-  }
+  };
 
   constructor(private apollo: Apollo, public modalController : ModalController) { }
 

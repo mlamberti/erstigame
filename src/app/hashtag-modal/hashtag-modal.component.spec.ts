@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HashtagModalPage } from './hashtag-modal.page';
+import { HashtagModalComponent } from './hashtag-modal.component';
 
-describe('HashtagModalPage', () => {
-  let component: HashtagModalPage;
-  let fixture: ComponentFixture<HashtagModalPage>;
+describe('HashtagModalComponent', () => {
+  let component: HashtagModalComponent;
+  let fixture: ComponentFixture<HashtagModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HashtagModalPage ],
+      declarations: [ HashtagModalComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HashtagModalPage);
+    fixture = TestBed.createComponent(HashtagModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
