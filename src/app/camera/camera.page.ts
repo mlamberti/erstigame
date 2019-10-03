@@ -4,6 +4,8 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 
+import { NgxPicaService } from '@digitalascetic/ngx-pica';
+
 import { HashtagModalPage } from '../hashtag-modal/hashtag-modal.page';
 import {
   User, HashtagCategory,
@@ -41,6 +43,7 @@ export class CameraPage implements OnInit, AfterViewInit {
     private router: Router,
     public modalController: ModalController,
     public toastController: ToastController,
+    private picaService: NgxPicaService
   ) {
     this.viewerQueryRef = this.dashboardGQL.watch();
   }
@@ -94,11 +97,18 @@ export class CameraPage implements OnInit, AfterViewInit {
   changePhoto(file: File) {
     this.picture = file;
 
-    let reader = new FileReader();
-    reader.onload = (e) => {
-      this.pictureURL = reader.result;
-    }
-    reader.readAsDataURL(file);
+    this.picaService.resizeImage(file, 1200, 1200, { aspectRatio: { keepAspectRatio: true } })
+      .subscribe(
+        (imageResized: File) => {
+          let reader: FileReader = new FileReader();
+               
+          reader.onload = (e) => {
+            this.pictureURL = reader.result;
+          };
+                  
+          reader.readAsDataURL(imageResized);
+        }
+      );
   }
 
   async openModal() {

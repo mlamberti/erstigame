@@ -23,6 +23,7 @@
     "@angular/router": "^7.2.15",
     "@capacitor/cli": "1.1.1",
     "@capacitor/core": "1.1.1",
+    "@digitalascetic/ngx-pica": "^8.0.2",
     "@graphql-codegen/cli": "^1.6.1",
     "@graphql-codegen/fragment-matcher": "^1.7.0",
     "@ionic-native/core": "^5.12.0",
@@ -41,6 +42,7 @@
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.0",
     "javascript-time-ago": "^2.0.2",
+    "ngx-pica": "^1.1.4",
     "ngx-pipes": "^2.5.6",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.29"

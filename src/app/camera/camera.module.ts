@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
+import { NgxPicaModule } from '@digitalascetic/ngx-pica';
+
 import { CameraPage } from './camera.page';
 
 const routes: Routes = [
@@ -21,7 +23,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes),
+    NgxPicaModule,
   ],
-  declarations: [CameraPage]
+  declarations: [CameraPage],
 })
 export class CameraPageModule {}
