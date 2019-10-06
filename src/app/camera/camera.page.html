@@ -7,14 +7,17 @@
   </ion-toolbar>
 </ion-header>
 
-<input #filePicker type="file" accept="image/*" capture (change)="changePhoto($event.target.files[0])">
+<input #filePicker type="file" accept="image/*" (change)="changePhoto($event.target.files[0])">
 
 <ng-container *ngIf="pictureURL">
 
   <ion-content>
     <ion-img [src]="pictureURL" *ngIf="pictureURL"></ion-img>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button (click)="createPhoto()"><ion-icon name="send"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="createPhoto()">
+        <ion-icon name="send" *ngIf="!sending"></ion-icon>
+        <ion-spinner *ngIf="sending"></ion-spinner>
+      </ion-fab-button>
     </ion-fab>
   </ion-content>
 
@@ -22,6 +25,7 @@
   <ion-footer>
     <ion-toolbar color="primary">
       <ion-list>
+
         <ion-item>
           <ion-label> Anzahl Personen </ion-label>
           <div class="number-input">
@@ -30,10 +34,17 @@
             <button (click)="peopleCountInput.stepUp()" class="plus"></button>
           </div>
         </ion-item>
+
+        <ion-item>
+          <ion-label>Zeitpunkt</ion-label>
+          <ion-datetime #datetimeInput displayFormat="D. MMM YYYY HH:mm" pickerFormat="D. MMM HH:mm" min="2019-10-01" [max]="currentDateString" monthShortNames="Jan, Feb, Mär, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez" [value]="currentDateString"></ion-datetime>
+        </ion-item>
+
         <ion-item button (click)="openModal()">
           <ion-label>Hashtags auswählen ...</ion-label>
           <ion-note slot="end">{{ hashtagIds.length }} / {{ numHashtags }}</ion-note>
         </ion-item>
+
       </ion-list>
     </ion-toolbar>
   </ion-footer>

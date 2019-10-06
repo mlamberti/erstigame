@@ -1,8 +1,6 @@
-mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!) {
-  createPhoto(picture: $picture, peopleCount: $peopleCount, hashtagIds: $hashtagIds) {
-    photo {
-      id
-    }
+mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $date: ISO8601DateTime, $hashtagIds: [ID!]!) {
+  createPhoto(picture: $picture, peopleCount: $peopleCount, date: $date, hashtagIds: $hashtagIds) {
+    photo { id }
     errors
   }
 }

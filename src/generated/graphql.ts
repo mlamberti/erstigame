@@ -10,6 +10,8 @@ export type Scalars = {
   Int: number,
   Float: number,
   Upload: any,
+  /** An ISO 8601-encoded datetime */
+  ISO8601DateTime: any,
 };
 
 
@@ -89,6 +91,7 @@ export enum HashtagCategory {
   Place = 'PLACE'
 }
 
+
 export type Level = Node & {
   __typename?: 'Level',
   createdAt?: Maybe<Scalars['String']>,
@@ -111,9 +114,10 @@ export type Mutation = {
 
 
 export type MutationCreatePhotoArgs = {
+  picture: Scalars['Upload'],
   peopleCount: Scalars['Int'],
   hashtagIds: Array<Scalars['ID']>,
-  picture: Scalars['Upload']
+  date?: Maybe<Scalars['ISO8601DateTime']>
 };
 
 
@@ -223,6 +227,7 @@ export type User = Node & {
 export type CreatePhotoMutationVariables = {
   picture: Scalars['Upload'],
   peopleCount: Scalars['Int'],
+  date?: Maybe<Scalars['ISO8601DateTime']>,
   hashtagIds: Array<Scalars['ID']>
 };
 
@@ -411,8 +416,8 @@ export type GroupByTokenQuery = (
 );
 
 export const CreatePhotoDocument = gql`
-    mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!) {
-  createPhoto(picture: $picture, peopleCount: $peopleCount, hashtagIds: $hashtagIds) {
+    mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $date: ISO8601DateTime, $hashtagIds: [ID!]!) {
+  createPhoto(picture: $picture, peopleCount: $peopleCount, date: $date, hashtagIds: $hashtagIds) {
     photo {
       id
     }

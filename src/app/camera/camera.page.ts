@@ -1,8 +1,9 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController, ToastController, IonDatetime } from '@ionic/angular';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { finalize } from 'rxjs/operators';
 
 import { NgxPicaService } from '@digitalascetic/ngx-pica';
 
@@ -13,8 +14,8 @@ import {
 } from '../../generated/graphql';
 
 const CREATE_PHOTO = gql`
-mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!) {
-  createPhoto(picture: $picture, peopleCount: $peopleCount, hashtagIds: $hashtagIds) {
+mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $date: ISO8601DateTime, $hashtagIds: [ID!]!) {
+  createPhoto(picture: $picture, peopleCount: $peopleCount, date: $date, hashtagIds: $hashtagIds) {
     photo { id }
     errors
   }
@@ -28,12 +29,16 @@ mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $hashtagIds: [ID!]!)
 export class CameraPage implements OnInit, AfterViewInit {
   @ViewChild('filePicker') filePicker: ElementRef;
   @ViewChild('peopleCountInput') peopleCountInput: ElementRef;
+  @ViewChild('datetimeInput') datetimeInput: IonDatetime;
   viewerQueryRef: QueryRef<DashboardQuery, DashboardQueryVariables>;
   viewer: Partial<User>;
+  sending = false;
 
   picture: File;
   pictureURL: any;
   peopleCount = 0;
+  currentDate = new Date();
+  currentDateString: string;
   numHashtags = 0;
   hashtagIds: string[] = [];
 
@@ -46,6 +51,8 @@ export class CameraPage implements OnInit, AfterViewInit {
     private picaService: NgxPicaService
   ) {
     this.viewerQueryRef = this.dashboardGQL.watch();
+    this.currentDate.setMinutes(this.currentDate.getMinutes() - this.currentDate.getTimezoneOffset());
+    this.currentDateString = this.currentDate.toISOString().slice(0, -1);
   }
 
   ngOnInit() {
@@ -70,26 +77,35 @@ export class CameraPage implements OnInit, AfterViewInit {
   }
 
   createPhoto() {
+    if (this.sending) { return; }
+    this.sending = true;
+
+    const date = new Date(this.datetimeInput.value);
+    console.log(date);
+
     this.apollo.mutate({
       mutation: CREATE_PHOTO,
       variables: {
         picture: this.picture,
         peopleCount: +this.peopleCountInput.nativeElement.value,
+        date: date,
         hashtagIds: this.hashtagIds
       },
       context: {
         useMultipart: true
       },
-    }).subscribe(
+    }).pipe(
+      finalize(() => this.sending = false)
+    ).subscribe(
       ({ data }) => {
         if (data.createPhoto.errors) {
-          this.presentToast(data.createPhoto.errors)
+          this.presentToast(data.createPhoto.errors);
         } else {
           this.dashboardGQL.watch().refetch();
           this.router.navigate(['/']);
         }
-      },(error) => {
-        this.presentToast(error)
+      }, (error) => {
+        this.presentToast(error);
       }
     );
   }
@@ -100,12 +116,12 @@ export class CameraPage implements OnInit, AfterViewInit {
     this.picaService.resizeImage(file, 1200, 1200, { aspectRatio: { keepAspectRatio: true } })
       .subscribe(
         (imageResized: File) => {
-          let reader: FileReader = new FileReader();
-               
+          const reader: FileReader = new FileReader();
+
           reader.onload = (e) => {
             this.pictureURL = reader.result;
           };
-                  
+
           reader.readAsDataURL(imageResized);
         }
       );
