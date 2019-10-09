@@ -83,7 +83,7 @@ export class CameraPage implements OnInit, AfterViewInit {
     const date = new Date(this.datetimeInput.value);
     console.log(date);
 
-    this.apollo.mutate({
+    this.apollo.mutate<{ createPhoto }>({
       mutation: CREATE_PHOTO,
       variables: {
         picture: this.picture,
@@ -96,10 +96,9 @@ export class CameraPage implements OnInit, AfterViewInit {
       },
     }).pipe(
       finalize(() => this.sending = false)
-    ).subscribe(
-      ({ data }) => {
-        if (data.createPhoto.errors) {
-          this.presentToast(data.createPhoto.errors);
+    ).subscribe(({ data: { createPhoto } }) => {
+        if (createPhoto.errors) {
+          this.presentToast(createPhoto.errors);
         } else {
           this.dashboardGQL.watch().refetch();
           this.router.navigate(['/']);

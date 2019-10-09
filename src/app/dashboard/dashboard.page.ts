@@ -24,7 +24,7 @@ export class DashboardPage implements OnInit {
   viewer: Partial<User>;
   group: Partial<Group>;
   level: Partial<Level>;
-  photos: Partial<Photo>[];
+  photos: any[];
   rallyeRatings: Partial<RallyeRating>[];
   rallyePoints: number;
   timeAgo = new TimeAgo('de-DE');

@@ -77,7 +77,7 @@ export class RallyePage implements OnInit {
       }).subscribe(
       ({ data }) => {
         if (data.createRallyeRating.errors) {
-          this.presentToast(data.createRallyeRating.errors);
+          this.presentToast(data.createRallyeRating.errors.join());
         } else {
           this.presentToast('Gespeichert');
         }

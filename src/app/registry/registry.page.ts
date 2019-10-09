@@ -98,7 +98,7 @@ export class RegistryPage implements OnInit, AfterViewInit {
       }).subscribe(
       ({ data }) => {
         if (data.createUser.errors) {
-          this.presentToast(data.createUser.errors);
+          this.presentToast(data.createUser.errors.join());
         } else {
           localStorage.setItem('authToken', data.createUser.authToken);
           window.location.href = environment.frontendUrl + '/tabs/group';
