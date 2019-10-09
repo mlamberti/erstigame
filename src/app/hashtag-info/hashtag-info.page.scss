@@ -1,0 +1,10 @@
+ion-card {
+  > ion-item {
+    > ion-label {
+      font-size: 20px;
+    }
+    ion-chip {
+      background: none;
+    }
+  }
+}

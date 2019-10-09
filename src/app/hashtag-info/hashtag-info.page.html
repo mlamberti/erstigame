@@ -11,9 +11,14 @@
   <ion-content>
     <ion-card>
       <ion-img *ngIf="hashtag.picture" src="assets/hashtags/{{hashtag.picture}}"></ion-img>
-      <ion-card-header>
-        <ion-card-title>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-card-title>
-      </ion-card-header>
+  
+      <ion-item lines="none">
+        <ion-label>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-label>
+        <ion-chip>
+          <ion-icon name="trophy"></ion-icon>
+          <ion-label>{{ hashtag.points }} Punkte</ion-label>
+        </ion-chip>
+      </ion-item>
 
       <ion-card-content>
         {{ hashtag.description || hashtag.info }}
