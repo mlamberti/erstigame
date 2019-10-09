@@ -16,7 +16,7 @@
     <ion-card-content>
       Um das nächste Level zu erreichen, müsst ihr folgende Bedingen erfüllen:
       <ion-item *ngFor="let hashtag of level.requiredHashtags" [routerLink]="['/hashtag-info', hashtag.id]">
-        <ion-label text-wrap>#{{ hashtag.name }}</ion-label>
+        <ion-label class="ion-text-wrap">#{{ hashtag.name }}</ion-label>
         <ion-icon name="checkmark" slot="end" *ngIf="hashtag.done"></ion-icon>
       </ion-item>
       <ng-container *ngFor="let category of categories">
@@ -38,7 +38,7 @@
 
     <ion-list>
       <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of hashtags" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
-        <ion-label text-wrap>
+        <ion-label class="ion-text-wrap">
           <h3>#{{ hashtag.name }}</h3>
           <p class="info">{{ hashtag.info }}</p>
         </ion-label>
@@ -53,7 +53,7 @@
 
         <app-expandable #expandable [expandHeight]="category.value.length*64+'px'">
           <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of category.value" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
               <h3>#{{ categoryLabels[hashtag.category] }}{{ hashtag.name }}</h3>
               <p class="info">{{ hashtag.info }}</p>
             </ion-label>
