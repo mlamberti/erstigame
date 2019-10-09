@@ -51,7 +51,7 @@
           <ion-note slot="end">{{ group[numKey(category.key)] }} / {{ category.value.length }}</ion-note>
         </ion-item>
 
-        <app-expandable #expandable [expandHeight]="category.value.length*70+'px'">
+        <app-expandable #expandable [expandHeight]="category.value.length*85+'px'">
           <ion-item detail [detailIcon]="hashtag.done ? 'checkmark' : 'ios-arrow-forward'" *ngFor="let hashtag of category.value" [class.done]="hashtag.done" [routerLink]="['/hashtag-info', hashtag.id]">
             <ion-label class="ion-text-wrap">
               <h3>#{{ categoryLabels[hashtag.category] }}{{ hashtag.name }}</h3>
