@@ -8,8 +8,9 @@ import { environment } from '../../environments/environment';
 
 import {
   GenderEnum,
-  CreateUserMutation, CreateUserMutationVariables, CreateUserGQL,
-  GroupByTokenQuery, GroupByTokenQueryVariables, GroupByTokenGQL
+  CreateGroupGQL,
+  CreateUserGQL,
+  GroupByTokenGQL
 } from '../../generated/graphql';
 
 @Component({
@@ -20,12 +21,13 @@ import {
 export class RegistryPage implements OnInit, AfterViewInit {
   @ViewChild('slides') slides: IonSlides;
 
-  groupByTokenQueryRef: QueryRef<GroupByTokenQuery, GroupByTokenQueryVariables>;
-  createUserQueryRef: QueryRef<CreateUserMutation, CreateUserMutationVariables>;
   genders = GenderEnum;
 
-  form: FormGroup;
-  groupToken: string;
+  tokenForm: FormGroup;
+  groupForm: FormGroup;
+  userForm: FormGroup;
+
+  joinToken: string;
   groupName = '';
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
   slideOpts = {
@@ -35,39 +37,42 @@ export class RegistryPage implements OnInit, AfterViewInit {
 
   constructor(
     private createUserGQL: CreateUserGQL,
+    private createGroupGQL: CreateGroupGQL,
     private groupByTokenGQL: GroupByTokenGQL,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     public toastController: ToastController,
-  ) {
-    this.form = this.formBuilder.group({
-      token: ['', Validators.required],
+    ) {
+    this.tokenForm = this.formBuilder.group({
+      token: ['', [Validators.required, Validators.minLength(24), Validators.maxLength(24)]],
+    });
+    this.groupForm = this.formBuilder.group({
+      name: ['', Validators.required],
+    });
+    this.userForm = this.formBuilder.group({
       name: ['', Validators.required],
       gender: [''],
       info: [''],
     });
 
-    this.form.valueChanges.subscribe(val => {
+    this.tokenForm.valueChanges.subscribe(val => {
       if ( val.token && val.token.length === 24 ) {
-        this.groupByTokenGQL.watch({ joinToken: val.token }).valueChanges.subscribe(({ data }) => {
-          this.groupName = data.groupByToken ? data.groupByToken.name : '';
-          if ( this.groupName ) {
-            this.slides.lockSwipes(false);
+        this.groupByTokenGQL.watch({ joinToken: val.token }).valueChanges.subscribe(({ data: { groupByToken } }) => {
+          if ( groupByToken ) {
+            this.groupName =  groupByToken.name;
+            this.joinToken = val.token;
           } else {
-            this.slides.lockSwipes(true);
+            this.presentToast('Das Einladungstoken ist ungültig.');
           }
         });
-      } else {
-        this.groupName = '';
-        this.slides.lockSwipes(true);
       }
     });
   }
 
   ngOnInit() {
-    this.groupToken = this.route.snapshot.paramMap.get('token');
-    this.form.patchValue({ 'token': this.groupToken });
+    this.joinToken = this.route.snapshot.paramMap.get('token');
+    this.tokenForm.patchValue({ 'token': this.joinToken });
   }
 
   ngAfterViewInit() {
@@ -83,31 +88,58 @@ export class RegistryPage implements OnInit, AfterViewInit {
   }
 
   createUser() {
-    if (!this.form.valid) {
-      if (this.form.controls.name.errors.required) {
+    if (!this.userForm.valid) {
+      if (this.userForm.controls.name.errors.required) {
         this.presentToast('Bitte gib einen Namen an');
       }
       return;
     }
 
     this.createUserGQL.mutate({
-        name: this.form.get('name').value || null,
-        token: this.form.get('token').value,
-        gender: this.form.get('gender').value || null,
-        info: this.form.get('info').value
+      token: this.tokenForm.get('token').value || this.joinToken,
+      name: this.userForm.get('name').value || null,
+      gender: this.userForm.get('gender').value || null,
+      info: this.userForm.get('info').value
+    }).subscribe(
+    ({ data }) => {
+      if (data.createUser.errors) {
+        this.presentToast(data.createUser.errors.join());
+      } else {
+        localStorage.setItem('authToken', data.createUser.authToken);
+        window.location.href = environment.frontendUrl + '/tabs/group';
+      }
+    },
+    (error) => {
+      this.presentToast(error);
+    }
+    );
+  }
+
+  goToCreateGroup() {
+    this.slides.lockSwipes(false);
+    this.slides.slideNext();
+  }
+
+  createGroup() {
+    const groupName = this.groupForm.get('name').value;
+
+    if ( groupName ) {
+      this.createGroupGQL.mutate({
+        name: groupName,
       }).subscribe(
-      ({ data }) => {
-        if (data.createUser.errors) {
-          this.presentToast(data.createUser.errors.join());
+      ({ data: { createGroup } }) => {
+        if (createGroup.errors) {
+          this.presentToast(createGroup.errors.join());
         } else {
-          localStorage.setItem('authToken', data.createUser.authToken);
-          window.location.href = environment.frontendUrl + '/tabs/group';
+          this.joinToken = createGroup.joinToken;
+          this.groupName = createGroup.group.name;
+          this.presentToast('Group created');
         }
       },
       (error) => {
         this.presentToast(error);
-      }
-    );
+      });
+    }
   }
 
 }

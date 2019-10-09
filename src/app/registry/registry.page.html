@@ -9,22 +9,35 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-slides #slides pager="true" [options]="slideOpts">
+  <ion-slides #slides pager="false" [options]="slideOpts">
 
-    <ion-slide *ngIf="!groupToken || !groupName">
-      <form [formGroup]="form" (submit)="slides.slideNext()">
-        <ion-item >
+    <ion-slide *ngIf="!groupName">
+      <form [formGroup]="tokenForm" (submit)="slides.slideNext()">
+        <ion-item>
           <ion-label position="floating">Einladungstoken</ion-label>
           <ion-input formControlName="token" ></ion-input>
         </ion-item>
-
-        <ion-button (click)="slides.slideNext()" [disabled]="!groupName">Weiter</ion-button>
       </form>
 
+      <div id="no-token">
+        <ion-text>Kein Token?</ion-text>
+        <ion-button (click)="goToCreateGroup()">Neue Gruppe anlegen</ion-button>
+      </div>
     </ion-slide>
 
-    <ion-slide>
-      <form [formGroup]="form" (submit)="createUser()">
+    <ion-slide *ngIf="!groupName">
+      <form [formGroup]="groupForm" (submit)="createGroup()">
+        <ion-item>
+          <ion-label position="floating">Gruppenname</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+
+        <ion-button type="submit" [disabled]="groupForm.invalid">Gruppe anlegen</ion-button>
+      </form>
+    </ion-slide>
+
+    <ion-slide *ngIf="groupName">
+      <form [formGroup]="userForm" (submit)="createUser()">
         <ion-item>
           <ion-label position="floating">Dein Name</ion-label>
           <ion-input formControlName="name" required></ion-input>
@@ -45,7 +58,7 @@
           </ion-label>
         </ion-item>
 
-        <ion-button type="submit" [disabled]="form.invalid">Gruppe beitreten</ion-button>
+        <ion-button type="submit" [disabled]="userForm.invalid">Gruppe beitreten</ion-button>
       </form>
     </ion-slide>
 

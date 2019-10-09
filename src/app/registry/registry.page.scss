@@ -5,3 +5,12 @@ ion-slides {
 ion-button {
 	margin-top: 20px;
 }
+
+#no-token {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  align: center;
+  ion-text { display: block; }
+  ion-button { margin-top: 10px; }
+}
