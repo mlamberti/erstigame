@@ -32,6 +32,7 @@ export class GroupPage implements OnInit {
                   id
                   name
                   info
+                  invalidated
                 }
               }
             }
