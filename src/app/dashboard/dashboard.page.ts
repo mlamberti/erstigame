@@ -25,6 +25,7 @@ export class DashboardPage implements OnInit {
   group: Partial<Group>;
   level: Partial<Level>;
   photos: any[];
+  photoLimit = 5;
   rallyeRatings: Partial<RallyeRating>[];
   rallyePoints: number;
   timeAgo = new TimeAgo('de-DE');
@@ -58,11 +59,12 @@ export class DashboardPage implements OnInit {
 
   loadData(event) {
     setTimeout(() => {
-      event.target.complete();
-
-      // App logic to determine if all data is loaded
-      // and disable the infinite scroll
+      this.photoLimit += 5;
+      if (this.photoLimit >= this.photos.length) {
         event.target.disabled = true;
+      }
+
+      event.target.complete();
     }, 500);
   }
 
@@ -71,7 +73,7 @@ export class DashboardPage implements OnInit {
       this.viewer = data.viewer;
       this.group = this.viewer.group;
       this.level = this.group.level;
-      this.photos = this.viewer.group.photos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+      this.photos = this.group.photos;
       for (const photo of this.photos) {
         photo['fullPath'] = environment.backendUrl + photo.path;
         photo['dateString'] = this.timeAgo.format(new Date(photo.date));
@@ -87,7 +89,7 @@ export class DashboardPage implements OnInit {
   }
 
   isRallye(): boolean {
-    const now = new Date('2019-10-04 4:00');
+    const now = new Date();
     return new Date('2019-10-04') < now && now < new Date('2019-10-05');
   }
 

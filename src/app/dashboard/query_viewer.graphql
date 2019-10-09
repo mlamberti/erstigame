@@ -20,7 +20,7 @@ query dashboard {
         peopleCount
         numHours
         points
-        path
+        url
         date
       }
       hashtagsAvailable {

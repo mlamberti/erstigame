@@ -156,6 +156,7 @@ export type Photo = Node & {
   peopleCount: Scalars['Int'],
   points: Scalars['Int'],
   updatedAt?: Maybe<Scalars['String']>,
+  url: Scalars['String'],
   user: User,
 };
 
@@ -224,6 +225,7 @@ export type User = Node & {
   picture?: Maybe<Scalars['String']>,
   updatedAt?: Maybe<Scalars['String']>,
 };
+
 export type CreatePhotoMutationVariables = {
   picture: Scalars['Upload'],
   peopleCount: Scalars['Int'],
@@ -275,7 +277,7 @@ export type DashboardQuery = (
         )>> }
       ), photos: Array<(
         { __typename?: 'Photo' }
-        & Pick<Photo, 'id' | 'peopleCount' | 'numHours' | 'points' | 'path' | 'date'>
+        & Pick<Photo, 'id' | 'peopleCount' | 'numHours' | 'points' | 'url' | 'date'>
         & { user: (
           { __typename?: 'User' }
           & Pick<User, 'id' | 'name' | 'picture'>
@@ -415,6 +417,7 @@ export type GroupByTokenQuery = (
   )> }
 );
 
+
 export const CreatePhotoDocument = gql`
     mutation CreatePhoto($picture: Upload!, $peopleCount: Int!, $date: ISO8601DateTime, $hashtagIds: [ID!]!) {
   createPhoto(picture: $picture, peopleCount: $peopleCount, date: $date, hashtagIds: $hashtagIds) {
@@ -489,7 +492,7 @@ export const DashboardDocument = gql`
         peopleCount
         numHours
         points
-        path
+        url
         date
       }
       hashtagsAvailable {

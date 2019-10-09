@@ -54,44 +54,43 @@
 
   <ion-item *ngIf="photos.length">Letzte Aktivitäten</ion-item>
 
-  <ion-card class="photo" *ngFor="let photo of photos">
-    <ion-img [src]="photo.fullPath"></ion-img>
+  <ng-container *ngFor="let photo of photos; let i=index">
+    <ion-card class="photo" *ngIf="i < photoLimit">
+      <img [src]="photo.url">
 
-    <ion-card-content>
+      <ion-card-content>
 
-      <ion-item lines="none">
-        <ion-avatar slot="start">
-          <ion-icon class="avatar" name="contact"></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          <div>{{ photo.user.name }}</div>
-          <span>{{ photo.dateString }}</span>
-        </ion-label>
-      </ion-item>
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <ion-icon class="avatar" name="contact"></ion-icon>
+          </ion-avatar>
+          <ion-label>
+            <div>{{ photo.user.name }}</div>
+            <span>{{ photo.dateString }}</span>
+          </ion-label>
+        </ion-item>
 
-      <ion-chip *ngIf="photo.points">
-        <ion-icon name="trophy"></ion-icon>
-        <ion-label>{{ photo.points }} Punkte</ion-label>
-      </ion-chip>
+        <ion-chip *ngIf="photo.points">
+          <ion-icon name="trophy"></ion-icon>
+          <ion-label>{{ photo.points }} Punkte</ion-label>
+        </ion-chip>
 
-      <ion-chip *ngIf="photo.numHours" [routerLink]="['/hashtag-info', 'hours']">
-        <ion-icon name="hourglass"></ion-icon>
-        <ion-label>{{ photo.numHours | floor }} Stunden</ion-label>
-      </ion-chip>
+        <ion-chip *ngIf="photo.numHours" [routerLink]="['/hashtag-info', 'hours']">
+          <ion-icon name="hourglass"></ion-icon>
+          <ion-label>{{ photo.numHours | floor }} Stunden</ion-label>
+        </ion-chip>
 
-      <ion-chip *ngFor="let hashtag of photo.hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
-        <ion-label>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-label>
-      </ion-chip>
+        <ion-chip *ngFor="let hashtag of photo.hashtags" [routerLink]="['/hashtag-info', hashtag.id]">
+          <ion-label>#{{ hashtag.category && categoryLabels[hashtag.category] }}{{ hashtag.name }}</ion-label>
+        </ion-chip>
 
-    </ion-card-content>
-  </ion-card>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content
-    loadingSpinner="bubbles"
-    loadingText="Loading more data...">
-  </ion-infinite-scroll-content>
-</ion-infinite-scroll>
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
 
