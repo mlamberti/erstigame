@@ -110,11 +110,10 @@ export class CameraPage implements OnInit, AfterViewInit {
   }
 
   changePhoto(file: File) {
-    this.picture = file;
-
     this.picaService.resizeImage(file, 1200, 1200, { aspectRatio: { keepAspectRatio: true } })
       .subscribe(
         (imageResized: File) => {
+          this.picture = imageResized;
           const reader: FileReader = new FileReader();
 
           reader.onload = (e) => {
